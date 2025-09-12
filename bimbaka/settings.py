@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-iyqs763a^4!d*ev(&g)*d$za+m3(p+cs)p)zg4@p4st@x4%ro=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["https://bimbaka-production.up.railway.app"]
+ALLOWED_HOSTS = ["bimbaka-production.up.railway.app"]
 
 CSRF_TRUSTED_ORIGINS = ["https://bimbaka-production.up.railway.app"]
 
