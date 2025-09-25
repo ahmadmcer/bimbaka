@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="flex flex-col w-full py-10">
+    <h1 class="text-2xl font-bold text-blue-600 mb-6">Materi Perkalian & Pembagian</h1>
+    <div class="bg-white shadow p-6 rounded-lg space-y-4">
+      <h2 class="text-lg font-semibold">Perkalian</h2>
+      <p>Perkalian adalah penjumlahan berulang. Contoh: 3 × 4 = 12 (artinya 3 + 3 + 3 + 3).</p>
+
+      <h2 class="text-lg font-semibold">Pembagian</h2>
+      <p>Pembagian adalah kebalikan dari perkalian. Contoh: 12 ÷ 4 = 3.</p>
+
+      <p class="mt-4">Cobalah latihan untuk memahami lebih dalam.</p>
+      <a href="{% url 'latihan' %}" class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Mulai Latihan</a>
+    </div>
+  </div>
+{% endblock %}

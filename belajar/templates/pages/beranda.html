@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="flex flex-col w-full py-10">
+    <div class="mb-6">
+      <p class="text-blue-600 font-semibold">Selamat Datang di</p>
+      <h1 class="text-4xl font-bold text-blue-600 mb-2">BIMBAKA</h1>
+      <h2 class="text-gray-600 font-semibold">Belajar Interaktif Matematika: Bagi dan Kali untuk Kelas 2 & 3 SD</h2>
+    </div>
+    <p class="text-gray-700 mb-4">
+      Website ini membantu pembelajaran <span class="font-semibold">Perkalian</span> dan <span class="font-semibold">Pembagian</span>
+      dengan interaktif dan mudah dipahami.
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <a href="{% url 'materi' %}" class="block bg-blue-100 hover:bg-blue-200 p-6 rounded-lg shadow">
+        <h2 class="text-xl font-bold text-blue-700">Materi</h2>
+        <p>Pelajari dasar perkalian dan pembagian dengan contoh soal.</p>
+      </a>
+      <a href="{% url 'latihan' %}" class="block bg-green-100 hover:bg-green-200 p-6 rounded-lg shadow">
+        <h2 class="text-xl font-bold text-green-700">Latihan</h2>
+        <p>Uji kemampuanmu dengan latihan soal interaktif.</p>
+      </a>
+    </div>
+  </div>
+{% endblock %}

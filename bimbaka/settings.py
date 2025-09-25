@@ -142,6 +142,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Login settings
+
+LOGIN_URL = 'masuk'
+LOGIN_REDIRECT_URL = 'beranda'
+LOGOUT_REDIRECT_URL = 'masuk'
+
+# Security settings for production
+
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True

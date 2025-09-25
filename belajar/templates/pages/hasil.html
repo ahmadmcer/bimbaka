@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Hasil - Bimbaka
+{% endblock %}
+
+{% block content %}
+  <div class="flex flex-col w-full py-6">
+    <div class="mb-6 text-center">
+      <h1 class="text-4xl font-bold text-blue-600 mb-2">🎉 Hasil Latihan</h1>
+      <p class="text-gray-600">Selamat! Kamu sudah menyelesaikan latihan</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
+      <!-- Score Display -->
+      <div class="text-center mb-8">
+        <div class="mb-6">
+          <div class="inline-block p-8 rounded-full {% if percentage >= 80 %}
+              bg-green-100
+            {% elif percentage >= 60 %}
+              bg-yellow-100
+            {% else %}
+              bg-red-100
+            {% endif %}">
+            <span class="text-6xl font-bold {% if percentage >= 80 %}
+                text-green-600
+              {% elif percentage >= 60 %}
+                text-yellow-600
+              {% else %}
+                text-red-600
+              {% endif %}">
+              {{ percentage }}%
+            </span>
+          </div>
+        </div>
+
+        <!-- Grade Message -->
+        <div class="mb-6">
+          {% if percentage >= 90 %}
+            <h2 class="text-2xl font-bold text-green-600 mb-2">🌟 Luar Biasa!</h2>
+            <p class="text-gray-600">Kamu sangat pintar! Pertahankan terus!</p>
+          {% elif percentage >= 80 %}
+            <h2 class="text-2xl font-bold text-green-600 mb-2">👍 Bagus Sekali!</h2>
+            <p class="text-gray-600">Hasil yang memuaskan! Terus berlatih!</p>
+          {% elif percentage >= 60 %}
+            <h2 class="text-2xl font-bold text-yellow-600 mb-2">📚 Cukup Baik!</h2>
+            <p class="text-gray-600">Masih bisa lebih baik lagi. Ayo berlatih lagi!</p>
+          {% else %}
+            <h2 class="text-2xl font-bold text-red-600 mb-2">💪 Terus Semangat!</h2>
+            <p class="text-gray-600">Jangan menyerah! Mari berlatih lagi untuk hasil yang lebih baik!</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Detailed Results -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Correct Answers -->
+        <div class="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+          <div class="text-3xl font-bold text-green-600 mb-2">{{ benar }}</div>
+          <div class="text-green-600 font-semibold">✓ Jawaban Benar</div>
+        </div>
+
+        <!-- Wrong Answers -->
+        <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+          <div class="text-3xl font-bold text-red-600 mb-2">{{ salah }}</div>
+          <div class="text-red-600 font-semibold">✗ Jawaban Salah</div>
+        </div>
+
+        <!-- Total Questions -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+          <div class="text-3xl font-bold text-blue-600 mb-2">{{ total }}</div>
+          <div class="text-blue-600 font-semibold">📝 Total Soal</div>
+        </div>
+      </div>
+
+      <!-- Progress Visual -->
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-gray-800 mb-3">Visualisasi Hasil:</h3>
+        <div class="flex rounded-lg overflow-hidden h-8">
+          <div class="bg-green-500 flex items-center justify-center text-white font-semibold" style="width: {{ benar_width }}%">
+            {% if benar > 0 %}{{ benar }}{% endif %}
+          </div>
+          <div class="bg-red-500 flex items-center justify-center text-white font-semibold" style="width: {{ salah_width }}%">
+            {% if salah > 0 %}{{ salah }}{% endif %}
+          </div>
+        </div>
+        <div class="flex justify-between text-sm text-gray-600 mt-2">
+          <span>Benar</span>
+          <span>Salah</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="{% url 'latihan' %}" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold text-center transition-colors duration-200">🔄 Latihan Lagi</a>
+        <a href="{% url 'materi' %}" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold text-center transition-colors duration-200">📖 Pelajari Materi</a>
+        <a href="{% url 'beranda' %}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold text-center transition-colors duration-200">🏠 Ke Beranda</a>
+      </div>
+    </div>
+
+    <!-- Motivational Tips -->
+    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6">
+      <h3 class="text-lg font-bold text-purple-700 mb-3">💡 Tips untuk Meningkatkan Hasil:</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="text-purple-600">
+          <strong>📚 Pelajari Materi:</strong> Kunjungi halaman materi untuk mempelajari dasar-dasar perkalian dan pembagian.
+        </div>
+        <div class="text-purple-600">
+          <strong>🔢 Hafalkan Tabel:</strong> Ingat tabel perkalian 1-10 untuk mempercepat hitungan.
+        </div>
+        <div class="text-purple-600">
+          <strong>⏰ Berlatih Rutin:</strong> Latihan setiap hari akan membantu meningkatkan kemampuan.
+        </div>
+        <div class="text-purple-600">
+          <strong>🤔 Berpikir Logis:</strong> Gunakan strategi seperti pembagian sebagai kebalikan perkalian.
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
