@@ -90,6 +90,12 @@ def materi(request):
 
 
 @login_required
+def materi_detail(request, materi_id):
+    template_name = f'pages/materi/materi_{materi_id}.html'
+    return render(request, template_name)
+
+
+@login_required
 def latihan(request):
     if request.method == 'GET':
         # Initialize new practice session

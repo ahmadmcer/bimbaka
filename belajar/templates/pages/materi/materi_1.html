@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="flex flex-col w-full">
+    <div class="bg-white shadow p-6 rounded-lg space-y-4">
+      <h1 class="text-xl font-bold mb-6">1. Perkalian sebagai Penjumlahan Berulang</h1>
+      <p>Perkalian artinya menambah bilangan yang sama berkali-kali.</p>
+      <p>
+        <strong>Contoh:</strong>
+      </p>
+      <div class="bg-gray-100 p-4 rounded text-center text-lg">
+        <p>3 × 4 = 3 + 3 + 3 + 3 = 12</p>
+      </div>
+    </div>
+    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
+      <p>Bayangkan kamu memiliki 3 kantong, dan di setiap kantong ada 4 apel. Berapa total apel yang kamu miliki?</p>
+      <div class="bg-gray-100 p-6 rounded text-center">
+        <div class="flex gap-2 justify-center mb-6 items-center">
+          <div class="grid grid-cols-2 gap-1 text-red-600 text-xl">
+            <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i>
+          </div>
+          <span class="text-xl font-bold">+</span>
+          <div class="grid grid-cols-2 gap-1 text-red-600 text-xl">
+            <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i>
+          </div>
+          <span class="text-xl font-bold">+</span>
+          <div class="grid grid-cols-2 gap-1 text-red-600 text-xl">
+            <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i>
+          </div>
+        </div>
+        <div class="flex justify-center items-center">
+          <span class="text-xl font-bold">=</span>
+          <div class="grid grid-cols-4 gap-1 ml-4 text-red-600 text-xl">
+            <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i>
+            <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i>
+            <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i> <i class="fa-solid fa-apple-whole"></i>
+          </div>
+        </div>
+      </div>
+      <p>Jadi, 3 kantong dengan 4 apel di setiap kantong adalah 3 × 4 = 12 apel.</p>
+    </div>
+    <div class="grid grid-rows-1 grid-cols-2 gap-4 mt-6">
+      <a href="{% url 'materi' %}" class="flex justify-start items-center gap-2 block bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 font-bold"><i class="fa-solid fa-backward"></i><div>Kembali ke Daftar Materi</div></a>
+      <a href="{% url 'materi_detail' 2 %}" class="flex justify-end items-center gap-2 block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold"><div>Lanjut ke Materi 2</div><i class="fa-solid fa-forward"></i></a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="flex flex-col w-full">
+    <div class="bg-white shadow p-6 rounded-lg space-y-4">
+      <h1 class="text-xl font-bold mb-6">5. Perkalian dengan 10</h1>
+      <p>
+        Kalau dikalikan <strong>10</strong>, hasilnya selalu berakhiran 0.
+      </p>
+      <p>
+        <strong>Contoh:</strong>
+      </p>
+      <div class="bg-gray-100 p-4 rounded text-center text-lg">
+        <p>1 × 10 = 10</p>
+        <p>2 × 10 = 20</p>
+        <p>3 × 10 = 30</p>
+        <p>4 × 10 = 40</p>
+        <p>5 × 10 = 50</p>
+        <p>...</p>
+      </div>
+    </div>
+    <div class="grid grid-rows-1 grid-cols-2 gap-4 mt-6">
+      <a href="{% url 'materi_detail' 4 %}" class="flex justify-start items-center gap-2 block bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 font-bold"><i class="fa-solid fa-backward"></i><div>Kembali ke Materi 4</div></a>
+      <a href="{% url 'materi_detail' 6 %}" class="flex justify-end items-center gap-2 block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold"><div>Lanjut ke Materi 6</div><i class="fa-solid fa-forward"></i></a>
+    </div>
+  </div>
+{% endblock %}

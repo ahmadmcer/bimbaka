@@ -1,17 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="flex flex-col w-full py-10">
-    <h1 class="text-2xl font-bold text-blue-600 mb-6">Materi Perkalian & Pembagian</h1>
-    <div class="bg-white shadow p-6 rounded-lg space-y-4">
-      <h2 class="text-lg font-semibold">Perkalian</h2>
-      <p>Perkalian adalah penjumlahan berulang. Contoh: 3 × 4 = 12 (artinya 3 + 3 + 3 + 3).</p>
-
-      <h2 class="text-lg font-semibold">Pembagian</h2>
-      <p>Pembagian adalah kebalikan dari perkalian. Contoh: 12 ÷ 4 = 3.</p>
-
-      <p class="mt-4">Cobalah latihan untuk memahami lebih dalam.</p>
-      <a href="{% url 'latihan' %}" class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Mulai Latihan</a>
+  <div class="flex flex-col w-full">
+    <h1 class="text-2xl font-bold text-blue-600 mb-6">Pilih Materi</h1>
+    <div class="grid grid-cols-1 gap-6 px-[20%]">
+      <a href="{% url 'materi_detail' 1 %}" class="block bg-white shadow rounded-full hover:bg-blue-50 flex justify-center items-center text-3xl font-bold size-20 justify-self-center"><div>1</div></a>
+      <a href="{% url 'materi_detail' 2 %}" class="block bg-white shadow rounded-full hover:bg-blue-50 flex justify-center items-center text-3xl font-bold size-20 justify-self-start"><div>2</div></a>
+      <a href="{% url 'materi_detail' 3 %}" class="block bg-white shadow rounded-full hover:bg-blue-50 flex justify-center items-center text-3xl font-bold size-20 justify-self-center"><div>3</div></a>
+      <a href="{% url 'materi_detail' 4 %}" class="block bg-white shadow rounded-full hover:bg-blue-50 flex justify-center items-center text-3xl font-bold size-20 justify-self-end"><div>4</div></a>
+      <a href="{% url 'materi_detail' 5 %}" class="block bg-white shadow rounded-full hover:bg-blue-50 flex justify-center items-center text-3xl font-bold size-20 justify-self-center"><div>5</div></a>
+      <a href="{% url 'materi_detail' 6 %}" class="block bg-white shadow rounded-full hover:bg-blue-50 flex justify-center items-center text-3xl font-bold size-20 justify-self-start"><div>6</div></a>
     </div>
   </div>
 {% endblock %}

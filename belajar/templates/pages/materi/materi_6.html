@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="flex flex-col w-full">
+    <div class="bg-white shadow p-6 rounded-lg space-y-4">
+      <h1 class="text-xl font-bold mb-6">6. Perkalian dengan 3, 4, 6, 7, 8, dan 9</h1>
+      <p>Untuk perkalian dengan angka-angka ini, kita bisa menggunakan tabel perkalian sebagai panduan.</p>
+      <p>
+        <strong>Contoh:</strong>
+      </p>
+      <div class="bg-gray-100 p-4 rounded text-center text-lg">
+        <p>3 × 4 = 12</p>
+        <p>6 × 7 = 42</p>
+        <p>8 × 9 = 72</p>
+      </div>
+    </div>
+    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
+      <p>Selain itu, bisa juga menggunakan pola jari-jemari untuk membantu menghitung perkalian dengan angka-angka ini.</p>
+      <p>Misalnya, untuk menghitung 6 × 7, kita bisa menggunakan jari-jemari sebagai berikut:</p>
+      <div class="bg-gray-100 p-4 rounded text-center text-lg">
+        <p>Letakkan 6 jari di satu tangan dan 7 jari di tangan lainnya.</p>
+        <p>Hitung jari yang saling berpasangan (5 pasang = 50) dan tambahkan jari yang tersisa (1 + 2 = 12).</p>
+        <p>Jadi, 6 × 7 = 42.</p>
+      </div>
+    </div>
+    <div class="grid grid-rows-1 grid-cols-2 gap-4 mt-6">
+      <a href="{% url 'materi_detail' 5 %}" class="flex justify-start items-center gap-2 block bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 font-bold"><i class="fa-solid fa-backward"></i><div>Kembali ke Materi 5</div></a>
+      <a href="{% url 'materi' %}" class="flex justify-end items-center gap-2 block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold"><div>Kembali ke Daftar Materi</div><i class="fa-solid fa-forward"></i></a>
+    </div>
+  </div>
+{% endblock %}
