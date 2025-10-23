@@ -207,7 +207,7 @@ def hasil(request):
     })
 
 
-# AUTHENTIKASI
+# AUTENTIKASI
 
 def masuk(request):
     if request.method == 'POST':
