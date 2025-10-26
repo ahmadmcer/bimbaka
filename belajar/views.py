@@ -86,12 +86,19 @@ def beranda(request):
 
 @login_required
 def materi(request):
-    return render(request, 'pages/materi.html')
+    profile = Profile.objects.get(user=request.user)
+    kelas = profile.kelas
+
+    template_name = f'pages/materi/{kelas}/daftar_materi.html'
+    return render(request, template_name)
 
 
 @login_required
 def materi_detail(request, materi_id):
-    template_name = f'pages/materi/materi_{materi_id}.html'
+    profile = Profile.objects.get(user=request.user)
+    kelas = profile.kelas
+
+    template_name = f'pages/materi/{kelas}/materi_{materi_id}.html'
     return render(request, template_name)
 
 
