@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
+from .models import Profile, NilaiEvaluasi, JawabanEvaluasi
 
 
 # UTILITAS
@@ -76,9 +77,8 @@ def generate_soal(jumlah_soal_perkalian=5, jumlah_soal_pembagian=5):
     random.shuffle(semua_soal)
     return semua_soal
 
+
 # HALAMAN UTAMA
-
-
 @login_required
 def beranda(request):
     return render(request, 'pages/beranda.html')
@@ -208,7 +208,6 @@ def hasil(request):
 
 
 # AUTENTIKASI
-
 def masuk(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -232,6 +231,7 @@ def daftar(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
+        kelas = request.POST.get('kelas')
         role = 'Siswa'  # Default role
 
         if password != confirm_password:
@@ -256,6 +256,11 @@ def daftar(request):
 
         group, _ = Group.objects.get_or_create(name=role)
         user.groups.add(group)
+
+        Profile.objects.create(
+            user=user,
+            kelas=kelas
+        )
 
         messages.success(
             request, 'Akun berhasil dibuat! Silakan masuk.')
