@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
-from .models import Profile, NilaiEvaluasi, JawabanEvaluasi, KemajuanBelajar
+from .models import Profile, NilaiEvaluasi, JawabanEvaluasi, KemajuanBelajar, NilaiEvaluasiPerMateri
 
 
 # UTILITAS SOAL
@@ -395,10 +395,10 @@ def hasil_latihan(request):
 def evaluasi(request):
     """Evaluasi akhir untuk semua materi"""
     # Check if user has completed all materials
-    if not KemajuanBelajar.user_ready_for_evaluation(request.user):
-        messages.warning(
-            request, 'Kamu harus menyelesaikan semua materi terlebih dahulu sebelum mengikuti evaluasi akhir!')
-        return redirect('materi')
+    # if not KemajuanBelajar.user_ready_for_evaluation(request.user):
+    #     messages.warning(
+    #         request, 'Kamu harus menyelesaikan semua materi terlebih dahulu sebelum mengikuti evaluasi akhir!')
+    #     return redirect('materi')
 
     # Get latest evaluation
     latest_evaluasi = NilaiEvaluasi.objects.filter(
@@ -456,7 +456,7 @@ def evaluasi(request):
 
 
 def finalize_evaluasi(request):
-    """Finalize evaluation and save results"""
+    """Finalize evaluation and save results with material breakdown"""
     soal = request.session.get('soal_evaluasi', [])
     jawaban_user = request.session.get('jawaban_evaluasi', [])
 
@@ -490,6 +490,7 @@ def finalize_evaluasi(request):
             nomor_soal=i + 1,
             materi_soal=soal_item['materi'],
             soal_pertanyaan=soal_item['question'],
+            pilihan_jawaban=soal_item['choices'],  # Store choices
             jawaban_user=user_answer or '',
             jawaban_benar=correct_answer,
             is_correct=is_correct,
@@ -500,6 +501,9 @@ def finalize_evaluasi(request):
     evaluasi.jumlah_benar = jumlah_benar
     evaluasi.nilai = (jumlah_benar / total_soal) * 100
     evaluasi.save()
+
+    # IMPORTANT: Calculate and save material breakdown
+    evaluasi.calculate_material_breakdown()
 
     # Store for result page
     request.session['evaluasi_id'] = evaluasi.id
@@ -514,7 +518,7 @@ def finalize_evaluasi(request):
 
 @login_required
 def hasil_evaluasi(request):
-    """Display evaluation results"""
+    """Display evaluation results with material breakdown"""
     evaluasi_id = request.session.get('evaluasi_id')
 
     if not evaluasi_id:
@@ -526,6 +530,11 @@ def hasil_evaluasi(request):
     jawaban_detail = JawabanEvaluasi.objects.filter(
         evaluasi=evaluasi).order_by('nomor_soal')
 
+    # Get material breakdown
+    breakdown_per_materi = NilaiEvaluasiPerMateri.objects.filter(
+        evaluasi_utama=evaluasi
+    ).order_by('materi')
+
     # Calculate statistics
     benar = evaluasi.jumlah_benar
     salah = evaluasi.total_soal - evaluasi.jumlah_benar
@@ -535,44 +544,23 @@ def hasil_evaluasi(request):
     benar_width = int((benar / total) * 100) if total > 0 else 0
     salah_width = int((salah / total) * 100) if total > 0 else 0
 
-    # Calculate per-material stats
-    materi_stats = {}
-    for jawaban in jawaban_detail:
-        materi = jawaban.materi_soal
-        if materi not in materi_stats:
-            materi_stats[materi] = {'benar': 0, 'total': 0}
-        materi_stats[materi]['total'] += 1
-        if jawaban.is_correct:
-            materi_stats[materi]['benar'] += 1
-
-    materi_breakdown = []
-    for materi, stats in materi_stats.items():
-        percentage_materi = int(
-            (stats['benar'] / stats['total']) * 100) if stats['total'] > 0 else 0
-        materi_breakdown.append({
-            'materi': materi.replace('materi_', 'Materi '),
-            'benar': stats['benar'],
-            'total': stats['total'],
-            'percentage': percentage_materi
-        })
-
-    # Determine grade
+    # Determine grade and recommendations
     grade = evaluasi.get_grade()
+    grade_color = evaluasi.get_grade_color()
+
     if percentage >= 90:
-        grade_color = 'green'
         message = '🎉 Excellent! Pemahaman kamu sangat luar biasa!'
     elif percentage >= 80:
-        grade_color = 'blue'
         message = '👏 Very Good! Kamu sudah memahami materi dengan sangat baik!'
     elif percentage >= 70:
-        grade_color = 'yellow'
         message = '👍 Good! Hasil yang cukup memuaskan!'
     elif percentage >= 60:
-        grade_color = 'orange'
         message = '😐 Perlu improvement. Coba pelajari materi yang masih kurang!'
     else:
-        grade_color = 'red'
         message = '😟 Perlu belajar lebih giat. Jangan menyerah, ulangi lagi!'
+
+    # Get weak materials for recommendations
+    weak_materials = [b for b in breakdown_per_materi if b.nilai < 70]
 
     # Clean up session
     if 'evaluasi_id' in request.session:
@@ -581,6 +569,8 @@ def hasil_evaluasi(request):
     context = {
         'evaluasi': evaluasi,
         'jawaban_detail': jawaban_detail,
+        'breakdown_per_materi': breakdown_per_materi,
+        'weak_materials': weak_materials,
         'benar': benar,
         'salah': salah,
         'total': total,
@@ -590,7 +580,6 @@ def hasil_evaluasi(request):
         'grade': grade,
         'grade_color': grade_color,
         'message': message,
-        'materi_breakdown': materi_breakdown,
     }
 
     return render(request, 'pages/hasil_evaluasi.html', context)

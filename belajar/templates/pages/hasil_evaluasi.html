@@ -32,15 +32,25 @@
 
         <div class="text-5xl font-bold mb-2"
           style="color: {% if grade_color == 'green' %}
+            
             #10b981
+
           {% elif grade_color == 'blue' %}
+            
             #3b82f6
+
           {% elif grade_color == 'yellow' %}
+            
             #f59e0b
+
           {% elif grade_color == 'orange' %}
+            
             #f97316
+
           {% else %}
+            
             #ef4444
+
           {% endif %}">{{ percentage }}</div>
         <div class="text-gray-500 text-lg">dari 100</div>
       </div>
@@ -98,27 +108,37 @@
     <div class="bg-white rounded-lg shadow p-6 mb-8">
       <h3 class="text-lg font-bold text-gray-800 mb-6">📚 Analisis Per Materi</h3>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {% for breakdown in materi_breakdown %}
-          <div class="border rounded-lg p-4">
-            <div class="font-semibold text-gray-800 mb-2">{{ breakdown.materi }}</div>
+        {% for breakdown in breakdown_per_materi %}
+          <div class="border rounded-lg p-4 border-{{ breakdown.get_status_color }}-200 bg-{{ breakdown.get_status_color }}-50">
+            <div class="font-semibold text-gray-800 mb-2">{{ breakdown.get_materi_display|slice:':11' }}</div>
             <div class="flex justify-between text-sm text-gray-600 mb-2">
-              <span>{{ breakdown.benar }}/{{ breakdown.total }}</span>
-              <span>{{ breakdown.percentage }}%</span>
+              <span>{{ breakdown.jumlah_benar }}/{{ breakdown.total_soal }}</span>
+              <span>{{ breakdown.nilai|floatformat:1 }}%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-{% if breakdown.percentage >= 80 %}
-                  green
-                {% elif breakdown.percentage >= 60 %}
-                  yellow
-                {% else %}
-                  red
-                {% endif %}-500 h-2 rounded-full"
-                style="width: {{ breakdown.percentage }}%"></div>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+              <div class="bg-{{ breakdown.get_status_color }}-500 h-2 rounded-full" style="width: {{ breakdown.nilai }}%"></div>
             </div>
+            <div class="text-xs text-{{ breakdown.get_status_color }}-700 font-medium">{{ breakdown.get_performance_status }}</div>
           </div>
         {% endfor %}
       </div>
     </div>
+
+    <!-- Recommendations based on weak materials -->
+    {% if weak_materials %}
+      <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
+        <h3 class="font-bold text-yellow-800 mb-3">💡 Rekomendasi Perbaikan:</h3>
+        <p class="text-yellow-700 mb-3">Materi yang perlu dipelajari lebih lanjut:</p>
+        <ul class="text-yellow-700 space-y-1">
+          {% for weak in weak_materials %}
+            <li class="flex justify-between">
+              <span>• {{ weak.get_materi_display }}</span>
+              <span class="font-semibold">{{ weak.nilai|floatformat:1 }}%</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
 
     <!-- Detailed Answers Review -->
     <div class="bg-white rounded-lg shadow p-6 mb-8">
@@ -127,9 +147,13 @@
       <div class="space-y-6">
         {% for jawaban in jawaban_detail %}
           <div class="border rounded-lg p-4 {% if jawaban.is_correct %}
+              
               border-green-200 bg-green-50
+
             {% else %}
+              
               border-red-200 bg-red-50
+
             {% endif %}">
             <div class="flex items-start justify-between mb-3">
               <div class="flex-1">
@@ -151,16 +175,24 @@
             <div class="grid md:grid-cols-2 gap-4 text-sm">
               <div>
                 <span class="font-semibold {% if jawaban.is_correct %}
+                    
                     text-green-700
+
                   {% else %}
+                    
                     text-red-700
+
                   {% endif %}">
                   Jawaban Kamu:
                 </span>
                 <p class="{% if jawaban.is_correct %}
+                    
                     text-green-600
+
                   {% else %}
+                    
                     text-red-600
+
                   {% endif %}">{{ jawaban.jawaban_user|default:'Tidak dijawab' }}</p>
               </div>
               <div>
