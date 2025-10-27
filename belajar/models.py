@@ -37,24 +37,11 @@ class Profile(models.Model):
 
 
 class NilaiEvaluasi(models.Model):
-    MATERI_CHOICES = [
-        ('materi_1', 'Materi 1'),
-        ('materi_2', 'Materi 2'),
-        ('materi_3', 'Materi 3'),
-        ('materi_4', 'Materi 4'),
-        ('materi_5', 'Materi 5'),
-        ('materi_6', 'Materi 6'),
-    ]
-
+    """Model untuk menyimpan nilai evaluasi akhir (keseluruhan materi)"""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='nilai_evaluasi'
-    )
-    materi = models.CharField(
-        max_length=50,
-        choices=MATERI_CHOICES,
-        verbose_name='Materi'
     )
     nilai = models.FloatField(
         blank=True,
@@ -76,19 +63,32 @@ class NilaiEvaluasi(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = 'Nilai Evaluasi'
-        verbose_name_plural = 'Nilai Evaluasi'
+        verbose_name = 'Nilai Evaluasi Akhir'
+        verbose_name_plural = 'Nilai Evaluasi Akhir'
         db_table = 'nilai_evaluasi'
-        unique_together = ['user', 'materi']
         ordering = ['-created_at']
 
     def __str__(self):
         nilai_str = f"{self.nilai:.1f}" if self.nilai else "Belum Ada"
         nama = self.user.get_full_name() or self.user.username
-        return f'{nama} - {self.get_materi_display()} - {nilai_str}'
+        return f'{nama} - Evaluasi Akhir - {nilai_str}'
+
+    def get_grade(self):
+        """Return letter grade based on score"""
+        if self.nilai >= 90:
+            return 'A'
+        elif self.nilai >= 80:
+            return 'B'
+        elif self.nilai >= 70:
+            return 'C'
+        elif self.nilai >= 60:
+            return 'D'
+        else:
+            return 'E'
 
 
 class JawabanEvaluasi(models.Model):
+    """Model untuk menyimpan detail jawaban evaluasi"""
     evaluasi = models.ForeignKey(
         NilaiEvaluasi,
         on_delete=models.CASCADE,
@@ -97,6 +97,11 @@ class JawabanEvaluasi(models.Model):
     nomor_soal = models.IntegerField(
         validators=[MinValueValidator(1)],
         verbose_name='Nomor Soal'
+    )
+    materi_soal = models.CharField(
+        max_length=50,
+        verbose_name='Materi Soal',
+        help_text='Materi asal dari soal ini (contoh: materi_1)'
     )
     soal_pertanyaan = models.TextField(verbose_name='Soal Pertanyaan')
     jawaban_user = models.TextField(verbose_name='Jawaban User')
@@ -123,13 +128,14 @@ class JawabanEvaluasi(models.Model):
 
 
 class KemajuanBelajar(models.Model):
+    """Model untuk tracking progress belajar per materi"""
     MATERI_CHOICES = [
-        ('materi_1', 'Materi 1'),
-        ('materi_2', 'Materi 2'),
-        ('materi_3', 'Materi 3'),
-        ('materi_4', 'Materi 4'),
-        ('materi_5', 'Materi 5'),
-        ('materi_6', 'Materi 6'),
+        ('materi_1', 'Materi 1: Perkalian dengan 0, 10, 100'),
+        ('materi_2', 'Materi 2: Perkalian Bersusun'),
+        ('materi_3', 'Materi 3: Perkalian Lanjutan'),
+        ('materi_4', 'Materi 4: Pembagian Bersusun'),
+        ('materi_5', 'Materi 5: Pembagian dengan Sisa'),
+        ('materi_6', 'Materi 6: Operasi Campuran'),
     ]
 
     user = models.ForeignKey(
@@ -190,6 +196,13 @@ class KemajuanBelajar(models.Model):
             'persentase_keseluruhan': round((selesai / total_materi) * 100, 2),
             'rata_rata_progress': round(avg_progress, 2)
         }
+
+    @classmethod
+    def user_ready_for_evaluation(cls, user):
+        """Check if user has completed all materials and ready for evaluation"""
+        total_materi = len(cls.MATERI_CHOICES)
+        selesai = cls.objects.filter(user=user, is_selesai=True).count()
+        return selesai >= total_materi
 
     def __str__(self):
         status = 'Selesai' if self.is_selesai else f'{self.progress_persentase}%'
