@@ -2,197 +2,135 @@ import random
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from .models import Profile, NilaiEvaluasi, JawabanEvaluasi, KemajuanBelajar, NilaiEvaluasiPerMateri
+from django.http import HttpResponse
+from openpyxl import Workbook
+
+# FUNGSI HELPER UNTUK CEK GURU
+def is_guru(user):
+    """Cek apakah user ada di grup 'Guru'"""
+    return user.is_authenticated and user.groups.filter(name='Guru').exists()
 
 
-# UTILITAS SOAL
-def generate_soal_perkalian(jumlah_soal=5):
-    """Generate soal perkalian"""
-    soal = []
-    for _ in range(jumlah_soal):
-        a = random.randint(1, 12)
-        b = random.randint(1, 12)
-        jawaban = a * b
-
-        pilihan = [str(jawaban)]
-        pilihan.append(str(jawaban + random.randint(1, 10)))
-        pilihan.append(str(jawaban - random.randint(1, 5)
-                       if jawaban > 5 else jawaban + 5))
-        pilihan.append(str(jawaban + random.randint(11, 20)))
-
-        random.shuffle(pilihan)
-
-        soal.append({
-            'question': f'Berapakah {a} × {b}?',
-            'choices': pilihan,
-            'answer': str(jawaban)
-        })
-    return soal
-
-
-def generate_soal_pembagian(jumlah_soal=5):
-    """Generate soal pembagian"""
-    soal = []
-    for _ in range(jumlah_soal):
-        b = random.randint(2, 9)
-        jawaban = random.randint(1, 12)
-        a = b * jawaban + random.randint(0, b - 1)
-        hasil_bagi = a // b
-        sisa_bagi = a % b
-
-        if sisa_bagi == 0:
-            kunci_jawaban = str(hasil_bagi)
-        else:
-            kunci_jawaban = f'{hasil_bagi} sisa {sisa_bagi}'
-
-        pilihan = [kunci_jawaban]
-        pilihan.append(str(hasil_bagi + 1))
-        pilihan.append(
-            f'{hasil_bagi} sisa {sisa_bagi + 1}' if sisa_bagi + 1 < b else f'{hasil_bagi + 1}')
-        pilihan.append(str(hasil_bagi - 1) if hasil_bagi > 0 else '0')
-
-        random.shuffle(pilihan)
-
-        soal.append({
-            'question': f'Berapakah {a} ÷ {b}?',
-            'choices': pilihan,
-            'answer': kunci_jawaban
-        })
-    return soal
-
-
-def generate_soal_evaluasi_akhir(jumlah_soal=20):
-    """Generate comprehensive evaluation questions from all materials"""
+def generate_soal_evaluasi_akhir(jumlah_soal=20, kelas='kelas_2'):  # Terima parameter 'kelas'
+    """Hasilkan soal evaluasi komprehensif berdasarkan kelas siswa."""
     soal = []
 
-    # Distribute questions across all 6 materials
-    soal_per_materi = jumlah_soal // 6
-    sisa_soal = jumlah_soal % 6
+    # ---------------------------------------------------
+    # SOAL UNTUK KELAS 2
+    # ---------------------------------------------------
+    if kelas == 'kelas_2':
+        # Materi K2: 1: Penjumlahan Berulang, 2: Komutatif, 3: 1&0, 4: 2&5, 5: 10, 6: Tabel
+        kategori_k2 = ['visual', 'komutatif', 'nol_satu', 'dua_lima_sepuluh', 'tabel']
+        for i in range(jumlah_soal):
+            question_data = {}
+            tipe_soal = random.choice(kategori_k2)
 
-    for materi_id in range(1, 7):
-        jumlah_untuk_materi = soal_per_materi + \
-            (1 if materi_id <= sisa_soal else 0)
+            if tipe_soal == 'visual':  # (Materi 1 & 3)
+                a = random.randint(2, 5)  # Angka kecil untuk visual
+                b = random.randint(2, 4)  # Angka kecil untuk visual
+                jawaban = a * b
+                question_data = {
+                    'type': 'visual', 'question_text': 'Berapa hasil dari apel di atas?',
+                    'a_range': [1] * a, 'b_range': [1] * b, 'op': '×', 'icon': '🍎',
+                }
+            elif tipe_soal == 'komutatif':  # (Materi 2)
+                a = random.randint(3, 9)
+                b = random.randint(2, 8)
+                jawaban = a * b
+                question_data = {
+                    'type': 'text', 'question_text': f'Berapakah {b} × {a}?',  # Dibalik
+                }
+            elif tipe_soal == 'nol_satu':  # (Materi 3)
+                a = random.randint(5, 20)
+                b = random.choice([0, 1])
+                jawaban = a * b
+                question_data = {'type': 'text', 'question_text': f'Berapakah {a} × {b}?', }
+            elif tipe_soal == 'dua_lima_sepuluh':  # (Materi 4 & 5)
+                a = random.randint(3, 9)
+                b = random.choice([2, 5, 10])
+                jawaban = a * b
+                question_data = {'type': 'text', 'question_text': f'Berapakah {a} × {b}?', }
+            else:  # 'tabel' (Materi 6)
+                a = random.randint(3, 9)
+                b = random.randint(3, 9)
+                jawaban = a * b
+                question_data = {'type': 'text', 'question_text': f'Berapakah {a} × {b}?', }
 
-        for _ in range(jumlah_untuk_materi):
-            if materi_id in [1, 2, 3]:  # Perkalian materials
+            # Buat pilihan jawaban untuk K2
+            pilihan = [str(jawaban)]
+            while len(pilihan) < 4:
+                wrong = jawaban + random.randint(-5, 5)
+                if wrong != jawaban and wrong >= 0 and str(wrong) not in pilihan:
+                    pilihan.append(str(wrong))
+            random.shuffle(pilihan)
+            question_data.update({
+                'choices': pilihan, 'correct_answer': str(jawaban),
+                'materi': f'materi_{random.randint(1, 6)}',
+            })
+            soal.append(question_data)
+
+    # ---------------------------------------------------
+    # SOAL UNTUK KELAS 3
+    # ---------------------------------------------------
+    elif kelas == 'kelas_3':
+        soal_per_materi = jumlah_soal // 6
+        sisa_soal = jumlah_soal % 6
+        for materi_id in range(1, 7):
+            jumlah_untuk_materi = soal_per_materi + (1 if materi_id <= sisa_soal else 0)
+            for _ in range(jumlah_untuk_materi):
+                question_data = {}
                 if materi_id == 1:  # Perkalian dengan 0, 10, 100
-                    operators = [0, 10, 100]
-                    a = random.randint(1, 12)
-                    b = random.choice(operators)
+                    a = random.randint(1, 12);
+                    b = random.choice([0, 10, 100]);
                     jawaban = a * b
+                    question_data = {'type': 'text', 'question_text': f'Berapakah {a} × {b}?', }
                 elif materi_id == 2:  # Perkalian bersusun
-                    a = random.randint(10, 99)
-                    b = random.randint(2, 9)
+                    a = random.randint(10, 99);
+                    b = random.randint(2, 9);
                     jawaban = a * b
-                else:  # materi_id == 3, perkalian biasa
-                    a = random.randint(1, 12)
-                    b = random.randint(1, 12)
-                    jawaban = a * b
-
-                # Generate wrong choices
-                pilihan = [str(jawaban)]
-                pilihan.append(str(jawaban + random.randint(1, 10)))
-                pilihan.append(str(jawaban - random.randint(1, 5)
-                               if jawaban > 5 else jawaban + 5))
-                pilihan.append(str(jawaban + random.randint(11, 20)))
-                random.shuffle(pilihan)
-
-                soal.append({
-                    'question': f'Berapakah {a} × {b}?',
-                    'choices': pilihan,
-                    'correct_answer': str(jawaban),
-                    'materi': f'materi_{materi_id}',
-                    'explanation': f'{a} × {b} = {jawaban}'
-                })
-
-            elif materi_id in [4, 5]:  # Pembagian materials
-                divisor = random.randint(2, 9)
-                if materi_id == 4:  # Pembagian bersusun (no remainder)
-                    quotient = random.randint(10, 99)
+                    question_data = {'type': 'text', 'question_text': f'Berapakah {a} × {b}?', }
+                elif materi_id == 3:  # Pembagian dengan 1
+                    a = random.randint(5, 50);
+                    b = 1;
+                    jawaban = a // b
+                    question_data = {'type': 'text', 'question_text': f'Berapakah {a} ÷ {b}?', }
+                elif materi_id == 4:  # Pembagian bersusun (Porogapit)
+                    divisor = random.randint(2, 9);
+                    quotient = random.randint(10, 99);
                     dividend = divisor * quotient
-                    remainder = 0
-                else:  # materi_id == 5, pembagian dengan sisa
-                    dividend = random.randint(20, 100)
-                    quotient = dividend // divisor
-                    remainder = dividend % divisor
-
-                if remainder == 0:
-                    jawaban = str(quotient)
-                    explanation = f'{dividend} ÷ {divisor} = {quotient}'
-                else:
-                    jawaban = f'{quotient} sisa {remainder}'
-                    explanation = f'{dividend} ÷ {divisor} = {quotient} sisa {remainder}'
-
-                # Generate wrong choices
-                pilihan = [jawaban]
-                pilihan.append(str(quotient + 1))
-                if remainder > 0:
-                    pilihan.append(f'{quotient} sisa {remainder + 1}')
-                    pilihan.append(str(quotient))
-                else:
-                    pilihan.append(f'{quotient} sisa 1')
-                    pilihan.append(str(quotient - 1))
-                random.shuffle(pilihan)
-
-                soal.append({
-                    'question': f'Berapakah {dividend} ÷ {divisor}?',
-                    'choices': pilihan,
-                    'correct_answer': jawaban,
-                    'materi': f'materi_{materi_id}',
-                    'explanation': explanation
-                })
-
-            else:  # materi_id == 6, operasi campuran
-                operation_type = random.choice(
-                    ['simple_mixed', 'story_problem'])
-
-                if operation_type == 'simple_mixed':
-                    a = random.randint(2, 9)
-                    b = random.randint(2, 9)
+                    jawaban = quotient
+                    question_data = {'type': 'text', 'question_text': f'Berapakah {dividend} ÷ {divisor}?', }
+                elif materi_id == 5:  # Operasi Campuran
+                    a = random.randint(2, 9);
+                    b = random.randint(2, 9);
                     c = random.randint(1, 20)
-                    operation = random.choice(['+', '-'])
-
-                    if operation == '+':
-                        jawaban = (a * b) + c
-                        question = f'Berapakah ({a} × {b}) + {c}?'
-                        explanation = f'({a} × {b}) + {c} = {a * b} + {c} = {jawaban}'
-                    else:
-                        jawaban = (a * b) - c
-                        question = f'Berapakah ({a} × {b}) - {c}?'
-                        explanation = f'({a} × {b}) - {c} = {a * b} - {c} = {jawaban}'
-
-                else:  # story_problem
-                    items = random.randint(3, 8)
-                    per_group = random.randint(2, 6)
+                    jawaban = (a * b) + c
+                    question_data = {'type': 'text', 'question_text': f'Berapakah ({a} × {b}) + {c}?', }
+                else:  # Materi 6: Soal Cerita
+                    items = random.randint(3, 8);
+                    per_group = random.randint(2, 6);
                     given_away = random.randint(1, items * per_group // 2)
+                    jawaban = (items * per_group) - given_away
+                    question_data = {'type': 'text',
+                                     'question_text': f'Ana punya {items} kotak. Tiap kotak isi {per_group} permen. Diberikan {given_away}. Berapa sisanya?', }
 
-                    total = items * per_group
-                    remaining = total - given_away
-                    jawaban = remaining
-
-                    question = f'Ana punya {items} kotak permen. Setiap kotak berisi {per_group} permen. Jika Ana memberikan {given_away} permen, berapa permen yang tersisa?'
-                    explanation = f'Total permen = {items} × {per_group} = {total}. Sisa = {total} - {given_away} = {jawaban}'
-
-                # Generate wrong choices
+                # Pilihan jawaban untuk K3
                 pilihan = [str(jawaban)]
-                pilihan.append(str(jawaban + random.randint(1, 5)))
-                pilihan.append(str(jawaban - random.randint(1, 3)
-                               if jawaban > 3 else jawaban + 3))
-                pilihan.append(str(jawaban + random.randint(6, 10)))
+                while len(pilihan) < 4:
+                    wrong = jawaban + random.randint(-10, 10)
+                    if wrong != jawaban and wrong >= 0 and str(wrong) not in pilihan:
+                        pilihan.append(str(wrong))
                 random.shuffle(pilihan)
-
-                soal.append({
-                    'question': question,
-                    'choices': pilihan,
-                    'correct_answer': str(jawaban),
+                question_data.update({
+                    'choices': pilihan, 'correct_answer': str(jawaban),
                     'materi': f'materi_{materi_id}',
-                    'explanation': explanation
                 })
+                soal.append(question_data)
 
-    # Shuffle all questions
     random.shuffle(soal)
     return soal
 
@@ -200,49 +138,87 @@ def generate_soal_evaluasi_akhir(jumlah_soal=20):
 # HALAMAN UTAMA
 @login_required
 def beranda(request):
-    # Get user progress summary
-    progress_summary = KemajuanBelajar.get_user_summary(request.user)
-    ready_for_evaluation = KemajuanBelajar.user_ready_for_evaluation(
-        request.user)
-
-    # Get latest evaluation score
-    latest_evaluation = NilaiEvaluasi.objects.filter(
-        user=request.user).order_by('-created_at').first()
-
-    context = {
-        'progress_summary': progress_summary,
-        'ready_for_evaluation': ready_for_evaluation,
-        'latest_evaluation': latest_evaluation,
-    }
-    return render(request, 'pages/beranda.html', context)
+    if is_guru(request.user):
+        try:
+            guru_kelas = request.user.profile.kelas
+        except Profile.DoesNotExist:
+            guru_kelas = None
+        if guru_kelas:
+            siswa_list = User.objects.filter(groups__name='Siswa', profile__kelas=guru_kelas)
+        else:
+            siswa_list = User.objects.none()
+        context = {
+            'total_siswa': siswa_list.count(),
+            'siswa_list': siswa_list,
+            'guru_kelas': guru_kelas,
+        }
+        return render(request, 'pages/dasbor_guru.html', context)
+    else:
+        progress_summary = KemajuanBelajar.get_user_summary(request.user)
+        ready_for_evaluation = KemajuanBelajar.user_ready_for_evaluation(request.user)
+        latest_evaluation = NilaiEvaluasi.objects.filter(
+            user=request.user).order_by('-created_at').first()
+        context = {
+            'progress_summary': progress_summary,
+            'ready_for_evaluation': ready_for_evaluation,
+            'latest_evaluation': latest_evaluation,
+        }
+        return render(request, 'pages/beranda.html', context)
 
 
 @login_required
 def materi(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
     kelas = profile.kelas or 'kelas_2'
-
-    # Get progress for each material
-    progress_data = {}
-    for materi_choice in KemajuanBelajar.MATERI_CHOICES:
-        materi_code = materi_choice[0]
-        kemajuan = KemajuanBelajar.objects.filter(
-            user=request.user,
-            materi=materi_code
-        ).first()
-
-        progress_data[materi_code] = {
-            'is_selesai': kemajuan.is_selesai if kemajuan else False,
-            'progress_persentase': kemajuan.progress_persentase if kemajuan else 0,
+    if kelas == 'kelas_3':
+        materi_info = {
+            'materi_1': {'id': 1, 'title': 'Perkalian 0, 10, 100', 'icon': '💯'},
+            'materi_2': {'id': 2, 'title': 'Perkalian Bersusun', 'icon': '📝'},
+            'materi_3': {'id': 3, 'title': 'Pembagian 1 & 0', 'icon': '🧠'},
+            'materi_4': {'id': 4, 'title': 'Pembagian Bersusun', 'icon': '🏠'},
+            'materi_5': {'id': 5, 'title': 'Operasi Campuran', 'icon': '🧮'},
+            'materi_6': {'id': 6, 'title': 'Soal Cerita', 'icon': '🌍'},
         }
-
+        header_title = "Matematika Kelas 3"
+        header_desc = "Pilih materi untuk melanjutkan petualanganmu!"
+    else:
+        materi_info = {
+            'materi_1': {'id': 1, 'title': 'Penjumlahan Berulang', 'icon': '🍎'},
+            'materi_2': {'id': 2, 'title': 'Sifat Komutatif', 'icon': '🔄'},
+            'materi_3': {'id': 3, 'title': 'Perkalian 1 & 0', 'icon': '⭕'},
+            'materi_4': {'id': 4, 'title': 'Perkalian 2 & 5', 'icon': '✌️'},
+            'materi_5': {'id': 5, 'title': 'Perkalian 10', 'icon': '🔟'},
+            'materi_6': {'id': 6, 'title': 'Tabel Perkalian', 'icon': '📊'},
+        }
+        header_title = "Matematika Kelas 2"
+        header_desc = "Belajar matematika yang menyenangkan! Mulai dari sini!"
+    progress_db = KemajuanBelajar.objects.filter(user=request.user)
+    progress_data = {p.materi: p for p in progress_db}
+    learning_path = []
+    active_lesson_found = False
+    total_selesai = 0
+    for key in sorted(materi_info.keys()):
+        info = materi_info[key]
+        progress = progress_data.get(key)
+        is_selesai = progress.is_selesai if progress else False
+        status = "locked"
+        if is_selesai:
+            status = "completed"
+            total_selesai += 1
+        elif not active_lesson_found:
+            status = "active"
+            active_lesson_found = True
+        info['status'] = status
+        info['key'] = key
+        learning_path.append(info)
+    total_materi = len(materi_info)
+    progress_percentage = (total_selesai / total_materi) * 100 if total_materi > 0 else 0
     context = {
-        'progress_data': progress_data,
-        'kelas': kelas,
+        'learning_path': learning_path, 'header_title': header_title,
+        'header_desc': header_desc, 'total_selesai': total_selesai,
+        'total_materi': total_materi, 'progress_percentage': progress_percentage,
     }
-
-    template_name = f'pages/materi/{kelas}/daftar_materi.html'
-    return render(request, template_name, context)
+    return render(request, 'pages/materi.html', context)
 
 
 @login_required
@@ -250,204 +226,73 @@ def materi_detail(request, materi_id):
     if materi_id not in range(1, 7):
         messages.error(request, 'Materi tidak ditemukan!')
         return redirect('materi')
-
     profile, created = Profile.objects.get_or_create(user=request.user)
     kelas = profile.kelas or 'kelas_2'
-
-    # Mark as viewed (update progress)
     kemajuan, created = KemajuanBelajar.objects.get_or_create(
-        user=request.user,
-        materi=f'materi_{materi_id}',
-        defaults={'progress_persentase': 50.0}  # 50% for viewing
+        user=request.user, materi=f'materi_{materi_id}',
+        defaults={'progress_persentase': 50.0}
     )
-
     if created or kemajuan.progress_persentase < 50:
         kemajuan.progress_persentase = 50.0
         kemajuan.save()
-
     template_name = f'pages/materi/{kelas}/materi_{materi_id}.html'
     return render(request, template_name, {'materi_id': materi_id})
 
 
 @login_required
 def mark_materi_completed(request, materi_id):
-    """Mark a specific material as completed"""
     if materi_id not in range(1, 7):
         messages.error(request, 'Materi tidak ditemukan!')
         return redirect('materi')
-
     kemajuan, created = KemajuanBelajar.objects.get_or_create(
-        user=request.user,
-        materi=f'materi_{materi_id}',
+        user=request.user, materi=f'materi_{materi_id}',
         defaults={'progress_persentase': 0.0}
     )
-
     kemajuan.mark_completed()
-    messages.success(
-        request, f'Materi {materi_id} berhasil ditandai sebagai selesai!')
-
+    messages.success(request, f'Materi {materi_id} berhasil ditandai sebagai selesai!')
     return redirect('materi')
-
-
-# LATIHAN SOAL
-@login_required
-def latihan(request):
-    if request.method == 'GET':
-        # Initialize new practice session
-        if 'page' not in request.GET or request.GET.get('start') == '1':
-            jumlah_soal = 10
-            soal_perkalian = generate_soal_perkalian(jumlah_soal // 2)
-            soal_pembagian = generate_soal_pembagian(jumlah_soal // 2)
-            soal = soal_perkalian + soal_pembagian
-            random.shuffle(soal)
-
-            request.session['soal_latihan'] = soal
-            request.session['jawaban_user'] = []
-
-        # Get current questions from session
-        soal = request.session.get('soal_latihan', [])
-        if not soal:
-            return redirect('latihan')
-
-        paginator = Paginator(soal, 1)
-        page_number = request.GET.get('page', 1)
-        page_obj = paginator.get_page(page_number)
-
-        progress_percentage = (
-            page_obj.number * 100) // page_obj.paginator.count
-
-        jawaban_user = request.session.get('jawaban_user', [])
-        jawaban_chosen = jawaban_user[page_obj.number -
-                                      1] if page_obj.number <= len(jawaban_user) else None
-
-        return render(request, 'pages/latihan.html', {
-            'page_obj': page_obj,
-            'progress_percentage': progress_percentage,
-            'jawaban_chosen': jawaban_chosen
-        })
-
-    elif request.method == 'POST':
-        jawaban = request.POST.get('jawaban')
-        current_page = int(request.GET.get('page', 1))
-
-        if jawaban:
-            jawaban_user = request.session.get('jawaban_user', [])
-            while len(jawaban_user) < current_page:
-                jawaban_user.append(None)
-            jawaban_user[current_page - 1] = jawaban
-            request.session['jawaban_user'] = jawaban_user
-
-        soal = request.session.get('soal_latihan', [])
-
-        if current_page >= len(soal):
-            # Calculate results
-            benar = 0
-            jawaban_user = request.session.get('jawaban_user', [])
-
-            for i, soal_item in enumerate(soal):
-                if i < len(jawaban_user) and jawaban_user[i] is not None:
-                    if str(jawaban_user[i]) == str(soal_item['answer']):
-                        benar += 1
-
-            request.session['benar'] = benar
-            request.session['salah'] = len(soal) - benar
-
-            # Clean up
-            if 'soal_latihan' in request.session:
-                del request.session['soal_latihan']
-            if 'jawaban_user' in request.session:
-                del request.session['jawaban_user']
-
-            return redirect('hasil_latihan')
-        else:
-            next_page = current_page + 1
-            return redirect(f'/latihan/?page={next_page}')
-
-
-@login_required
-def hasil_latihan(request):
-    benar = request.session.get('benar', 0)
-    salah = request.session.get('salah', 0)
-    total = benar + salah
-
-    percentage = (benar * 100) // total if total > 0 else 0
-    benar_width = (benar * 100) // total if total > 0 else 0
-    salah_width = (salah * 100) // total if total > 0 else 0
-
-    # Clean up session
-    if 'benar' in request.session:
-        del request.session['benar']
-    if 'salah' in request.session:
-        del request.session['salah']
-
-    return render(request, 'pages/hasil_latihan.html', {
-        'benar': benar,
-        'salah': salah,
-        'total': total,
-        'percentage': percentage,
-        'benar_width': benar_width,
-        'salah_width': salah_width
-    })
 
 
 # EVALUASI AKHIR
 @login_required
 def evaluasi(request):
-    """Evaluasi akhir untuk semua materi"""
-    # Check if user has completed all materials
-    # if not KemajuanBelajar.user_ready_for_evaluation(request.user):
-    #     messages.warning(
-    #         request, 'Kamu harus menyelesaikan semua materi terlebih dahulu sebelum mengikuti evaluasi akhir!')
-    #     return redirect('materi')
-
-    # Get latest evaluation
     latest_evaluasi = NilaiEvaluasi.objects.filter(
         user=request.user).order_by('-created_at').first()
-
+    try:
+        profile = request.user.profile
+        kelas_siswa = profile.kelas
+    except Profile.DoesNotExist:
+        kelas_siswa = 'kelas_2'
     if request.method == 'GET':
-        # Start new evaluation session
         if 'page' not in request.GET or request.GET.get('start') == '1':
-            soal = generate_soal_evaluasi_akhir(jumlah_soal=20)
+            soal = generate_soal_evaluasi_akhir(jumlah_soal=20, kelas=kelas_siswa)
             request.session['soal_evaluasi'] = soal
             request.session['jawaban_evaluasi'] = []
-
-        # Get current questions from session
         soal = request.session.get('soal_evaluasi', [])
         if not soal:
             return redirect('/evaluasi/?start=1')
-
         paginator = Paginator(soal, 1)
         page_number = request.GET.get('page', 1)
         page_obj = paginator.get_page(page_number)
-
         progress_percentage = int((page_obj.number / len(soal)) * 100)
-
         jawaban_user = request.session.get('jawaban_evaluasi', [])
         jawaban_chosen = jawaban_user[page_obj.number -
                                       1] if page_obj.number <= len(jawaban_user) else None
-
         context = {
-            'page_obj': page_obj,
-            'progress_percentage': progress_percentage,
-            'jawaban_chosen': jawaban_chosen,
-            'latest_evaluasi': latest_evaluasi,
+            'page_obj': page_obj, 'progress_percentage': progress_percentage,
+            'jawaban_chosen': jawaban_chosen, 'latest_evaluasi': latest_evaluasi,
         }
-
         return render(request, 'pages/evaluasi.html', context)
-
     elif request.method == 'POST':
         jawaban = request.POST.get('jawaban')
         current_page = int(request.GET.get('page', 1))
-
         if jawaban:
             jawaban_user = request.session.get('jawaban_evaluasi', [])
             while len(jawaban_user) < current_page:
                 jawaban_user.append(None)
             jawaban_user[current_page - 1] = jawaban
             request.session['jawaban_evaluasi'] = jawaban_user
-
         soal = request.session.get('soal_evaluasi', [])
-
         if current_page >= len(soal):
             return finalize_evaluasi(request)
         else:
@@ -456,98 +301,65 @@ def evaluasi(request):
 
 
 def finalize_evaluasi(request):
-    """Finalize evaluation and save results with material breakdown"""
     soal = request.session.get('soal_evaluasi', [])
     jawaban_user = request.session.get('jawaban_evaluasi', [])
-
     if not soal or not jawaban_user:
         messages.error(request, 'Data evaluasi tidak ditemukan!')
         return redirect('materi')
-
-    # Calculate results
     total_soal = len(soal)
     jumlah_benar = 0
-
-    # Create evaluation record
     evaluasi = NilaiEvaluasi.objects.create(
-        user=request.user,
-        total_soal=total_soal,
-        jumlah_benar=0,
-        nilai=0.0
+        user=request.user, total_soal=total_soal,
+        jumlah_benar=0, nilai=0.0
     )
-
-    # Check answers and create detailed records
     for i, soal_item in enumerate(soal):
         user_answer = jawaban_user[i] if i < len(jawaban_user) else None
         correct_answer = soal_item['correct_answer']
         is_correct = str(user_answer) == str(correct_answer)
-
         if is_correct:
             jumlah_benar += 1
-
         JawabanEvaluasi.objects.create(
-            evaluasi=evaluasi,
-            nomor_soal=i + 1,
+            evaluasi=evaluasi, nomor_soal=i + 1,
             materi_soal=soal_item['materi'],
-            soal_pertanyaan=soal_item['question'],
-            pilihan_jawaban=soal_item['choices'],  # Store choices
+            soal_pertanyaan=soal_item['question_text'],  # Perbaikan KeyError
+            pilihan_jawaban=soal_item['choices'],
             jawaban_user=user_answer or '',
             jawaban_benar=correct_answer,
             is_correct=is_correct,
             poin=1.0 if is_correct else 0.0
         )
-
-    # Update final score
     evaluasi.jumlah_benar = jumlah_benar
     evaluasi.nilai = (jumlah_benar / total_soal) * 100
     evaluasi.save()
-
-    # IMPORTANT: Calculate and save material breakdown
     evaluasi.calculate_material_breakdown()
-
-    # Store for result page
     request.session['evaluasi_id'] = evaluasi.id
-
-    # Clean up
     for key in ['soal_evaluasi', 'jawaban_evaluasi']:
         if key in request.session:
             del request.session[key]
-
     return redirect('hasil_evaluasi')
 
 
 @login_required
 def hasil_evaluasi(request):
-    """Display evaluation results with material breakdown"""
     evaluasi_id = request.session.get('evaluasi_id')
-
     if not evaluasi_id:
         messages.error(request, 'Hasil evaluasi tidak ditemukan!')
         return redirect('materi')
-
     evaluasi = get_object_or_404(
         NilaiEvaluasi, id=evaluasi_id, user=request.user)
     jawaban_detail = JawabanEvaluasi.objects.filter(
         evaluasi=evaluasi).order_by('nomor_soal')
-
-    # Get material breakdown
     breakdown_per_materi = NilaiEvaluasiPerMateri.objects.filter(
         evaluasi_utama=evaluasi
     ).order_by('materi')
-
-    # Calculate statistics
     benar = evaluasi.jumlah_benar
     salah = evaluasi.total_soal - evaluasi.jumlah_benar
     total = evaluasi.total_soal
     percentage = int(evaluasi.nilai)
-
     benar_width = int((benar / total) * 100) if total > 0 else 0
     salah_width = int((salah / total) * 100) if total > 0 else 0
-
-    # Determine grade and recommendations
     grade = evaluasi.get_grade()
     grade_color = evaluasi.get_grade_color()
-
     if percentage >= 90:
         message = '🎉 Excellent! Pemahaman kamu sangat luar biasa!'
     elif percentage >= 80:
@@ -558,31 +370,53 @@ def hasil_evaluasi(request):
         message = '😐 Perlu improvement. Coba pelajari materi yang masih kurang!'
     else:
         message = '😟 Perlu belajar lebih giat. Jangan menyerah, ulangi lagi!'
-
-    # Get weak materials for recommendations
     weak_materials = [b for b in breakdown_per_materi if b.nilai < 70]
-
-    # Clean up session
     if 'evaluasi_id' in request.session:
         del request.session['evaluasi_id']
-
     context = {
-        'evaluasi': evaluasi,
-        'jawaban_detail': jawaban_detail,
+        'evaluasi': evaluasi, 'jawaban_detail': jawaban_detail,
         'breakdown_per_materi': breakdown_per_materi,
-        'weak_materials': weak_materials,
-        'benar': benar,
-        'salah': salah,
-        'total': total,
-        'percentage': percentage,
-        'benar_width': benar_width,
-        'salah_width': salah_width,
-        'grade': grade,
-        'grade_color': grade_color,
-        'message': message,
+        'weak_materials': weak_materials, 'benar': benar,
+        'salah': salah, 'total': total, 'percentage': percentage,
+        'benar_width': benar_width, 'salah_width': salah_width,
+        'grade': grade, 'grade_color': grade_color, 'message': message,
     }
-
     return render(request, 'pages/hasil_evaluasi.html', context)
+
+
+# FUNGSI HALAMAN GURU
+@login_required
+@user_passes_test(is_guru, login_url='beranda')
+def guru_nilai(request):
+    try:
+        guru_kelas = request.user.profile.kelas
+    except Profile.DoesNotExist:
+        guru_kelas = None
+    if guru_kelas:
+        students = User.objects.filter(groups__name='Siswa', profile__kelas=guru_kelas).prefetch_related(
+            'profile', 'nilai_evaluasi', 'nilai_evaluasi__breakdown_per_materi'
+        )
+    else:
+        students = User.objects.none()
+    student_grades = []
+    for student in students:
+        latest_eval = student.nilai_evaluasi.order_by('-created_at').first()
+        grades = {'materi_1': None, 'materi_2': None, 'materi_3': None,
+                  'materi_4': None, 'materi_5': None, 'materi_6': None, }
+        final_score = None
+        if latest_eval:
+            final_score = latest_eval.nilai
+            breakdown = latest_eval.breakdown_per_materi.all()
+            for b in breakdown:
+                if b.materi in grades:
+                    grades[b.materi] = b.nilai
+        student_grades.append({
+            'student': student, 'final_score': final_score, 'grades': grades
+        })
+    context = {
+        'student_data': student_grades, 'guru_kelas': guru_kelas,
+    }
+    return render(request, 'pages/guru_nilai.html', context)
 
 
 # AUTHENTICATION
@@ -590,18 +424,45 @@ def masuk(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        peran = request.POST.get('peran')  # Ambil peran dari form (siswa/guru)
+
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)
-            return redirect('beranda')
+            # Pengguna valid, sekarang cek peran mereka
+            is_siswa = user.groups.filter(name='Siswa').exists()
+            is_guru_check = is_guru(user)  # Menggunakan fungsi is_guru()
+
+            # KASUS 1: Login sebagai SISWA di form SISWA
+            if peran == 'siswa' and is_siswa:
+                login(request, user)
+                return redirect('beranda')
+
+            # KASUS 2: Login sebagai GURU di form GURU
+            elif peran == 'guru' and is_guru_check:
+                login(request, user)
+                return redirect('beranda')
+
+            # KASUS 3: Peran tidak cocok (Misal: Guru login di form Siswa)
+            elif peran == 'siswa' and not is_siswa:
+                messages.error(request, 'Akun ini bukan akun Siswa. Silakan gunakan tab Login Guru.')
+            elif peran == 'guru' and not is_guru_check:
+                messages.error(request, 'Akun ini bukan akun Guru. Silakan gunakan tab Login Siswa.')
+
+            # KASUS 4: Pengguna tidak punya peran (jarang terjadi)
+            else:
+                messages.error(request, 'Peran akun Anda tidak terdefinisi.')
+
         else:
+            # Username atau password salah
             messages.error(request, 'Username atau password salah!')
 
+    # Jika login gagal (POST) atau jika method GET, tampilkan halaman login
     return render(request, 'pages/auth/masuk.html')
 
 
 def daftar(request):
+    SECRET_TEACHER_CODE = 'BIMBAKA2025'
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -609,39 +470,178 @@ def daftar(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
+        peran = request.POST.get('peran')
         kelas = request.POST.get('kelas')
-        role = 'Siswa'
+        kode_guru = request.POST.get('kode_guru')
 
         if password != confirm_password:
             messages.error(request, 'Password tidak sesuai!')
             return redirect('daftar')
-
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username sudah terdaftar!')
             return redirect('daftar')
-
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Email sudah terdaftar!')
             return redirect('daftar')
 
+        role_name = ''
+        if not kelas:
+            messages.error(request, 'Silakan pilih kelas Anda (atau kelas yang Anda ajar)!')
+            return redirect('daftar')
+        if peran == 'guru':
+            if kode_guru == SECRET_TEACHER_CODE:
+                role_name = 'Guru'
+            else:
+                messages.error(request, 'Kode Pendaftaran Guru salah!')
+                return redirect('daftar')
+        elif peran == 'siswa':
+            role_name = 'Siswa'
+        else:
+            messages.error(request, 'Silakan pilih peran Anda (Siswa/Guru)!')
+            return redirect('daftar')
+
         user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-            first_name=first_name,
-            last_name=last_name
+            username=username, email=email, password=password,
+            first_name=first_name, last_name=last_name
         )
-
-        group, _ = Group.objects.get_or_create(name=role)
+        group, _ = Group.objects.get_or_create(name=role_name)
         user.groups.add(group)
-
         Profile.objects.create(user=user, kelas=kelas)
-
         messages.success(request, 'Akun berhasil dibuat! Silakan masuk.')
         return redirect('masuk')
-
     return render(request, 'pages/auth/daftar.html')
 
+
+@login_required
+def riwayat_evaluasi(request):
+    # Hanya ambil riwayat untuk siswa yang sedang login
+    # Pastikan yang diambil BUKAN guru
+    if is_guru(request.user):
+        return redirect('beranda')  # Guru tidak punya riwayat, arahkan ke dasbor
+
+    # Ambil semua evaluasi user, urutkan dari yang terbaru
+    riwayat_list = NilaiEvaluasi.objects.filter(user=request.user).order_by('-created_at')
+
+    context = {
+        'riwayat_list': riwayat_list
+    }
+    return render(request, 'pages/riwayat_evaluasi.html', context)
+
+
+@login_required
+@user_passes_test(is_guru, login_url='beranda')
+def guru_riwayat_siswa(request, siswa_id):
+    """Halaman untuk guru melihat detail riwayat evaluasi seorang siswa."""
+
+    # 1. Dapatkan guru dan kelasnya
+    try:
+        guru_kelas = request.user.profile.kelas
+    except Profile.DoesNotExist:
+        messages.error(request, 'Profil guru tidak ditemukan.')
+        return redirect('beranda')
+
+    # 2. Dapatkan siswa yang diminta
+    siswa = get_object_or_404(User, id=siswa_id, groups__name='Siswa')
+
+    # 3. Validasi: Pastikan guru ini mengajar siswa tsb
+    if siswa.profile.kelas != guru_kelas:
+        messages.error(request, 'Anda tidak memiliki izin untuk melihat siswa ini.')
+        return redirect('guru_nilai')
+
+    # 4. Ambil semua riwayat evaluasi siswa, prefetch jawaban terkait
+    #    Ini mengambil SEMUA percobaan evaluasi siswa, diurutkan dari yang terbaru
+    evaluasi_list = NilaiEvaluasi.objects.filter(
+        user=siswa
+    ).prefetch_related(
+        'jawaban_evaluasi'  # Ini akan mengambil semua detail jawaban untuk setiap evaluasi
+    ).order_by('-created_at')  # Terbaru di atas
+
+    context = {
+        'siswa': siswa,
+        'evaluasi_list': evaluasi_list
+    }
+    return render(request, 'pages/guru_riwayat_siswa.html', context)
+
+
+# --- TAMBAHKAN FUNGSI BARU INI ---
+@login_required
+@user_passes_test(is_guru, login_url='beranda')
+def export_nilai_excel(request):
+    """Menangani ekspor data nilai siswa ke file Excel."""
+
+    # 1. Dapatkan kelas guru
+    try:
+        guru_kelas = request.user.profile.kelas
+    except Profile.DoesNotExist:
+        messages.error(request, 'Profil guru tidak ditemukan.')
+        return redirect('guru_nilai')
+
+    # 2. Siapkan file Excel (Workbook)
+    wb = Workbook()
+    ws = wb.active
+    ws.title = f"Nilai {request.user.profile.get_kelas_display()}"
+
+    # 3. Buat Header
+    headers = [
+        "Nama Siswa", "Username",
+        "Materi 1", "Materi 2", "Materi 3",
+        "Materi 4", "Materi 5", "Materi 6",
+        "Nilai Akhir"
+    ]
+    ws.append(headers)
+
+    # 4. Ambil data siswa (logika yang sama dengan halaman 'guru_nilai')
+    if guru_kelas:
+        students = User.objects.filter(groups__name='Siswa', profile__kelas=guru_kelas).prefetch_related(
+            'profile', 'nilai_evaluasi', 'nilai_evaluasi__breakdown_per_materi'
+        )
+    else:
+        students = User.objects.none()
+
+    # 5. Isi data siswa ke baris Excel
+    for student in students:
+        latest_eval = student.nilai_evaluasi.order_by('-created_at').first()
+
+        grades = {
+            'materi_1': None, 'materi_2': None, 'materi_3': None,
+            'materi_4': None, 'materi_5': None, 'materi_6': None,
+        }
+        final_score = None
+
+        if latest_eval:
+            final_score = latest_eval.nilai
+            breakdown = latest_eval.breakdown_per_materi.all()
+            for b in breakdown:
+                if b.materi in grades:
+                    grades[b.materi] = b.nilai
+
+        # Buat baris data
+        row_data = [
+            student.get_full_name(),
+            student.username,
+            grades['materi_1'],
+            grades['materi_2'],
+            grades['materi_3'],
+            grades['materi_4'],
+            grades['materi_5'],
+            grades['materi_6'],
+            final_score
+        ]
+        # Tambahkan baris ke sheet
+        ws.append(row_data)
+
+    # 6. Buat Respon HTTP untuk mengunduh file
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    )
+    # Tentukan nama file
+    filename = f"daftar_nilai_{guru_kelas}.xlsx"
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+    # Simpan workbook ke respon
+    wb.save(response)
+
+    return response
 
 def keluar(request):
     logout(request)

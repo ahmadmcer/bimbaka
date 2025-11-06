@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load auth_extras %}
+
+{% block title %}Riwayat {{ siswa.first_name }}{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full" style="background-color: #fefefe; border-radius: 8px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+
+  <div class="mb-6 border-b pb-4">
+    <a href="{% url 'guru_nilai' %}" class="text-sm font-medium" style="color: #0077B6;">
+      <i class="fa-solid fa-arrow-left mr-2"></i>Kembali ke Daftar Nilai
+    </a>
+    <h1 class="text-3xl font-bold mt-2" style="color: #0077B6;">
+      Riwayat Evaluasi: {{ siswa.get_full_name }}
+    </h1>
+    <p class="text-gray-600">Menampilkan semua evaluasi yang pernah dikerjakan oleh @{{ siswa.username }}.</p>
+  </div>
+
+  <div class="space-y-6">
+
+    {% for evaluasi in evaluasi_list %}
+      <div class="rounded-lg shadow-md border border-gray-200">
+
+        <div class="p-4 rounded-t-lg flex flex-col sm:flex-row justify-between sm:items-center" style="background-color: {% if forloop.first %}#caf0f8{% else %}white{% endif %};">
+          <div>
+            <h2 class="text-xl font-bold" style="color: #0077B6;">
+              Evaluasi #{{ forloop.revcounter }} {% if forloop.first %}
+                <span class="text-sm font-medium text-white px-2 py-0.5 rounded" style="background-color: #0077B6;">Terbaru</span>
+              {% endif %}
+            </h2>
+            <p class="text-sm text-gray-600">{{ evaluasi.created_at|date:"d F Y, H:i" }}</p>
+          </div>
+          <div class="text-left sm:text-right mt-2 sm:mt-0">
+            {% with grade_color=evaluasi.get_grade_color %}
+              <div class="text-3xl font-bold" style="color:
+                {% if grade_color == 'green' %}#10b981{% endif %}
+                {% if grade_color == 'blue' %}#3b82f6{% endif %}
+                {% if grade_color == 'yellow' %}#f59e0b{% endif %}
+                {% if grade_color == 'orange' %}#f97316{% endif %}
+                {% if grade_color == 'red' %}#ef4444{% endif %}
+                {% if grade_color == 'gray' %}#6b7280{% endif %};">
+                {{ evaluasi.nilai|floatformat:0 }}
+              </div>
+            {% endwith %}
+            <p class="text-sm font-semibold" style="color: #0077B6;">
+              Benar {{ evaluasi.jumlah_benar }}/{{ evaluasi.total_soal }}
+            </p>
+          </div>
+        </div>
+
+        <div class="p-4 bg-white rounded-b-lg divide-y divide-gray-200">
+          {% for jawaban in evaluasi.jawaban_evaluasi.all %}
+            <div class="flex justify-between items-center py-3">
+              <div>
+                <p class="text-sm font-semibold text-gray-800">
+                  Soal {{ jawaban.nomor_soal }}: {{ jawaban.soal_pertanyaan }}
+                </p>
+                <p class="text-sm text-gray-500">
+                  Jawaban Siswa:
+                  <span class="font-bold {% if jawaban.is_correct %}text-gray-700{% else %}text-red-500{% endif %}">
+                    {{ jawaban.jawaban_user|default:"-" }}
+                  </span>
+                  {% if not jawaban.is_correct %}
+                    <span class="text-green-600 ml-2">(Benar: {{ jawaban.jawaban_benar }})</span>
+                  {% endif %}
+                </p>
+              </div>
+              <div class="ml-4 flex-shrink-0">
+                {% if jawaban.is_correct %}
+                  <span class="text-xs font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full">✓ BENAR</span>
+                {% else %}
+                  <span class="text-xs font-bold text-red-600 bg-red-100 px-3 py-1 rounded-full">✗ SALAH</span>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        </div>
+    {% empty %}
+      <div class="text-center p-8 bg-gray-50 rounded-lg">
+        <i class="fa-solid fa-folder-open text-4xl text-gray-400 mb-4"></i>
+        <h3 class="text-xl font-semibold text-gray-700">Belum Ada Riwayat</h3>
+        <p class="text-gray-500">Siswa ini belum pernah menyelesaikan evaluasi akhir.</p>
+      </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock %}

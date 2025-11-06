@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Dasbor Guru{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full">
+
+  <div class="bg-gradient-to-r from-sky-100 to-cyan-100 text-sky-900 p-8 rounded-lg mb-8 text-center shadow-md">
+    <i class="fa-solid fa-trophy text-4xl text-yellow-500 mb-4"></i>
+    <h1 class="text-4xl font-bold mb-2">Selamat datang kembali, {{ user.first_name }}!</h1>
+    <p class="text-lg text-sky-700">Mari kita ciptakan pengalaman belajar yang menginspirasi hari ini.</p>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-6 mb-8">
+
+    <div class="bg-sky-100 text-sky-900 p-6 rounded-lg shadow-lg flex items-center space-x-4 hover:bg-sky-200 transition-colors">
+      <div class="bg-white p-3 rounded-full">
+        <i class="fa-solid fa-users text-2xl text-sky-600"></i>
+      </div>
+      <div>
+        <div class="text-3xl font-bold">{{ total_siswa }}</div>
+        <div class="text-sm text-sky-700 font-semibold">Total Siswa</div>
+      </div>
+    </div>
+
+    <div class="bg-cyan-100 text-cyan-900 p-6 rounded-lg shadow-lg flex items-center space-x-4 hover:bg-cyan-200 transition-colors">
+      <div class="bg-white p-3 rounded-full">
+        <i class="fa-solid fa-book-open text-2xl text-cyan-600"></i>
+      </div>
+      <div>
+        <div class="text-3xl font-bold">7</div>
+        <div class="text-sm text-cyan-700 font-semibold">Pembelajaran Aktif</div>
+      </div>
+    </div>
+
+    <div class="bg-amber-100 text-amber-900 p-6 rounded-lg shadow-lg flex items-center space-x-4 hover:bg-amber-200 transition-colors">
+      <div class="bg-white p-3 rounded-full">
+        <i class="fa-solid fa-clipboard-list text-2xl text-amber-600"></i>
+      </div>
+      <div>
+        <div class="text-3xl font-bold">7</div>
+        <div class="text-sm text-amber-700 font-semibold">Ulasan Tertunda</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-6">
+
+    <div class="lg:col-span-1 bg-white p-6 rounded-lg shadow-lg h-fit">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Aktivitas Terbaru</h2>
+      <div class="space-y-5">
+
+        <div class="flex items-start space-x-3">
+          <div class="bg-blue-100 p-2 rounded-full flex-shrink-0 mt-1">
+            <i class="fa-solid fa-book text-blue-600"></i>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-gray-700">Siswa 'Budi' menyelesaikan materi Perkalian.</p>
+            <p class="text-xs text-gray-500">2 jam yang lalu</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-3">
+          <div class="bg-green-100 p-2 rounded-full flex-shrink-0 mt-1">
+            <i class="fa-solid fa-pen-to-square text-green-600"></i>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-gray-700">Siswa 'Ani' mengerjakan evaluasi akhir.</p>
+            <p class="text-xs text-gray-500">Kemarin</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-3">
+          <div class="bg-yellow-100 p-2 rounded-full flex-shrink-0 mt-1">
+            <i class="fa-solid fa-trophy text-yellow-600"></i>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-gray-700">Siswa 'Citra' mendapat nilai A pada Latihan.</p>
+            <p class="text-xs text-gray-500">3 hari yang lalu</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="daftar-siswa" class="lg:col-span-2 bg-white shadow rounded-lg p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">📚 Daftar Siswa {{ request.user.profile.get_kelas_display }}</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="p-3 font-semibold text-gray-700 rounded-l-lg">Nama Lengkap</th>
+              <th class="p-3 font-semibold text-gray-700">Username</th>
+              <th class="p-3 font-semibold text-gray-700">Email</th>
+              <th class="p-3 font-semibold text-gray-700 rounded-r-lg">Kelas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for siswa in siswa_list %}
+              <tr class="border-b hover:bg-gray-50">
+                <td class="p-3">{{ siswa.get_full_name }}</td>
+                <td class="p-3">{{ siswa.username }}</td>
+                <td class="p-3">{{ siswa.email }}</td>
+                <td class="p-3">{{ siswa.profile.get_kelas_display }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="4" class="p-3 text-center text-gray-500">Belum ada siswa yang terdaftar di kelas ini.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Riwayat Evaluasi{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full" style="background-color: #fefefe; border-radius: 8px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold" style="color: #0077B6;">Riwayat Evaluasi Saya</h1>
+    <p class="text-gray-600">Lihat semua hasil evaluasi akhir yang pernah kamu kerjakan.</p>
+  </div>
+
+  <div class="space-y-4">
+
+    {% for evaluasi in riwayat_list %}
+      <div class="p-5 rounded-lg shadow-md border border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center" style="background-color: {% if forloop.first %}#caf0f8{% else %}white{% endif %};">
+
+        <div class_pro="flex items-center mb-3 sm:mb-0">
+          <div class="mr-4 text-center">
+            {% with grade_color=evaluasi.get_grade_color %}
+              <div class="text-3xl font-bold" style="color:
+                {% if grade_color == 'green' %}#10b981{% endif %}
+                {% if grade_color == 'blue' %}#3b82f6{% endif %}
+                {% if grade_color == 'yellow' %}#f59e0b{% endif %}
+                {% if grade_color == 'orange' %}#f97316{% endif %}
+                {% if grade_color == 'red' %}#ef4444{% endif %}
+                {% if grade_color == 'gray' %}#6b7280{% endif %};">
+                {{ evaluasi.nilai|floatformat:0 }}
+              </div>
+              <div class="text-sm font-semibold" style="color: #0077B6;">
+                Grade {{ evaluasi.get_grade }}
+              </div>
+            {% endwith %}
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-800">
+              Evaluasi #{{ forloop.revcounter }}
+              {% if forloop.first %}
+                <span class="text-sm font-medium text-white px-2 py-0.5 rounded" style="background-color: #0077B6;">Terbaru</span>
+              {% endif %}
+            </h3>
+            <p class="text-sm text-gray-600">
+              Benar {{ evaluasi.jumlah_benar }} dari {{ evaluasi.total_soal }} soal
+            </p>
+          </div>
+        </div>
+
+        <div class="text-sm text-gray-500 font-medium text-left sm:text-right mt-2 sm:mt-0">
+          <i class="fa-solid fa-calendar-days mr-1"></i>
+          {{ evaluasi.created_at|date:"d F Y, H:i" }}
+        </div>
+
+      </div>
+    {% empty %}
+      <div class_pro="text-center p-8 bg-gray-50 rounded-lg">
+        <i class="fa-solid fa-folder-open text-4xl text-gray-400 mb-4"></i>
+        <h3 class="text-xl font-semibold text-gray-700">Belum Ada Riwayat</h3>
+        <p class="text-gray-500">Kamu belum pernah menyelesaikan evaluasi akhir.</p>
+      </div>
+    {% endfor %}
+
+  </div>
+
+  <div class="mt-8 border-t pt-6">
+    <a href="{% url 'beranda' %}" class="font-medium" style="color: #0077B6;">
+      <i class="fa-solid fa-arrow-left mr-2"></i>
+      Kembali ke Dasbor
+    </a>
+  </div>
+
+</div>
+{% endblock %}

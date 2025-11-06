@@ -1,184 +1,94 @@
 {% extends 'base.html' %}
 
+{% block title %}Dasbor Siswa{% endblock %}
+
 {% block content %}
-  <div class="flex flex-col w-full">
-    <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg p-8 mb-8">
-      <div class="text-center">
-        <p class="text-blue-100 font-semibold mb-2">✨ Selamat Datang di ✨</p>
-        <h1 class="text-5xl font-bold mb-4">🧮 BIMBAKA 🧮</h1>
-        <h2 class="text-xl text-blue-100 mb-6 max-w-3xl mx-auto">
-          <strong>Bimbingan Interaktif Matematika:</strong><br />
-          Bagi dan Kali untuk Kelas 2 & 3 SD
-        </h2>
-        <p class="text-lg text-blue-100 max-w-2xl mx-auto mb-6">
-          Belajar matematika jadi <strong>mudah</strong>, <strong>menyenangkan</strong>, dan <strong>interaktif</strong>! Khusus dirancang untuk siswa SD dengan metode pembelajaran yang fun! 🎉
-        </p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="#mulai-belajar" class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition-colors">🚀 Mulai Belajar Sekarang!</a>
-          <a href="#tentang" class="border-2 border-white text-white px-6 py-3 rounded-full font-bold hover:bg-white hover:text-blue-600 transition-colors">📖 Pelajari Lebih Lanjut</a>
-        </div>
+<div class="flex flex-col w-full" style="background-color: #fefefe; border-radius: 8px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+
+  <div class="text-center p-8 rounded-lg mb-8" style="background-color: #caf0f8; color: #0077B6;">
+    <i class="fa-solid fa-trophy text-4xl text-yellow-500 mb-4"></i>
+    <h1 class="text-4xl font-bold mb-2">Selamat datang kembali, {{ user.first_name }}!</h1>
+    <p class="text-lg opacity-80">Ayo kita lihat apa yang menunggumu hari ini. Semangat terus!!!</p>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-6 mb-8">
+
+    <div class="text-center p-6 rounded-lg shadow-lg" style="background-color: #caf0f8;">
+      <div class="p-3 bg-white rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+        <i class="fa-solid fa-book-bookmark text-3xl" style="color: #0077B6;"></i>
       </div>
+      <div class="text-4xl font-bold" style="color: #0077B6;">
+        {{ progress_summary.materi_selesai }}
+      </div>
+      <div class="text-sm font-semibold opacity-80" style="color: #0077B6;">Pelajaran Selesai</div>
     </div>
 
-    <!-- Stats Section -->
-    <div class="grid md:grid-cols-4 gap-4 mb-8">
-      <div class="bg-green-50 border border-green-200 p-4 rounded-lg text-center">
-        <div class="text-2xl font-bold text-green-600">2</div>
-        <div class="text-sm text-green-700">Kelas Tersedia</div>
+    <div class="text-center p-6 rounded-lg shadow-xl ring-2" style="background-color: #90E0EF; border-color: #0077B6;">
+      <div class="p-3 bg-white rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+        <i class="fa-solid fa-clipboard-check text-3xl" style="color: #0077B6;"></i>
       </div>
-      <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg text-center">
-        <div class="text-2xl font-bold text-blue-600">14</div>
-        <div class="text-sm text-blue-700">Materi Lengkap</div>
+      <div class="text-4xl font-bold" style="color: #0077B6;">
+        {{ progress_summary.persentase_keseluruhan|floatformat:0 }}%
       </div>
-      <div class="bg-purple-50 border border-purple-200 p-4 rounded-lg text-center">
-        <div class="text-2xl font-bold text-purple-600">50+</div>
-        <div class="text-sm text-purple-700">Contoh Soal</div>
-      </div>
-      <div class="bg-orange-50 border border-orange-200 p-4 rounded-lg text-center">
-        <div class="text-2xl font-bold text-orange-600">100%</div>
-        <div class="text-sm text-orange-700">Gratis</div>
-      </div>
+      <div class="text-sm font-semibold opacity-80" style="color: #0077B6;">Progress Belajar</div>
     </div>
 
-    <!-- Main Navigation -->
-    <div id="mulai-belajar" class="grid md:grid-cols-2 gap-6 mb-8">
-      <!-- Pembelajaran Materi -->
-      <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">📚 Pembelajaran Materi</h2>
-        <p class="text-gray-600 mb-6">Mulai pembelajaranmu sekarang!</p>
-
-        <a href="{% url 'materi' %}" class="block bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-colors text-center">
-          <div class="text-4xl mb-2">🚀</div>
-          <h3 class="font-bold text-lg mb-2">Mulai Belajar</h3>
-          <p class="text-sm text-purple-100">Materi lengkap untuk kelas 2 & 3 SD</p>
-        </a>
+    <a href="{% url 'riwayat_evaluasi' %}" class="block text-center p-6 rounded-lg shadow-lg transition-transform hover:scale-105" style="background-color: #caf0f8;">
+      <div class="p-3 bg-white rounded-full w-16 h-16 mx-auto flex items-center justify-center mb-3">
+        <i class="fa-solid fa-star text-3xl" style="color: #0077B6;"></i>
       </div>
-
-      <!-- Latihan Soal -->
-      <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">🧮 Latihan Soal</h2>
-        <p class="text-gray-600 mb-6">Uji kemampuan dengan soal-soal interaktif!</p>
-
-        <a href="{% url 'latihan' %}" class="block bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors text-center">
-          <div class="text-4xl mb-2">🎯</div>
-          <h3 class="font-bold text-lg mb-2">Mulai Latihan</h3>
-          <p class="text-sm text-purple-100">Soal bergambar yang menyenangkan!</p>
-        </a>
+      <div class="text-4xl font-bold" style="color: #0077B6;">
+        {{ latest_evaluation.nilai|floatformat:0|default:"-" }}
       </div>
+      <div class="text-sm font-semibold opacity-80" style="color: #0077B6;">Nilai Terakhir</div>
+    </a>
     </div>
 
-    <!-- Features Section -->
-    <div id="tentang" class="bg-gray-50 rounded-lg p-8 mb-8">
-      <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">🌟 Mengapa Memilih BIMBAKA?</h2>
+  <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+    <a href="{% url 'materi' %}" class="text-white font-bold py-3 px-8 rounded-full shadow-lg text-center transition-transform hover:scale-105" style="background-color: #0077B6;">
+      <i class="fa-solid fa-book-open mr-2"></i> Pergi ke Pelajaran
+    </a>
+  </div>
 
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="text-center">
-          <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-            <span class="text-2xl">🎨</span>
-          </div>
-          <h3 class="font-bold text-lg text-gray-800 mb-2">Visual & Interaktif</h3>
-          <p class="text-gray-600">Pembelajaran dengan gambar, warna, dan contoh nyata yang mudah dipahami.</p>
-        </div>
+  <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+    <h2 class="text-xl font-bold text-gray-800 mb-6">Aktivitas Terbaru</h2>
+    <div class="space-y-5">
 
-        <div class="text-center">
-          <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-            <span class="text-2xl">📝</span>
-          </div>
-          <h3 class="font-bold text-lg text-gray-800 mb-2">Step-by-Step</h3>
-          <p class="text-gray-600">Setiap materi dijelaskan langkah demi langkah dengan contoh yang jelas.</p>
-        </div>
-
-        <div class="text-center">
-          <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-            <span class="text-2xl">🎯</span>
-          </div>
-          <h3 class="font-bold text-lg text-gray-800 mb-2">Sesuai Kurikulum</h3>
-          <p class="text-gray-600">Materi disesuaikan dengan kurikulum SD kelas 2 dan 3.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- What You'll Learn -->
-    <div class="bg-white border border-gray-200 rounded-lg p-8 mb-8">
-      <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">📚 Apa yang Akan Dipelajari?</h2>
-
-      <div class="grid md:grid-cols-2 gap-8">
-        <!-- Kelas 2 -->
-        <div>
-          <h3 class="text-xl font-bold text-green-700 mb-4">🌟 Kelas 2 SD</h3>
-          <ul class="space-y-2 text-gray-700">
-            <li class="flex items-center">
-              <span class="text-green-500 mr-2">✓</span> Konsep perkalian sebagai penjumlahan berulang
-            </li>
-            <li class="flex items-center">
-              <span class="text-green-500 mr-2">✓</span> Sifat komutatif (pertukaran)
-            </li>
-            <li class="flex items-center">
-              <span class="text-green-500 mr-2">✓</span> Perkalian dengan 0, 1, 2, 5, dan 10
-            </li>
-            <li class="flex items-center">
-              <span class="text-green-500 mr-2">✓</span> Tabel perkalian 3, 4, 6, 7, 8, 9
-            </li>
-            <li class="flex items-center">
-              <span class="text-green-500 mr-2">✓</span> Pola dan trik menghitung cepat
-            </li>
-          </ul>
-        </div>
-
-        <!-- Kelas 3 -->
-        <div>
-          <h3 class="text-xl font-bold text-blue-700 mb-4">🚀 Kelas 3 SD</h3>
-          <ul class="space-y-2 text-gray-700">
-            <li class="flex items-center">
-              <span class="text-blue-500 mr-2">✓</span> Perkalian dengan 100 (konsep baru)
-            </li>
-            <li class="flex items-center">
-              <span class="text-blue-500 mr-2">✓</span> Perkalian bersusun (susun ke bawah)
-            </li>
-            <li class="flex items-center">
-              <span class="text-blue-500 mr-2">✓</span> Pembagian dengan 0 dan 1
-            </li>
-            <li class="flex items-center">
-              <span class="text-blue-500 mr-2">✓</span> Pembagian bersusun (porogapit)
-            </li>
-            <li class="flex items-center">
-              <span class="text-blue-500 mr-2">✓</span> Operasi hitung campuran
-            </li>
-            <li class="flex items-center">
-              <span class="text-blue-500 mr-2">✓</span> Soal cerita aplikatif
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Getting Started -->
-    <div class="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg p-8 text-center">
-      <h2 class="text-3xl font-bold mb-4">🎉 Siap Memulai Petualangan Matematika?</h2>
-      <p class="text-xl text-green-100 mb-6">Bergabunglah dengan ribuan siswa yang sudah belajar dengan BIMBAKA!</p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="{% url 'materi' %}" class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition-colors">🚀 Mulai Belajar Sekarang!</a>
-      </div>
-    </div>
-
-    <!-- Tips Section -->
-    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mt-8">
-      <h3 class="text-xl font-bold text-yellow-800 mb-4">💡 Tips Belajar Efektif</h3>
-      <div class="grid md:grid-cols-3 gap-4 text-sm text-yellow-700">
-        <div>
-          <p class="font-semibold">⏰ Konsisten:</p>
-          <p>Belajar 15-20 menit setiap hari lebih baik daripada 2 jam sekali seminggu.</p>
+      <div class="flex items-start space-x-3">
+        <div class="p-2 rounded-full flex-shrink-0 mt-1" style="background-color: #caf0f8;">
+          <i class="fa-solid fa-book" style="color: #0077B6;"></i>
         </div>
         <div>
-          <p class="font-semibold">🎯 Bertahap:</p>
-          <p>Mulai dari materi yang mudah, lalu naik ke tingkat yang lebih sulit.</p>
+          <p class="text-sm font-semibold text-gray-700">Pelajaran Selesai</p>
+          <p class="text-xs text-gray-500">Kamu telah menyelesaikan "Materi Perkalian 1 & 0".</p>
+        </div>
+        <span class="text-xs text-gray-400 ml-auto flex-shrink-0">2 jam lalu</span>
+      </div>
+
+      <div class="flex items-start space-x-3">
+        <div class="p-2 rounded-full flex-shrink-0 mt-1" style="background-color: #caf0f8;">
+          <i class="fa-solid fa-pen-to-square" style="color: #0077B6;"></i>
         </div>
         <div>
-          <p class="font-semibold">🔄 Latihan:</p>
-          <p>Setelah mempelajari materi, selalu latihan soal untuk memperkuat pemahaman.</p>
+          <p class="text-sm font-semibold text-gray-700">Evaluasi Dikerjakan</p>
+          <p class="text-xs text-gray-500">Kamu mendapat nilai 85 di Evaluasi Akhir!</p>
         </div>
+        <span class="text-xs text-gray-400 ml-auto flex-shrink-0">Kemarin</span>
       </div>
+
+      <div class="flex items-start space-x-3">
+        <div class="p-2 rounded-full flex-shrink-0 mt-1" style="background-color: #caf0f8;">
+          <i class="fa-solid fa-star" style="color: #0077B6;"></i>
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-gray-700">Pencapaian Diraih</p>
+          <p class="text-xs text-gray-500">Kamu membuka materi "Pembagian Bersusun".</p>
+        </div>
+        <span class="text-xs text-gray-400 ml-auto flex-shrink-0">3 hari lalu</span>
+      </div>
+
     </div>
   </div>
+
+</div>
 {% endblock %}
