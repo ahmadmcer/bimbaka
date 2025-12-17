@@ -1,317 +1,237 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="flex flex-col w-full">
-    <!-- Penjelasan Konsep -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4">
-      <h1 class="text-xl font-bold mb-6">2. Perkalian Bersusun</h1>
+<div class="flex flex-col w-full max-w-5xl mx-auto pb-12">
 
-      <!-- Konsep Dasar -->
-      <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400 mb-4">
-        <p class="font-semibold text-blue-800">💡 Apa itu Perkalian Bersusun?</p>
-        <p class="text-blue-700">Perkalian bersusun adalah cara mudah mengalikan angka besar dengan menulisnya ke bawah!</p>
-        <p class="text-blue-700 mt-2">
-          <strong>Seperti menumpuk balok!</strong> Angka disusun dari atas ke bawah.
-        </p>
+  <div class="bg-gradient-to-r from-[#0077B6] to-[#00B4D8] rounded-3xl p-8 shadow-xl text-white mb-8 relative overflow-hidden">
+    <div class="relative z-10">
+      <div class="inline-block bg-white/20 px-4 py-1 rounded-full text-sm font-bold mb-2 backdrop-blur-sm">
+        MATEMATIKA KELAS 3
       </div>
-
-      <p>
-        <strong>Mari kita pelajari langkah demi langkah!</strong>
-      </p>
+      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">2. Perkalian Bersusun</h1>
+      <p class="mt-2 text-blue-50 text-lg opacity-90">Cara mudah mengalikan angka besar dengan cara disusun ke bawah.</p>
     </div>
+    <div class="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+  </div>
 
-    <!-- Mengapa Perlu Perkalian Bersusun? -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-green-700">🤔 Mengapa Perlu Perkalian Bersusun?</h2>
-
-      <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-400">
-        <p class="font-semibold text-green-800">✨ Perbandingan Mudah:</p>
-        <div class="mt-3 grid md:grid-cols-2 gap-4">
-          <div class="bg-red-100 p-3 rounded">
-            <p class="font-bold text-red-800">❌ Cara Sulit:</p>
-            <p class="text-red-700">23 × 4 = 23 + 23 + 23 + 23</p>
-            <p class="text-sm text-red-600">Lama dan mudah salah!</p>
-          </div>
-          <div class="bg-green-100 p-3 rounded">
-            <p class="font-bold text-green-800">✅ Cara Mudah:</p>
-            <p class="text-green-700">Pakai perkalian bersusun!</p>
-            <p class="text-sm text-green-600">Cepat dan rapi!</p>
-          </div>
-        </div>
+  <div class="bg-white rounded-3xl shadow-lg border border-[#90E0EF] p-8 mb-8">
+    <h2 class="text-2xl font-bold text-[#0077B6] mb-4">🤔 Mengapa Perlu Perkalian Bersusun?</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-[#F5B7B1]/20 p-5 rounded-2xl border border-[#F5B7B1]">
+        <p class="font-bold text-[#c45f55] mb-2">❌ Cara Sulit (Penjumlahan Berulang)</p>
+        <p class="text-gray-700 font-mono text-lg">4 × 23 = 23 + 23 + 23 + 23</p>
+        <p class="text-sm text-[#c45f55] mt-2 italic">Terlalu panjang dan mudah salah hitung!</p>
       </div>
-    </div>
-
-    <!-- Langkah-langkah Mudah -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-purple-700">📝 Langkah-langkah Mudah</h2>
-
-      <!-- Langkah 1 -->
-      <div class="bg-purple-50 p-4 rounded border-l-4 border-purple-400">
-        <h3 class="font-semibold text-purple-800">Langkah 1: Susun Angka</h3>
-        <p class="text-purple-700">Tulis angka yang besar di atas, angka yang kecil di bawah</p>
-
-        <div class="mt-3 text-center">
-          <div class="inline-block bg-white p-4 rounded border-2 border-purple-300">
-            <div class="text-2xl font-bold space-y-1">
-              <div class="text-purple-600">23</div>
-              <div class="text-purple-600">× 4</div>
-              <hr class="border-purple-300 border-2" />
-              <div class="text-gray-400">?</div>
-            </div>
-          </div>
-        </div>
+      <div class="bg-[#caf0f8]/50 p-5 rounded-2xl border border-[#90E0EF]">
+        <p class="font-bold text-[#0077B6] mb-2">✅ Cara Mudah (Bersusun)</p>
+        <p class="text-gray-700 font-mono text-lg">Disusun ke bawah</p>
+        <p class="text-sm text-[#00B4D8] mt-2 italic">Lebih cepat, rapi, dan teliti!</p>
       </div>
-
-      <!-- Langkah 2 -->
-      <div class="bg-purple-50 p-4 rounded border-l-4 border-purple-400 mt-4">
-        <h3 class="font-semibold text-purple-800">Langkah 2: Kalikan dari Kanan</h3>
-        <p class="text-purple-700">Mulai dari angka paling kanan (satuan)</p>
-
-        <div class="mt-3 grid md:grid-cols-2 gap-4">
-          <div class="text-center">
-            <div class="inline-block bg-white p-4 rounded border-2 border-purple-300">
-              <div class="text-2xl font-bold space-y-1">
-                <div class="text-purple-600">
-                  2<span class="bg-yellow-200 px-1 rounded">3</span>
-                </div>
-                <div class="text-purple-600">
-                  × <span class="bg-yellow-200 px-1 rounded">4</span>
-                </div>
-                <hr class="border-purple-300 border-2" />
-                <div class="text-green-600">2</div>
-              </div>
-            </div>
-          </div>
-          <div class="bg-yellow-100 p-3 rounded">
-            <p class="font-bold">🧮 Hitung:</p>
-            <p>3 × 4 = 12</p>
-            <p class="text-sm">
-              Tulis <strong>2</strong>, simpan <strong>1</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Langkah 3 -->
-      <div class="bg-purple-50 p-4 rounded border-l-4 border-purple-400 mt-4">
-        <h3 class="font-semibold text-purple-800">Langkah 3: Lanjut ke Kiri</h3>
-        <p class="text-purple-700">Kalikan angka berikutnya, jangan lupa tambah yang disimpan!</p>
-
-        <div class="mt-3 grid md:grid-cols-2 gap-4">
-          <div class="text-center">
-            <div class="inline-block bg-white p-4 rounded border-2 border-purple-300">
-              <div class="text-2xl font-bold space-y-1">
-                <div class="text-purple-600">
-                  <span class="bg-yellow-200 px-1 rounded">2</span>3
-                </div>
-                <div class="text-purple-600">
-                  × <span class="bg-yellow-200 px-1 rounded">4</span>
-                </div>
-                <hr class="border-purple-300 border-2" />
-                <div class="text-green-600">92</div>
-              </div>
-            </div>
-          </div>
-          <div class="bg-yellow-100 p-3 rounded">
-            <p class="font-bold">🧮 Hitung:</p>
-            <p>2 × 4 = 8</p>
-            <p>8 + 1 = 9</p>
-            <p class="text-sm">
-              Tulis <strong>9</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Contoh Lain -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-orange-700">📚 Contoh Lain</h2>
-
-      <div class="grid md:grid-cols-2 gap-6">
-        <!-- Contoh 2 -->
-        <div class="bg-orange-50 p-4 rounded">
-          <h3 class="font-bold text-orange-800 mb-3">Contoh 2: 34 × 5</h3>
-          <div class="space-y-3">
-            <div class="text-center">
-              <div class="inline-block bg-white p-3 rounded border">
-                <div class="text-lg font-bold space-y-1">
-                  <div>34</div>
-                  <div>× 5</div>
-                  <hr class="border-gray-300" />
-                  <div class="text-orange-600">170</div>
-                </div>
-              </div>
-            </div>
-            <div class="text-sm space-y-1">
-              <p>• 4 × 5 = 20 → tulis 0, simpan 2</p>
-              <p>• 3 × 5 = 15, plus 2 = 17 → tulis 17</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Contoh 3 -->
-        <div class="bg-orange-50 p-4 rounded">
-          <h3 class="font-bold text-orange-800 mb-3">Contoh 3: 56 × 7</h3>
-          <div class="space-y-3">
-            <div class="text-center">
-              <div class="inline-block bg-white p-3 rounded border">
-                <div class="text-lg font-bold space-y-1">
-                  <div>56</div>
-                  <div>× 7</div>
-                  <hr class="border-gray-300" />
-                  <div class="text-orange-600">392</div>
-                </div>
-              </div>
-            </div>
-            <div class="text-sm space-y-1">
-              <p>• 6 × 7 = 42 → tulis 2, simpan 4</p>
-              <p>• 5 × 7 = 35, plus 4 = 39 → tulis 39</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Latihan Terbimbing -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-blue-700">🧮 Latihan Terbimbing</h2>
-      <p class="text-sm text-gray-600">Coba selesaikan soal-soal berikut step by step:</p>
-
-      <div class="grid md:grid-cols-3 gap-4">
-        <!-- Latihan 1 -->
-        <div class="bg-blue-50 p-4 rounded border">
-          <h3 class="font-semibold text-blue-800 mb-3">Latihan 1:</h3>
-          <div class="text-center mb-3">
-            <div class="inline-block bg-white p-3 rounded border">
-              <div class="text-lg font-bold space-y-1">
-                <div>42</div>
-                <div>× 3</div>
-                <hr class="border-gray-300" />
-                <div class="text-blue-600">126</div>
-              </div>
-            </div>
-          </div>
-          <div class="text-xs space-y-1">
-            <p>• 2 × 3 = 6</p>
-            <p>• 4 × 3 = 12 → tulis 126</p>
-          </div>
-        </div>
-
-        <!-- Latihan 2 -->
-        <div class="bg-blue-50 p-4 rounded border">
-          <h3 class="font-semibold text-blue-800 mb-3">Latihan 2:</h3>
-          <div class="text-center mb-3">
-            <div class="inline-block bg-white p-3 rounded border">
-              <div class="text-lg font-bold space-y-1">
-                <div>35</div>
-                <div>× 6</div>
-                <hr class="border-gray-300" />
-                <div class="text-blue-600">210</div>
-              </div>
-            </div>
-          </div>
-          <div class="text-xs space-y-1">
-            <p>• 5 × 6 = 30 → tulis 0, simpan 3</p>
-            <p>• 3 × 6 = 18, plus 3 = 21</p>
-          </div>
-        </div>
-
-        <!-- Latihan 3 -->
-        <div class="bg-blue-50 p-4 rounded border">
-          <h3 class="font-semibold text-blue-800 mb-3">Latihan 3:</h3>
-          <div class="text-center mb-3">
-            <div class="inline-block bg-white p-3 rounded border">
-              <div class="text-lg font-bold space-y-1">
-                <div>67</div>
-                <div>× 8</div>
-                <hr class="border-gray-300" />
-                <div class="text-blue-600">536</div>
-              </div>
-            </div>
-          </div>
-          <div class="text-xs space-y-1">
-            <p>• 7 × 8 = 56 → tulis 6, simpan 5</p>
-            <p>• 6 × 8 = 48, plus 5 = 53</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tips dan Trik -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-pink-700">💡 Tips dan Trik</h2>
-
-      <div class="grid md:grid-cols-2 gap-4">
-        <!-- Tips Umum -->
-        <div class="bg-pink-50 p-4 rounded border-l-4 border-pink-400">
-          <h3 class="font-semibold text-pink-800">🎯 Tips Umum:</h3>
-          <ul class="text-pink-700 text-sm mt-2 space-y-1">
-            <li>
-              • Mulai <strong>selalu dari kanan</strong>
-            </li>
-            <li>• Tulis rapi agar tidak bingung</li>
-            <li>• Jangan lupa angka yang "disimpan"</li>
-            <li>• Cek hasil dengan cara lain</li>
-          </ul>
-        </div>
-
-        <!-- Tips Mengingat -->
-        <div class="bg-pink-50 p-4 rounded border-l-4 border-pink-400">
-          <h3 class="font-semibold text-pink-800">🧠 Tips Mengingat:</h3>
-          <ul class="text-pink-700 text-sm mt-2 space-y-1">
-            <li>
-              • Ingat: <strong>"Kanan dulu, kiri kemudian"</strong>
-            </li>
-            <li>• Kalau hasil > 9, tulis satuan, simpan puluhan</li>
-            <li>• Seperti menyusun balok dari bawah ke atas</li>
-            <li>• Latihan setiap hari 5 soal</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Aplikasi dalam Kehidupan -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-green-700">🌍 Kapan Digunakan?</h2>
-
-      <div class="grid md:grid-cols-2 gap-4">
-        <!-- Contoh 1 -->
-        <div class="bg-green-50 p-4 rounded border">
-          <h3 class="font-semibold text-green-800">🛒 Berbelanja</h3>
-          <p class="text-sm mt-2">Beli 23 buku, harga satuan Rp 4.000:</p>
-          <div class="text-center mt-2">
-            <div class="inline-block bg-white p-2 rounded text-sm">
-              <div>23 × 4 = 92</div>
-              <div class="text-green-600">= Rp 92.000</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Contoh 2 -->
-        <div class="bg-green-50 p-4 rounded border">
-          <h3 class="font-semibold text-green-800">🎂 Kue Ulang Tahun</h3>
-          <p class="text-sm mt-2">Ada 34 tamu, setiap tamu makan 5 potong:</p>
-          <div class="text-center mt-2">
-            <div class="inline-block bg-white p-2 rounded text-sm">
-              <div>34 × 5 = 170</div>
-              <div class="text-green-600">= 170 potong kue</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Navigasi -->
-    <div class="grid grid-rows-1 grid-cols-2 gap-4 mt-6">
-      <a href="{% url 'materi_detail' 1 %}" class="flex justify-start items-center gap-2 block bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 font-bold transition-colors">
-        <i class="fa-solid fa-backward"></i>
-        <div>Kembali ke Materi 1</div>
-      </a>
-      <a href="{% url 'materi_detail' 3 %}" class="flex justify-end items-center gap-2 block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold transition-colors">
-        <div>Lanjut ke Materi 3</div>
-        <i class="fa-solid fa-forward"></i>
-      </a>
     </div>
   </div>
+
+  <div class="bg-white rounded-3xl shadow-lg border border-[#90E0EF] p-8 mb-8 relative">
+    <div class="absolute top-0 left-8 -mt-4 bg-[#00B4D8] text-white px-6 py-2 rounded-full font-bold shadow-md text-sm">
+      📝 LANGKAH DEMI LANGKAH (23 × 4)
+    </div>
+
+    <div class="mt-8 space-y-10">
+
+      <div class="flex flex-col md:flex-row gap-8 items-center border-b border-[#caf0f8] pb-8">
+        <div class="bg-[#fefefe] p-6 rounded-xl border-2 border-[#caf0f8] shadow-sm min-w-[200px] flex justify-center">
+          <div class="font-mono text-5xl text-gray-800 text-right leading-tight w-24 mx-auto">
+            <div>23</div>
+            <div class="relative">
+              4
+              <div class="absolute w-full border-b-4 border-gray-800 top-full mt-[-2px]"></div>
+              <span class="absolute -left-10 top-full -translate-y-1/2 text-4xl text-gray-400">×</span>
+            </div>
+            <div class="text-gray-300 mt-2">?</div>
+          </div>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold text-[#0077B6] mb-2">Langkah 1: Susun Angka</h3>
+          <p class="text-gray-600">
+            Tulis angka yang besar (23) di atas, dan angka yang kecil (4) di bawah. Pastikan posisi satuan lurus dengan satuan.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-8 items-center border-b border-[#caf0f8] pb-8">
+        <div class="bg-[#fefefe] p-6 rounded-xl border-2 border-[#caf0f8] shadow-sm min-w-[200px] flex justify-center">
+          <div class="font-mono text-5xl text-gray-800 text-right leading-tight w-24 mx-auto">
+            <div>2<span class="text-[#c45f55]">3</span></div>
+            <div class="relative">
+              <span class="text-[#c45f55]">4</span>
+              <div class="absolute w-full border-b-4 border-gray-800 top-full mt-[-2px]"></div>
+              <span class="absolute -left-10 top-full -translate-y-1/2 text-4xl text-gray-400">×</span>
+            </div>
+            <div class="text-[#c45f55] mt-2">2</div>
+            <div class="text-base text-gray-400 text-center mt-1 font-sans">(Simpan 1)</div>
+          </div>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold text-[#0077B6] mb-2">Langkah 2: Kalikan Satuan</h3>
+          <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+            <p class="text-lg font-bold text-yellow-800 mb-1">Hitung: 3 × 4 = 12</p>
+            <p class="text-yellow-700">Tulis angka <strong>2</strong> di bawah, simpan angka <strong>1</strong> (kecil) di samping/pikiran.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-8 items-center">
+        <div class="bg-[#fefefe] p-6 rounded-xl border-2 border-[#caf0f8] shadow-sm min-w-[200px] flex justify-center">
+          <div class="font-mono text-5xl text-gray-800 text-right leading-tight w-24 mx-auto">
+            <div><span class="text-[#00B4D8]">2</span>3</div>
+            <div class="relative">
+              <span class="text-[#00B4D8]">4</span>
+              <div class="absolute w-full border-b-4 border-gray-800 top-full mt-[-2px]"></div>
+              <span class="absolute -left-10 top-full -translate-y-1/2 text-4xl text-gray-400">×</span>
+            </div>
+            <div class="text-[#0077B6] font-bold mt-2">92</div>
+          </div>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold text-[#0077B6] mb-2">Langkah 3: Kalikan Puluhan</h3>
+          <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+            <p class="text-lg font-bold text-green-800 mb-1">Hitung: 2 × 4 = 8</p>
+            <p class="text-green-700 mb-1">Jangan lupa tambah simpanan tadi!</p>
+            <p class="text-xl font-bold text-green-600">8 + 1 = 9</p>
+            <p class="text-green-700 mt-1">Tulis angka 9. Selesai!</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="bg-white rounded-3xl shadow-lg border-2 border-[#F5B7B1] p-8 mb-8">
+    <h2 class="text-2xl font-bold text-[#0077B6] mb-6 flex items-center gap-3">
+      <span class="text-3xl">📚</span> Contoh Lain
+    </h2>
+    <div class="grid md:grid-cols-2 gap-8">
+
+      <div class="bg-[#caf0f8]/30 p-6 rounded-xl border border-[#caf0f8]">
+        <p class="font-bold text-[#0077B6] mb-4 text-center">Contoh 2: 34 × 5</p>
+        <div class="flex justify-center gap-8 items-center">
+          <div class="font-mono text-4xl text-gray-800 text-right leading-tight">
+            <div>34</div>
+            <div class="relative">
+              5
+              <div class="absolute w-full border-b-4 border-gray-800 top-full mt-[-2px]"></div>
+              <span class="absolute -left-8 top-full -translate-y-1/2 text-3xl text-gray-400">×</span>
+            </div>
+            <div class="text-[#00B4D8] font-bold mt-2">170</div>
+          </div>
+          <div class="text-sm text-gray-600 space-y-2 border-l pl-4 border-gray-300">
+            <p><strong>1.</strong> 4×5 = 20 <br>(tulis 0, sisa 2)</p>
+            <p><strong>2.</strong> 3×5 = 15 <br>(15+2 = 17)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#caf0f8]/30 p-6 rounded-xl border border-[#caf0f8]">
+        <p class="font-bold text-[#0077B6] mb-4 text-center">Contoh 3: 56 × 7</p>
+        <div class="flex justify-center gap-8 items-center">
+          <div class="font-mono text-4xl text-gray-800 text-right leading-tight">
+            <div>56</div>
+            <div class="relative">
+              7
+              <div class="absolute w-full border-b-4 border-gray-800 top-full mt-[-2px]"></div>
+              <span class="absolute -left-8 top-full -translate-y-1/2 text-3xl text-gray-400">×</span>
+            </div>
+            <div class="text-[#00B4D8] font-bold mt-2">392</div>
+          </div>
+          <div class="text-sm text-gray-600 space-y-2 border-l pl-4 border-gray-300">
+            <p><strong>1.</strong> 6×7 = 42 <br>(tulis 2, sisa 4)</p>
+            <p><strong>2.</strong> 5×7 = 35 <br>(35+4 = 39)</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="bg-white rounded-3xl shadow-lg border border-[#90E0EF] p-8 mb-8">
+    <h2 class="text-2xl font-bold text-[#0077B6] mb-4">🧮 Latihan Terbimbing</h2>
+    <p class="text-gray-600 mb-6 text-center">Coba kerjakan di buku tulis, lalu cocokkan jawabannya!</p>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="bg-[#fefefe] p-6 rounded-xl border border-[#caf0f8] flex flex-col items-center hover:shadow-md transition-shadow">
+        <p class="font-bold text-gray-500 mb-4">Latihan 1</p>
+        <div class="font-mono text-3xl text-gray-800 text-right leading-tight w-24">
+          <div>42</div>
+          <div class="relative">
+            3
+            <div class="absolute w-full border-b-4 border-gray-800 top-full mt-[-2px]"></div>
+            <span class="absolute -left-6 top-full -translate-y-1/2 text-xl text-gray-400">×</span>
+          </div>
+          <div class="text-[#00B4D8] font-bold mt-2">126</div>
+        </div>
+      </div>
+
+      <div class="bg-[#fefefe] p-6 rounded-xl border border-[#caf0f8] flex flex-col items-center hover:shadow-md transition-shadow">
+        <p class="font-bold text-gray-500 mb-4">Latihan 2</p>
+        <div class="font-mono text-3xl text-gray-800 text-right leading-tight w-24">
+          <div>35</div>
+          <div class="relative">
+            6
+            <div class="absolute w-full border-b-4 border-gray-800 top-full mt-[-2px]"></div>
+            <span class="absolute -left-6 top-full -translate-y-1/2 text-xl text-gray-400">×</span>
+          </div>
+          <div class="text-[#00B4D8] font-bold mt-2">210</div>
+        </div>
+      </div>
+
+      <div class="bg-[#fefefe] p-6 rounded-xl border border-[#caf0f8] flex flex-col items-center hover:shadow-md transition-shadow">
+        <p class="font-bold text-gray-500 mb-4">Latihan 3</p>
+        <div class="font-mono text-3xl text-gray-800 text-right leading-tight w-24">
+          <div>67</div>
+          <div class="relative">
+            8
+            <div class="absolute w-full border-b-4 border-gray-800 top-full mt-[-2px]"></div>
+            <span class="absolute -left-6 top-full -translate-y-1/2 text-xl text-gray-400">×</span>
+          </div>
+          <div class="text-[#00B4D8] font-bold mt-2">536</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-6 mb-8">
+    <div class="bg-white rounded-3xl shadow p-6 border border-[#90E0EF]">
+      <h3 class="text-lg font-bold text-[#0077B6] mb-3">💡 Tips Umum</h3>
+      <ul class="text-sm text-gray-700 list-disc ml-4 space-y-2">
+        <li>Mulai selalu dari <strong>kanan (satuan)</strong>.</li>
+        <li>Tulis angka yang rapi lurus ke bawah.</li>
+        <li>Jangan lupa menambahkan angka yang <strong>disimpan</strong>.</li>
+        <li>Cek ulang jawabanmu dengan cara lain jika ragu.</li>
+      </ul>
+    </div>
+    <div class="bg-white rounded-3xl shadow p-6 border-2 border-[#F5B7B1]">
+      <h3 class="text-lg font-bold text-[#0077B6] mb-3">🧠 Cara Mengingat</h3>
+      <ul class="text-sm text-gray-700 list-disc ml-4 space-y-2">
+        <li>Ingat: <strong>"Kanan dulu, baru Kiri"</strong>.</li>
+        <li>Kalau hasilnya lebih dari 9 (misal 12), tulis angka belakang (2), simpan angka depan (1).</li>
+        <li>Bayangkan seperti naik tangga, satu per satu dari bawah.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4 mt-8">
+    <a href="{% url 'materi_detail' materi_id|add:'-1' %}"
+       class="group flex items-center justify-center gap-3 bg-[#caf0f8] text-[#0077B6] py-4 px-6 rounded-2xl font-bold hover:bg-[#90E0EF] transition-all duration-300">
+      <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+      <span>Materi Sebelumnya</span>
+    </a>
+    <button onclick="openQuiz()"
+            class="group flex items-center justify-center gap-3 bg-[#F5B7B1] text-white py-4 px-6 rounded-2xl font-bold shadow-lg hover:shadow-xl hover:bg-[#ffc4be] hover:-translate-y-1 transition-all duration-300 border-b-4 border-[#e5a09a] active:border-b-0 active:translate-y-1">
+      <span>Tantangan Berikutnya!</span>
+      <i class="fa-solid fa-gamepad text-xl group-hover:rotate-12 transition-transform"></i>
+    </button>
+  </div>
+</div>
+{% include 'components/modal_quiz.html' %}
 {% endblock %}

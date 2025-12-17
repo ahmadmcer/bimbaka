@@ -1,306 +1,142 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="flex flex-col w-full">
-    <!-- Penjelasan Konsep -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4">
-      <h1 class="text-xl font-bold mb-6">1. Perkalian dengan 0, 10, dan 100</h1>
+<div class="flex flex-col w-full max-w-5xl mx-auto pb-12">
 
-      <!-- Konsep Dasar -->
-      <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400 mb-4">
-        <p class="font-semibold text-blue-800">💡 Mengapa Penting untuk Kelas 3?</p>
-        <p class="text-blue-700">Di kelas 3, kita belajar perkalian dengan bilangan yang lebih besar!</p>
-        <p class="text-blue-700 mt-2">
-          <strong>Konsep Baru:</strong> Perkalian dengan 100 dan pola bilangan besar
-        </p>
+  <div class="bg-gradient-to-r from-[#0077B6] to-[#00B4D8] rounded-3xl p-8 shadow-xl text-white mb-8 relative overflow-hidden">
+    <div class="relative z-10">
+      <div class="inline-block bg-white/20 px-4 py-1 rounded-full text-sm font-bold mb-2 backdrop-blur-sm">
+        MATEMATIKA KELAS 3
       </div>
-
-      <p>
-        <strong>Mari kita pelajari dari yang sederhana ke yang lebih kompleks!</strong>
-      </p>
+      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">1. Perkalian dengan 0 dan 10</h1>
+      <p class="mt-2 text-blue-50 text-lg opacity-90">Dua sifat penting yang harus kamu tahu!</p>
     </div>
+    <div class="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+  </div>
 
-    <!-- Review: Perkalian dengan 0 -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-red-700">⭕ Review: Perkalian dengan 0</h2>
-
-      <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
-        <p class="font-semibold text-red-800">🔄 Mengingat Kembali:</p>
-        <p class="text-red-700">Bilangan apa pun yang dikalikan 0, hasilnya selalu 0!</p>
-        <p class="text-red-700 mt-2">
-          <strong>Rumus:</strong> a × 0 = 0
-        </p>
+  <div class="bg-white rounded-3xl shadow-lg border border-[#90E0EF] p-8 mb-8 relative">
+    <div class="absolute top-0 left-8 -mt-4 bg-[#00B4D8] text-white px-6 py-2 rounded-full font-bold shadow-md text-sm">
+      💡 DUA SIFAT PENTING
+    </div>
+    <div class="mt-6 grid md:grid-cols-2 gap-8">
+      <div class="bg-[#F5B7B1]/20 p-6 rounded-2xl border border-[#F5B7B1]">
+        <h3 class="text-xl font-bold text-[#c45f55] mb-2">Perkalian dengan 0</h3>
+        <p class="text-gray-700 mb-3">Bilangan apa pun dikali 0, hasilnya <strong>selalu 0</strong>.</p>
+        <div class="bg-white p-3 rounded-lg text-center font-bold text-[#c45f55] border border-[#F5B7B1] shadow-sm">
+          a × 0 = 0
+        </div>
       </div>
-
-      <!-- Contoh Lebih Kompleks -->
-      <div class="bg-gray-100 p-4 rounded">
-        <h3 class="font-bold mb-3">🧮 Contoh untuk Kelas 3:</h3>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="space-y-2">
-            <p>
-              • 25 × 0 = <strong class="text-red-600">0</strong>
-            </p>
-            <p>
-              • 138 × 0 = <strong class="text-red-600">0</strong>
-            </p>
-            <p>
-              • 999 × 0 = <strong class="text-red-600">0</strong>
-            </p>
-          </div>
-          <div class="space-y-2">
-            <p>
-              • 0 × 47 = <strong class="text-red-600">0</strong>
-            </p>
-            <p>
-              • 0 × 256 = <strong class="text-red-600">0</strong>
-            </p>
-            <p>
-              • 0 × 1000 = <strong class="text-red-600">0</strong>
-            </p>
-          </div>
+      <div class="bg-[#caf0f8]/50 p-6 rounded-2xl border border-[#90E0EF]">
+        <h3 class="text-xl font-bold text-[#0077B6] mb-2">Perkalian dengan 10</h3>
+        <p class="text-gray-700 mb-3">Tambahkan angka <strong>0</strong> di belakang bilangan tersebut.</p>
+        <div class="bg-white p-3 rounded-lg text-center font-bold text-[#00B4D8] border border-[#caf0f8] shadow-sm">
+          a × 10 = a0
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Review: Perkalian dengan 10 -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-green-700">🔟 Review: Perkalian dengan 10</h2>
-
-      <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-400">
-        <p class="font-semibold text-green-800">🔄 Mengingat Kembali:</p>
-        <p class="text-green-700">Perkalian dengan 10 = Tambahkan angka 0 di belakang!</p>
-        <p class="text-green-700 mt-2">
-          <strong>Rumus:</strong> a × 10 = a0
-        </p>
+  <div class="bg-white rounded-3xl shadow-lg border border-[#90E0EF] p-8 mb-8">
+    <h2 class="text-2xl font-bold text-[#0077B6] mb-6 flex items-center gap-3">
+      <span class="text-3xl">🧮</span> Contoh Perhitungan
+    </h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-[#fefefe] p-5 rounded-2xl border border-[#caf0f8]">
+        <p class="font-bold text-[#c45f55] mb-3 border-b border-[#F5B7B1] pb-2">Contoh Perkalian 0</p>
+        <ul class="space-y-2 text-sm text-gray-700">
+          <li>25 × 0 = <strong>0</strong></li>
+          <li>138 × 0 = <strong>0</strong></li>
+          <li>999 × 0 = <strong>0</strong></li>
+          <li>0 × 47 = <strong>0</strong></li>
+          <li>0 × 256 = <strong>0</strong></li>
+          <li>0 × 1000 = <strong>0</strong></li>
+        </ul>
       </div>
-
-      <!-- Contoh Lebih Kompleks -->
-      <div class="bg-gray-100 p-4 rounded">
-        <h3 class="font-bold mb-3">🧮 Contoh untuk Kelas 3:</h3>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="space-y-2">
-            <p>
-              • 23 × 10 = <strong class="text-green-600">230</strong>
-            </p>
-            <p>
-              • 156 × 10 = <strong class="text-green-600">1560</strong>
-            </p>
-            <p>
-              • 89 × 10 = <strong class="text-green-600">890</strong>
-            </p>
-          </div>
-          <div class="space-y-2">
-            <p>
-              • 10 × 47 = <strong class="text-green-600">470</strong>
-            </p>
-            <p>
-              • 10 × 123 = <strong class="text-green-600">1230</strong>
-            </p>
-            <p>
-              • 10 × 67 = <strong class="text-green-600">670</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Konsep Baru: Perkalian dengan 100 -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-purple-700">💯 Konsep Baru: Perkalian dengan 100</h2>
-
-      <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-400">
-        <p class="font-semibold text-purple-800">✨ Pola Baru untuk Kelas 3:</p>
-        <p class="text-purple-700">Perkalian dengan 100 = Tambahkan DUA angka 0 di belakang!</p>
-        <p class="text-purple-700 mt-2">
-          <strong>Rumus:</strong> a × 100 = a00
-        </p>
-      </div>
-
-      <!-- Visualisasi Pola -->
-      <div class="bg-gray-100 p-6 rounded">
-        <h3 class="font-bold text-center mb-4">🔍 Lihat Polanya!</h3>
-
-        <div class="space-y-4">
-          <div class="text-center bg-white p-3 rounded border">
-            <p class="font-bold">3 × 1 = 3</p>
-            <p class="font-bold">
-              3 × 10 = 3<span class="bg-yellow-200 px-1 rounded">0</span>
-            </p>
-            <p class="font-bold">
-              3 × 100 = 3<span class="bg-yellow-200 px-1 rounded">00</span>
-            </p>
-          </div>
-
-          <div class="text-center bg-white p-3 rounded border">
-            <p class="font-bold">7 × 1 = 7</p>
-            <p class="font-bold">
-              7 × 10 = 7<span class="bg-yellow-200 px-1 rounded">0</span>
-            </p>
-            <p class="font-bold">
-              7 × 100 = 7<span class="bg-yellow-200 px-1 rounded">00</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tabel Perkalian 100 -->
-      <div class="bg-purple-50 p-4 rounded">
-        <h3 class="font-bold text-purple-800 mb-3">📊 Tabel Perkalian 100:</h3>
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-2 text-center text-sm">
-          <div class="bg-white p-2 rounded border">
-            1 × 100 = <strong class="text-purple-600">100</strong>
-          </div>
-          <div class="bg-white p-2 rounded border">
-            2 × 100 = <strong class="text-purple-600">200</strong>
-          </div>
-          <div class="bg-white p-2 rounded border">
-            3 × 100 = <strong class="text-purple-600">300</strong>
-          </div>
-          <div class="bg-white p-2 rounded border">
-            4 × 100 = <strong class="text-purple-600">400</strong>
-          </div>
-          <div class="bg-white p-2 rounded border">
-            5 × 100 = <strong class="text-purple-600">500</strong>
-          </div>
-          <div class="bg-white p-2 rounded border">
-            6 × 100 = <strong class="text-purple-600">600</strong>
-          </div>
-          <div class="bg-white p-2 rounded border">
-            7 × 100 = <strong class="text-purple-600">700</strong>
-          </div>
-          <div class="bg-white p-2 rounded border">
-            8 × 100 = <strong class="text-purple-600">800</strong>
-          </div>
-          <div class="bg-white p-2 rounded border">
-            9 × 100 = <strong class="text-purple-600">900</strong>
-          </div>
-          <div class="bg-white p-2 rounded border">
-            10 × 100 = <strong class="text-purple-600">1000</strong>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Latihan Bertingkat -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-orange-700">🧮 Latihan Kelas 3</h2>
-      <p class="text-sm text-gray-600">Selesaikan soal-soal berikut sesuai level kelas 3:</p>
-
-      <div class="grid md:grid-cols-3 gap-4">
-        <!-- Latihan Perkalian 0 -->
-        <div class="bg-red-50 p-4 rounded border">
-          <h3 class="font-semibold text-red-800 mb-3">Perkalian dengan 0:</h3>
-          <div class="space-y-2 text-sm">
-            <p>
-              1. 45 × 0 = <strong class="text-red-600">0</strong>
-            </p>
-            <p>
-              2. 0 × 167 = <strong class="text-red-600">0</strong>
-            </p>
-            <p>
-              3. 289 × 0 = <strong class="text-red-600">0</strong>
-            </p>
-            <p>
-              4. 0 × 999 = <strong class="text-red-600">0</strong>
-            </p>
-          </div>
-        </div>
-
-        <!-- Latihan Perkalian 10 -->
-        <div class="bg-green-50 p-4 rounded border">
-          <h3 class="font-semibold text-green-800 mb-3">Perkalian dengan 10:</h3>
-          <div class="space-y-2 text-sm">
-            <p>
-              1. 34 × 10 = <strong class="text-green-600">340</strong>
-            </p>
-            <p>
-              2. 10 × 78 = <strong class="text-green-600">780</strong>
-            </p>
-            <p>
-              3. 156 × 10 = <strong class="text-green-600">1560</strong>
-            </p>
-            <p>
-              4. 10 × 99 = <strong class="text-green-600">990</strong>
-            </p>
-          </div>
-        </div>
-
-        <!-- Latihan Perkalian 100 -->
-        <div class="bg-purple-50 p-4 rounded border">
-          <h3 class="font-semibold text-purple-800 mb-3">Perkalian dengan 100:</h3>
-          <div class="space-y-2 text-sm">
-            <p>
-              1. 6 × 100 = <strong class="text-purple-600">600</strong>
-            </p>
-            <p>
-              2. 100 × 13 = <strong class="text-purple-600">1300</strong>
-            </p>
-            <p>
-              3. 25 × 100 = <strong class="text-purple-600">2500</strong>
-            </p>
-            <p>
-              4. 100 × 47 = <strong class="text-purple-600">4700</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Aplikasi dalam Kehidupan -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-blue-700">🌍 Aplikasi dalam Kehidupan Sehari-hari</h2>
-
-      <div class="grid md:grid-cols-2 gap-4">
-        <!-- Contoh Perkalian 10 -->
-        <div class="bg-blue-50 p-4 rounded border">
-          <h3 class="font-semibold text-blue-800">💰 Uang (Perkalian 10)</h3>
-          <p class="text-sm mt-2">Kamu punya 25 lembar uang Rp 10.000:</p>
-          <p class="font-bold text-blue-700">25 × 10 = 250 (ribuan)</p>
-          <p class="text-sm text-gray-600">= Rp 250.000</p>
-        </div>
-
-        <!-- Contoh Perkalian 100 -->
-        <div class="bg-blue-50 p-4 rounded border">
-          <h3 class="font-semibold text-blue-800">📦 Barang (Perkalian 100)</h3>
-          <p class="text-sm mt-2">Ada 8 kotak, setiap kotak berisi 100 pensil:</p>
-          <p class="font-bold text-blue-700">8 × 100 = 800 pensil</p>
-          <p class="text-sm text-gray-600">Mudah kan?</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tips dan Trik -->
-    <div class="bg-white shadow p-6 rounded-lg space-y-4 mt-6">
-      <h2 class="text-lg font-bold text-pink-700">💡 Tips untuk Kelas 3</h2>
-      <div class="bg-pink-50 p-4 rounded border-l-4 border-pink-400">
-        <h3 class="font-semibold text-pink-800">🎯 Cara Mudah Mengingat:</h3>
-        <ul class="text-pink-700 text-sm mt-2 space-y-1">
-          <li>
-            • <strong>× 0</strong> = Hasilnya SELALU nol
-          </li>
-          <li>
-            • <strong>× 10</strong> = Tambah 1 angka nol
-          </li>
-          <li>
-            • <strong>× 100</strong> = Tambah 2 angka nol
-          </li>
-          <li>
-            • <strong>× 1000</strong> = Tambah 3 angka nol (bonus!)
-          </li>
+      <div class="bg-[#fefefe] p-5 rounded-2xl border border-[#caf0f8]">
+        <p class="font-bold text-[#0077B6] mb-3 border-b border-[#00B4D8] pb-2">Contoh Perkalian 10</p>
+        <ul class="space-y-2 text-sm text-gray-700">
+          <li>23 × 10 = <strong>230</strong></li>
+          <li>156 × 10 = <strong>1560</strong></li>
+          <li>89 × 10 = <strong>890</strong></li>
+          <li>10 × 47 = <strong>470</strong></li>
+          <li>10 × 123 = <strong>1230</strong></li>
+          <li>10 × 67 = <strong>670</strong></li>
         </ul>
       </div>
     </div>
+  </div>
 
-    <!-- Navigasi -->
-    <div class="grid grid-rows-1 grid-cols-2 gap-4 mt-6">
-      <a href="{% url 'materi' %}" class="flex justify-start items-center gap-2 block bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 font-bold transition-colors">
-        <i class="fa-solid fa-backward"></i>
-        <div>Kembali ke Daftar Materi</div>
-      </a>
-      <a href="{% url 'materi_detail' 2 %}" class="flex justify-end items-center gap-2 block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold transition-colors">
-        <div>Lanjut ke Materi 2</div>
-        <i class="fa-solid fa-forward"></i>
-      </a>
+  <div class="bg-white rounded-3xl shadow-lg border-2 border-[#F5B7B1] p-8 mb-8">
+    <h2 class="text-2xl font-bold text-[#0077B6] mb-6 flex items-center gap-3">
+      <span class="text-3xl">📝</span> Ayo Berlatih!
+    </h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-[#F5B7B1]/10 p-5 rounded-xl border border-[#F5B7B1]">
+        <p class="font-bold text-[#c45f55] mb-3">Perkalian dengan 0:</p>
+        <ul class="space-y-2 text-sm text-gray-700">
+          <li>45 × 0 = <strong class="text-[#c45f55]">0</strong></li>
+          <li>0 × 167 = <strong class="text-[#c45f55]">0</strong></li>
+          <li>289 × 0 = <strong class="text-[#c45f55]">0</strong></li>
+          <li>0 × 999 = <strong class="text-[#c45f55]">0</strong></li>
+        </ul>
+      </div>
+      <div class="bg-[#caf0f8]/30 p-5 rounded-xl border border-[#caf0f8]">
+        <p class="font-bold text-[#00B4D8] mb-3">Perkalian dengan 10:</p>
+        <ul class="space-y-2 text-sm text-gray-700">
+          <li>34 × 10 = <strong class="text-[#00B4D8]">340</strong></li>
+          <li>10 × 78 = <strong class="text-[#00B4D8]">780</strong></li>
+          <li>156 × 10 = <strong class="text-[#00B4D8]">1560</strong></li>
+          <li>10 × 99 = <strong class="text-[#00B4D8]">990</strong></li>
+        </ul>
+      </div>
     </div>
   </div>
+
+  <div class="grid md:grid-cols-2 gap-6 mb-8">
+    <div class="bg-white rounded-3xl shadow p-6 border border-[#90E0EF]">
+      <h3 class="text-lg font-bold text-[#0077B6] mb-3">🌍 Aplikasi Sehari-hari</h3>
+      <div class="space-y-3">
+        <div class="bg-[#fefefe] p-3 rounded border border-[#caf0f8]">
+          <p class="text-sm font-bold text-[#00B4D8]">💰 Uang (Perkalian 1)</p>
+          <p class="text-xs text-gray-600">Kamu punya 25 lembar uang Rp 1.000</p>
+          <p class="font-bold text-[#0077B6] mt-1">25 × 1.000 = 25.000</p>
+          <p class="text-xs text-[#00B4D8] mt-1">= Rp 25.000</p>
+        </div>
+        <div class="bg-[#fefefe] p-3 rounded border border-[#caf0f8]">
+          <p class="text-sm font-bold text-[#00B4D8]">📦 Barang (Perkalian 10)</p>
+          <p class="text-xs text-gray-600">Ada 8 kotak, setiap kotak isi 10 pensil</p>
+          <p class="font-bold text-[#0077B6] mt-1">8 × 10 = 80 pensil</p>
+          <p class="text-xs text-gray-500">Mudah kan?</p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-3xl shadow p-6 border-2 border-[#F5B7B1]">
+      <h3 class="text-lg font-bold text-[#0077B6] mb-3">💡 Tips Mengingat</h3>
+      <ul class="space-y-2 text-sm text-gray-700">
+        <li class="flex gap-2">
+          <i class="fa-solid fa-check text-[#c45f55] mt-1"></i>
+          <span><strong>× 0</strong> = Hasilnya SELALU nol</span>
+        </li>
+        <li class="flex gap-2">
+          <i class="fa-solid fa-check text-[#00B4D8] mt-1"></i>
+          <span><strong>× 10</strong> = Tambah 1 angka nol</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4 mt-8">
+    <a href="{% url 'materi' %}"
+       class="group flex items-center justify-center gap-3 bg-[#caf0f8] text-[#0077B6] py-4 px-6 rounded-2xl font-bold hover:bg-[#90E0EF] transition-all duration-300">
+      <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+      <span>Daftar Materi</span>
+    </a>
+    <button onclick="openQuiz()"
+            class="group flex items-center justify-center gap-3 bg-[#F5B7B1] text-white py-4 px-6 rounded-2xl font-bold shadow-lg hover:shadow-xl hover:bg-[#ffc4be] hover:-translate-y-1 transition-all duration-300 border-b-4 border-[#e5a09a] active:border-b-0 active:translate-y-1">
+      <span>Tantangan Berikutnya!</span>
+      <i class="fa-solid fa-gamepad text-xl group-hover:rotate-12 transition-transform"></i>
+    </button>
+  </div>
+</div>
+{% include 'components/modal_quiz.html' %}
 {% endblock %}
