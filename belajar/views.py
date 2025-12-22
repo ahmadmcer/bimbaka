@@ -668,182 +668,112 @@ def keluar(request):
     return redirect('masuk')
 
 
+# Tambahkan import random jika belum ada di file (sudah ada di snippet Anda)
+
 def get_mini_quiz(kelas, materi_id):
-    soal = {}
+    """
+    Menghasilkan 3 pasang soal dan jawaban untuk mode Drag & Drop (Match Pairs).
+    """
+    pairs = []
+    generated_answers = set()  # Untuk mencegah duplikat jawaban
 
-    # ==========================================
-    # KELAS 2 (DASAR PERKALIAN)
-    # ==========================================
-    if kelas == 'kelas_2':
+    # Loop untuk membuat 3 pasang soal
+    target_pairs = 3
+    attempts = 0
 
-        # Materi 1: Penjumlahan Berulang
-        # Contoh: 3 + 3 + 3 + 3 = ... x ...
-        if materi_id == 1:
-            a = random.randint(2, 5)  # Jumlah kelompok (pengali)
-            b = random.randint(2, 6)  # Angka yang dijumlah
-            soal = {
-                'pertanyaan': f"Bentuk perkalian dari: {' + '.join([str(b)] * a)} adalah...",
-                'pilihan': [
-                    f"{a} × {b}",  # Benar
-                    f"{b} × {a}",  # Salah (konsep terbalik)
-                    f"{a} + {b}",
-                    f"{a * b}"
-                ],
-                'jawaban_benar': f"{a} × {b}"
-            }
+    while len(pairs) < target_pairs and attempts < 20:
+        attempts += 1
+        q_text = ""
+        a_text = ""
 
-        # Materi 2: Sifat Komutatif (Pertukaran)
-        # Contoh: 4 x 5 = ... x 4
-        elif materi_id == 2:
-            a = random.randint(3, 9)
-            b = random.randint(2, 8)
-            soal = {
-                'pertanyaan': f"Sifat pertukaran: {a} × {b} = ... × {a}",
-                'pilihan': [str(b), str(a), str(a + b), str(a * b)],
-                'jawaban_benar': str(b)
-            }
+        # ================= KELAS 2 =================
+        if kelas == 'kelas_2':
+            if materi_id == 1:  # Penjumlahan Berulang
+                n = random.randint(2, 5)
+                val = random.randint(2, 5)
+                q_text = " + ".join([str(val)] * n)
+                a_text = f"{n} × {val}"
+            elif materi_id == 2:  # Komutatif
+                a = random.randint(3, 9);
+                b = random.randint(2, 8)
+                q_text = f"{a} × {b}"
+                a_text = f"{b} × {a}"
+            elif materi_id == 3:  # 1 & 0
+                val = random.randint(5, 20)
+                pengali = random.choice([0, 1])
+                q_text = f"{val} × {pengali}"
+                a_text = str(val * pengali)
+            elif materi_id == 4:  # 2 & 5
+                a = random.randint(3, 9)
+                b = random.choice([2, 5])
+                q_text = f"{a} × {b}"
+                a_text = str(a * b)
+            elif materi_id == 5:  # 10
+                a = random.randint(2, 9)
+                q_text = f"{a} × 10"
+                a_text = f"{a}0"
+            else:  # Tabel Lain
+                a = random.randint(3, 8);
+                b = random.randint(3, 8)
+                q_text = f"{a} × {b}"
+                a_text = str(a * b)
 
-        # Materi 3: Perkalian 1 & 0
-        # Contoh: 8 x 1 = ... atau 9 x 0 = ...
-        elif materi_id == 3:
-            angka = random.randint(5, 50)
-            pengali = random.choice([0, 1])
-            soal = {
-                'pertanyaan': f"Berapakah hasil dari {angka} × {pengali} ?",
-                'pilihan': [str(angka * pengali), str(angka), str(pengali), "10"],
-                'jawaban_benar': str(angka * pengali)
-            }
+        # ================= KELAS 3 =================
+        elif kelas == 'kelas_3':
+            if materi_id == 1:  # 0, 10, 100
+                a = random.randint(2, 9)
+                b = random.choice([10, 100])
+                q_text = f"{a} × {b}"
+                a_text = str(a * b)
+            elif materi_id == 2:  # Bersusun (Angka simpel)
+                a = random.randint(11, 20);
+                b = random.choice([2, 3])
+                q_text = f"{a} × {b}"
+                a_text = str(a * b)
+            elif materi_id == 3:  # Bagi 1 & 0
+                if random.choice([True, False]):
+                    q_text = f"0 ÷ {random.randint(2, 9)}"
+                    a_text = "0"
+                else:
+                    val = random.randint(5, 20)
+                    q_text = f"{val} ÷ 1"
+                    a_text = str(val)
+            elif materi_id == 4:  # Porogapit Simpel
+                res = random.randint(10, 20);
+                div = random.randint(2, 3)
+                q_text = f"{res * div} ÷ {div}"
+                a_text = str(res)
+            elif materi_id == 5:  # Campuran
+                a = random.randint(2, 5);
+                b = random.randint(2, 4);
+                c = random.randint(1, 5)
+                q_text = f"({a}×{b}) + {c}"
+                a_text = str((a * b) + c)
+            else:  # Soal Cerita (Versi Pendek)
+                item = random.randint(3, 6);
+                price = random.randint(2, 5)
+                q_text = f"{item} kotak isi {price}"
+                a_text = str(item * price)
 
-        # Materi 4: Perkalian 2 & 5
-        # Contoh: 7 x 5 = ...
-        elif materi_id == 4:
-            a = random.randint(3, 9)
-            b = random.choice([2, 5])
-            soal = {
-                'pertanyaan': f"Hitunglah: {a} × {b} = ...",
-                'pilihan': [str(a * b), str(a * b + b), str(a * b - b), str(a + b)],
-                'jawaban_benar': str(a * b)
-            }
+        # Cek Duplikat Jawaban (Agar unik saat di-match)
+        if a_text not in generated_answers:
+            generated_answers.add(a_text)
+            pairs.append({
+                'id': len(pairs) + 1,
+                'question': q_text,
+                'answer': a_text
+            })
 
-        # Materi 5: Perkalian 10
-        # Contoh: 6 x 10 = ...
-        elif materi_id == 5:
-            a = random.randint(2, 9)
-            soal = {
-                'pertanyaan': f"Berapakah {a} × 10 ?",
-                'pilihan': [f"{a}0", f"{a}00", f"{a + 10}", "100"],
-                'jawaban_benar': f"{a}0"
-            }
+    # Pisahkan soal dan jawaban untuk dikirim ke template
+    questions = pairs[:]
+    answers = pairs[:]
 
-        # Materi 6: Tabel Perkalian (3, 4, 6, 7, 8, 9)
-        # Soal acak yang agak sulit
-        else:
-            a = random.randint(3, 9)
-            b = random.randint(3, 9)
-            # Pastikan bukan perkalian mudah (1,2,5,10)
-            while b in [1, 2, 5, 10]:
-                b = random.randint(3, 9)
+    # Acak urutan jawaban agar tidak bersebelahan langsung dengan soalnya
+    random.shuffle(answers)
 
-            soal = {
-                'pertanyaan': f"Ayo tebak: {a} × {b} = ...",
-                'pilihan': [str(a * b), str(a * b + 2), str(a * b - 1), str(a + b)],
-                'jawaban_benar': str(a * b)
-            }
-
-    # ==========================================
-    # KELAS 3 (LANJUTAN)
-    # ==========================================
-    elif kelas == 'kelas_3':
-
-        # Materi 1: Perkalian 0, 10, 100
-        # Contoh: 15 x 100 = ...
-        if materi_id == 1:
-            a = random.randint(2, 9)
-            b = random.choice([10, 100])
-            soal = {
-                'pertanyaan': f"Hitung cepat: {a} × {b} = ...",
-                'pilihan': [str(a * b), str(a * b * 10), str(a + b), str(b)],
-                'jawaban_benar': str(a * b)
-            }
-
-        # Materi 2: Perkalian Bersusun
-        # Contoh: 12 x 3 = ... (Angka puluhan x satuan)
-        elif materi_id == 2:
-            a = random.randint(11, 25)
-            b = random.randint(2, 4)
-            soal = {
-                'pertanyaan': f"Berapa hasil dari {a} × {b} ?",
-                'pilihan': [str(a * b), str(a * b + 2), str(a * b - 2), str(a + b)],
-                'jawaban_benar': str(a * b)
-            }
-
-        # Materi 3: Pembagian 1 & 0
-        # Contoh: 0 : 5 = ... atau 8 : 1 = ...
-        elif materi_id == 3:
-            tipe = random.choice(['nol', 'satu'])
-            if tipe == 'nol':
-                a = 0
-                b = random.randint(2, 10)
-                jawaban = 0
-                pertanyaan = f"{a} ÷ {b} = ..."
-            else:
-                a = random.randint(5, 50)
-                b = 1
-                jawaban = a
-                pertanyaan = f"{a} ÷ {b} = ..."
-
-            soal = {
-                'pertanyaan': pertanyaan,
-                'pilihan': [str(jawaban), "1", "0", "Tidak Bisa"],
-                'jawaban_benar': str(jawaban)
-            }
-
-        # Materi 4: Pembagian Bersusun
-        # Contoh: 48 : 2 = ... (Pembagian habis)
-        elif materi_id == 4:
-            hasil = random.randint(11, 25)
-            pembagi = random.randint(2, 4)
-            angka_dibagi = hasil * pembagi
-            soal = {
-                'pertanyaan': f"Hitunglah: {angka_dibagi} ÷ {pembagi} = ...",
-                'pilihan': [str(hasil), str(hasil + 2), str(hasil - 2), str(10)],
-                'jawaban_benar': str(hasil)
-            }
-
-        # Materi 5: Operasi Campuran
-        # Contoh: (3 x 4) + 5 = ...
-        elif materi_id == 5:
-            a = random.randint(2, 5)
-            b = random.randint(2, 5)
-            c = random.randint(1, 10)
-            jawaban = (a * b) + c
-            soal = {
-                'pertanyaan': f"({a} × {b}) + {c} = ...",
-                'pilihan': [str(jawaban), str(jawaban + 2), str(a * b), str(a + b + c)],
-                'jawaban_benar': str(jawaban)
-            }
-
-        # Materi 6: Soal Cerita
-        else:
-            kotak = random.randint(3, 8)
-            isi = random.randint(2, 6)
-            total = kotak * isi
-            soal = {
-                'pertanyaan': f"Ibu beli {kotak} kotak donat. Tiap kotak isi {isi}. Berapa total donat?",
-                'pilihan': [f"{total} donat", f"{total + 2} donat", f"{kotak + isi} donat", f"{isi} donat"],
-                'jawaban_benar': f"{total} donat"
-            }
-
-    # Fallback (Jaga-jaga jika data kosong)
-    if not soal:
-        soal = {
-            'pertanyaan': "2 x 2 = ...",
-            'pilihan': ["4", "5", "6", "8"],
-            'jawaban_benar': "4"
-        }
-
-    # Acak urutan pilihan jawaban
-    # Agar kunci jawaban tidak selalu di tombol pertama
-    random.shuffle(soal['pilihan'])
-
-    return soal
+    return {
+        'type': 'drag_drop',  # Penanda untuk template
+        'questions': questions,
+        'answers': answers,
+        'total_pairs': len(pairs)
+    }
