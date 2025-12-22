@@ -71,7 +71,6 @@
                 {% else %}
                   <a href="{% url 'beranda' %}" class="nav-link {% if request.resolver_match.url_name == 'beranda' %}nav-link-active{% endif %}">Beranda</a>
                   <a href="{% url 'materi' %}" class="nav-link {% if request.resolver_match.url_name == 'materi' or request.resolver_match.url_name == 'materi_detail' %}nav-link-active{% endif %}">Materi</a>
-                  <a href="{% url 'evaluasi' %}" class="nav-link {% if request.resolver_match.url_name == 'evaluasi' or request.resolver_match.url_name == 'hasil_evaluasi' %}nav-link-active{% endif %}">Evaluasi Akhir</a>
                 {% endif %}
               {% else %}
                 <a href="{% url 'beranda' %}" class="nav-link {% if request.resolver_match.url_name == 'beranda' %}nav-link-active{% endif %}">Beranda</a>

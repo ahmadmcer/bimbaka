@@ -272,6 +272,10 @@ def mark_materi_completed(request, materi_id):
 # EVALUASI AKHIR
 @login_required
 def evaluasi(request):
+    # 1. Cek apakah user sudah menyelesaikan semua materi
+    if not KemajuanBelajar.user_ready_for_evaluation(request.user):
+        messages.error(request,'Ups! Kamu harus menyelesaikan semua materi dulu sebelum ikut Evaluasi Akhir. Semangat! 🚀')
+        return redirect('materi')
     latest_evaluasi = NilaiEvaluasi.objects.filter(
         user=request.user).order_by('-created_at').first()
     try:
