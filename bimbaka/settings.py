@@ -148,6 +148,10 @@ LOGIN_URL = 'masuk'
 LOGIN_REDIRECT_URL = 'beranda'
 LOGOUT_REDIRECT_URL = 'masuk'
 
+# Konfigurasi Media (Upload User)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Security settings for production
 
 if not DEBUG:

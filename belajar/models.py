@@ -383,3 +383,28 @@ class KemajuanBelajar(models.Model):
         status = 'Selesai' if self.is_selesai else f'{self.progress_persentase}%'
         nama = self.user.get_full_name() or self.user.username
         return f'{nama} - {self.get_materi_display()} ({status})'
+
+
+class Profile(models.Model):
+    KELAS_CHOICES = [
+        ('kelas_2', 'Kelas 2'),
+        ('kelas_3', 'Kelas 3'),
+    ]
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='profile'
+    )
+    kelas = models.CharField(
+        max_length=50,
+        choices=KELAS_CHOICES,
+        blank=True,
+        null=True,
+        verbose_name='Kelas'
+    )
+    # Tambahkan field ini:
+    foto = models.ImageField(upload_to='profile_pics', blank=True, null=True, verbose_name='Foto Profil')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

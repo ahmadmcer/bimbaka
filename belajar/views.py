@@ -8,6 +8,8 @@ from django.contrib import messages
 from .models import Profile, NilaiEvaluasi, JawabanEvaluasi, KemajuanBelajar, NilaiEvaluasiPerMateri
 from django.http import HttpResponse
 from openpyxl import Workbook
+from .forms import UserUpdateForm, ProfileUpdateForm
+
 
 
 # FUNGSI HELPER UNTUK CEK GURU
@@ -777,3 +779,46 @@ def get_mini_quiz(kelas, materi_id):
         'answers': answers,
         'total_pairs': len(pairs)
     }
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        # Perhatikan penambahan request.FILES di baris bawah ini untuk menangani gambar
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, 'Profil berhasil diperbarui!')
+            return redirect('edit_profile')
+    else:
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+    return render(request, 'pages/auth/edit_profile.html', context)
+
+
+@login_required
+def hapus_foto_profil(request):
+    """Menghapus foto profil pengguna."""
+    try:
+        profile = request.user.profile
+        if profile.foto:
+            # Hapus file fisik dan set field ke None
+            profile.foto.delete(save=False)
+            profile.foto = None
+            profile.save()
+            messages.success(request, 'Foto profil berhasil dihapus.')
+        else:
+            messages.warning(request, 'Anda belum memiliki foto profil.')
+    except Profile.DoesNotExist:
+        messages.error(request, 'Profil tidak ditemukan.')
+
+    return redirect('edit_profile')

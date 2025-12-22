@@ -84,11 +84,19 @@
         <div class="flex items-center space-x-4">
            {% if user.is_authenticated %}
             <div class="relative">
-                <button id="avatar-button" class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-blue-500 flex items-center justify-center text-white font-semibold focus:outline-none flex-shrink-0">
-                  {{ user.first_name|first|upper }}
+                <button id="avatar-button" class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-blue-500 flex items-center justify-center text-white font-semibold focus:outline-none flex-shrink-0 overflow-hidden border-2 border-white shadow-sm">
+                    {% if user.profile.foto %}
+                        <img src="{{ user.profile.foto.url }}" alt="Avatar" class="w-full h-full object-cover">
+                    {% else %}
+                        {{ user.first_name|first|upper }}
+                    {% endif %}
                 </button>
                 <div id="avatar-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-50">
-                  <a href="{% url 'keluar' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Keluar</a>
+                    <a href="{% url 'edit_profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <i class="fa-solid fa-user-gear mr-2"></i>Edit Profil
+                    </a>
+                    <div class="border-t border-gray-100 my-1"></div>
+                    <a href="{% url 'keluar' %}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Keluar</a>
                 </div>
             </div>
            {% endif %}

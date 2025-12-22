@@ -25,5 +25,7 @@ urlpatterns = [
     # Authentication
     path('masuk/', views.masuk, name='masuk'),
     path('daftar/', views.daftar, name='daftar'),
-    path('keluar/', views.keluar, name='keluar'),  # <--- INI KABELNYA
+    path('keluar/', views.keluar, name='keluar'),
+    path('profil/edit/', views.edit_profile, name='edit_profile'),
+    path('profil/hapus-foto/', views.hapus_foto_profil, name='hapus_foto_profil'),
 ]
