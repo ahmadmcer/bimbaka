@@ -39,8 +39,8 @@ def clean_dataset(file_path):
 
 
 # Ganti nama file sesuai dengan file Anda
-file_kelas_2 = "nilai_dummy_kelas_2.csv"
-file_kelas_3 = "nilai_dummy_kelas_3.csv"
+file_kelas_2 = "nilai_dummy_kelas_2_v2.csv"
+file_kelas_3 = "nilai_dummy_kelas_3_v2.csv"
 
 # Proses pembersihan
 df_siap_kelas_2 = clean_dataset(file_kelas_2)
@@ -54,5 +54,5 @@ print("\n--- Data Kelas 3 Siap Pakai ---")
 print(df_siap_kelas_3.head())
 
 # (Opsional) Simpan ke file CSV baru
-df_siap_kelas_2.to_csv("dataset_dummy_kelas_2.csv", index=False)
-df_siap_kelas_3.to_csv("dataset_dummy_kelas_3.csv", index=False)
+df_siap_kelas_2.to_csv("dataset_dummy_kelas_2_v2.csv", index=False)
+df_siap_kelas_3.to_csv("dataset_dummy_kelas_3_v2.csv", index=False)
