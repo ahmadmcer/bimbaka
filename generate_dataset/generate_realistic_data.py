@@ -166,7 +166,7 @@ def generate_realisitic_data(original_file_path, output_filename, n_students=200
 generate_realisitic_data(
     original_file_path="nilai_kelas_2.csv",
     output_filename="nilai_dummy_kelas_2_v2.csv",
-    n_students=300
+    n_students=100
 )
 
 
@@ -174,5 +174,5 @@ generate_realisitic_data(
 generate_realisitic_data(
     original_file_path="nilai_kelas_3.csv",
     output_filename="nilai_dummy_kelas_3_v2.csv",
-    n_students=300
+    n_students=100
 )

@@ -3,38 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
-
-class Profile(models.Model):
-    KELAS_CHOICES = [
-        ('kelas_2', 'Kelas 2'),
-        ('kelas_3', 'Kelas 3'),
-    ]
-
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        related_name='profile'
-    )
-    kelas = models.CharField(
-        max_length=50,
-        choices=KELAS_CHOICES,
-        blank=True,
-        null=True,
-        verbose_name='Kelas'
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = 'Profil Pengguna'
-        verbose_name_plural = 'Profil Pengguna'
-        db_table = 'profile'
-
-    def __str__(self):
-        kelas_display = self.get_kelas_display() if self.kelas else 'Belum Set Kelas'
-        nama = self.user.get_full_name() or self.user.username
-        return f'{nama} - {kelas_display}'
-
+# --- HAPUS CLASS PROFILE YANG PERTAMA DI SINI ---
 
 class NilaiEvaluasi(models.Model):
     """Model untuk menyimpan nilai evaluasi akhir (keseluruhan materi)"""
@@ -64,6 +33,13 @@ class NilaiEvaluasi(models.Model):
         null=True,
         blank=True,
         verbose_name='Durasi Pengerjaan (menit)'
+    )
+    # ADD: Field untuk menyimpan hasil rekomendasi AI
+    rekomendasi_materi = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name='Rekomendasi AI'
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -403,8 +379,18 @@ class Profile(models.Model):
         null=True,
         verbose_name='Kelas'
     )
-    # Tambahkan field ini:
+    # Ini yang benar, ada field foto-nya
     foto = models.ImageField(upload_to='profile_pics', blank=True, null=True, verbose_name='Foto Profil')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Profil Pengguna'
+        verbose_name_plural = 'Profil Pengguna'
+        db_table = 'profile'
+
+    def __str__(self):
+        kelas_display = self.get_kelas_display() if self.kelas else 'Belum Set Kelas'
+        nama = self.user.get_full_name() or self.user.username
+        return f'{nama} - {kelas_display}'

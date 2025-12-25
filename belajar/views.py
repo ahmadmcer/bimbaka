@@ -9,6 +9,10 @@ from .models import Profile, NilaiEvaluasi, JawabanEvaluasi, KemajuanBelajar, Ni
 from django.http import HttpResponse
 from openpyxl import Workbook
 from .forms import UserUpdateForm, ProfileUpdateForm
+import os
+import joblib
+import pandas as pd
+from django.conf import settings
 
 
 
@@ -322,6 +326,64 @@ def evaluasi(request):
             return redirect(f'/evaluasi/?page={next_page}')
 
 
+def get_ai_recommendation(evaluasi, kelas_siswa):
+    """
+    Fungsi untuk memprediksi rekomendasi materi menggunakan model ML.
+    """
+    try:
+        # 1. Tentukan path model berdasarkan kelas
+        model_filename = ''
+        if kelas_siswa == 'kelas_2':
+            model_filename = 'model_dummy_kelas_2.joblib'
+        elif kelas_siswa == 'kelas_3':
+            model_filename = 'model_dummy_kelas_3.joblib'
+        else:
+            return "Kelas tidak dikenali"
+
+        # Construct full path (sesuaikan path folder ml_models Anda)
+        # Asumsi folder ml_models ada di dalam folder aplikasi 'belajar'
+        model_path = os.path.join(settings.BASE_DIR, 'belajar', 'ml_models', model_filename)
+
+        if not os.path.exists(model_path):
+            return f"Model tidak ditemukan: {model_filename}"
+
+        # 2. Load Model
+        model = joblib.load(model_path)
+
+        # 3. Siapkan Data Input (Features)
+        # Model dilatih dengan urutan kolom Nilai Materi 1 s/d 6
+        # Kita harus mengambil nilai dari database dengan urutan yang SAMA
+
+        # Ambil breakdown nilai yang sudah dihitung sebelumnya
+        breakdown = NilaiEvaluasiPerMateri.objects.filter(evaluasi_utama=evaluasi)
+
+        # Buat dictionary untuk akses cepat: {'materi_1': 80.0, 'materi_2': 70.0, ...}
+        nilai_map = {item.materi: item.nilai for item in breakdown}
+
+        # Urutkan nilai menjadi list [nilai_m1, nilai_m2, ..., nilai_m6]
+        # PENTING: Urutan list harus sama persis dengan urutan kolom saat training di create_model.py
+        input_features = []
+        for i in range(1, 7):
+            materi_key = f'materi_{i}'
+            # Default 0 jika tidak ada nilai (walaupun seharusnya ada)
+            nilai = nilai_map.get(materi_key, 0.0)
+            input_features.append(nilai)
+
+        # Format data ke DataFrame (karena model dilatih pake DF dgn nama kolom tertentu)
+        # Nama kolom harus mengandung kata "NILAI" agar sesuai logic di create_model.py
+        feature_names = [f'NILAI_MATERI_{i}' for i in range(1, 7)]
+        X_input = pd.DataFrame([input_features], columns=feature_names)
+
+        # 4. Lakukan Prediksi
+        prediction = model.predict(X_input)
+
+        # Hasil prediksi berupa array, ambil elemen pertama
+        return prediction[0]
+
+    except Exception as e:
+        print(f"Error Prediction: {e}")
+        return "Gagal memproses rekomendasi"
+
 def finalize_evaluasi(request):
     soal = request.session.get('soal_evaluasi', [])
     jawaban_user = request.session.get('jawaban_evaluasi', [])
@@ -354,6 +416,19 @@ def finalize_evaluasi(request):
     evaluasi.nilai = (jumlah_benar / total_soal) * 100
     evaluasi.save()
     evaluasi.calculate_material_breakdown()
+    try:
+        profile = request.user.profile
+        kelas_siswa = profile.kelas
+
+        # Panggil fungsi prediksi
+        rekomendasi = get_ai_recommendation(evaluasi, kelas_siswa)
+
+        # Simpan ke database
+        evaluasi.rekomendasi_materi = rekomendasi
+        evaluasi.save()
+
+    except Exception as e:
+        print(f"Error saat menjalankan ML: {e}")
     request.session['evaluasi_id'] = evaluasi.id
     for key in ['soal_evaluasi', 'jawaban_evaluasi']:
         if key in request.session:
