@@ -67,7 +67,7 @@
                 {% if user|has_group:"Guru" %}
                   <a href="{% url 'beranda' %}" class="nav-link {% if request.resolver_match.url_name == 'beranda' %}nav-link-active{% endif %}">Dasbor</a>
                   <a href="{% url 'guru_nilai' %}" class="nav-link {% if request.resolver_match.url_name == 'guru_nilai' %}nav-link-active{% endif %}">Nilai</a>
-                  <a href="{% url 'beranda' %}#daftar-siswa" class="nav-link">Siswa</a>
+                  <a href="{% url 'guru_daftar_siswa' %}" class="nav-link {% if request.resolver_match.url_name == 'guru_daftar_siswa' or 'guru_riwayat_siswa' in request.resolver_match.url_name %}nav-link-active{% endif %}">Siswa</a>
                 {% else %}
                   <a href="{% url 'beranda' %}" class="nav-link {% if request.resolver_match.url_name == 'beranda' %}nav-link-active{% endif %}">Beranda</a>
                   <a href="{% url 'materi' %}" class="nav-link {% if request.resolver_match.url_name == 'materi' or request.resolver_match.url_name == 'materi_detail' %}nav-link-active{% endif %}">Materi</a>
@@ -114,7 +114,7 @@
               {% if user|has_group:"Guru" %}
                 <a href="{% url 'beranda' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">Dasbor</a>
                 <a href="{% url 'guru_nilai' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">Nilai</a>
-                <a href="{% url 'beranda' %}#daftar-siswa" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">Siswa</a>
+                <a href="{% url 'guru_daftar_siswa' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded {% if request.resolver_match.url_name == 'guru_daftar_siswa' %}bg-blue-50 text-blue-700 font-semibold{% endif %}">Siswa</a>
                 <hr class="my-2">
                 <a href="{% url 'keluar' %}" class="block px-4 py-2 text-red-600 hover:bg-red-50 rounded">Keluar</a>
               {% else %}

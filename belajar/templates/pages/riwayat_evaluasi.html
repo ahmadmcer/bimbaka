@@ -1,142 +1,199 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Riwayat Evaluasi{% endblock %}
+{% block title %}Riwayat Belajarku{% endblock %}
 
 {% block content %}
-<div class="flex flex-col w-full" style="background-color: #fefefe; border-radius: 8px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+<div class="flex flex-col w-full bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden min-h-screen">
 
-  <div class="mb-8">
-    <h1 class="text-3xl font-bold" style="color: #0077B6;">Riwayat Evaluasi Saya</h1>
-    <p class="text-gray-600">Lihat hasil evaluasi dan detail jawabanmu per materi.</p>
+  <div class="bg-blue-50/50 border-b border-gray-200">
+    <div class="p-6 pb-0">
+      <h1 class="text-2xl font-bold text-gray-800 mb-2">📜 Jejak Belajarku</h1>
+      <p class="text-gray-500 text-sm mb-6">Pantau terus perkembangan nilai dan materi yang sudah kamu pelajari.</p>
+
+      <div class="flex space-x-6">
+        <button onclick="switchTab('tab-evaluasi')" id="btn-evaluasi" class="tab-btn pb-3 px-1 text-sm font-bold border-b-2 border-blue-600 text-blue-600 transition-colors">
+          <i class="fa-solid fa-trophy mr-2"></i> Hasil Evaluasi
+        </button>
+        <button onclick="switchTab('tab-materi')" id="btn-materi" class="tab-btn pb-3 px-1 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-colors">
+          <i class="fa-solid fa-book-open mr-2"></i> Materi Selesai
+        </button>
+      </div>
+    </div>
   </div>
 
-  <div class="space-y-6">
+  <div class="p-6 bg-gray-50 flex-grow">
 
-    {% for evaluasi in riwayat_list %}
-      <div class="rounded-lg shadow-md border border-gray-200 overflow-hidden" style="background-color: {% if forloop.first %}#caf0f8{% else %}white{% endif %};">
+    <div id="tab-evaluasi" class="tab-content space-y-6">
+      {% if riwayat_evaluasi %}
+        {% for evaluasi in riwayat_evaluasi %}
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
 
-        <div class="p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            <div class="flex items-center mb-3 sm:mb-0">
-              <div class="mr-4 text-center">
-                {% with grade_color=evaluasi.get_grade_color %}
-                  <div class="text-3xl font-bold" style="color:
-                    {% if grade_color == 'green' %}#10b981{% endif %}
-                    {% if grade_color == 'blue' %}#3b82f6{% endif %}
-                    {% if grade_color == 'yellow' %}#f59e0b{% endif %}
-                    {% if grade_color == 'orange' %}#f97316{% endif %}
-                    {% if grade_color == 'red' %}#ef4444{% endif %}
-                    {% if grade_color == 'gray' %}#6b7280{% endif %};">
-                    {{ evaluasi.nilai|floatformat:0 }}
+            <div class="p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="flex items-center gap-4">
+                  <div class="w-16 h-16 rounded-full flex flex-col items-center justify-center border-4
+                    {% if evaluasi.nilai >= 80 %}border-green-100 bg-green-50 text-green-600
+                    {% elif evaluasi.nilai >= 70 %}border-blue-100 bg-blue-50 text-blue-600
+                    {% else %}border-red-100 bg-red-50 text-red-600{% endif %}">
+                    <span class="text-xl font-bold">{{ evaluasi.nilai|floatformat:0 }}</span>
                   </div>
-                  <div class="text-sm font-semibold" style="color: #0077B6;">
-                    Grade {{ evaluasi.get_grade }}
+
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h3 class="text-lg font-bold text-gray-800">Evaluasi Akhir</h3>
+                      {% if forloop.first %}
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-600 text-white">TERBARU</span>
+                      {% endif %}
+                    </div>
+                    <p class="text-sm text-gray-500 mt-0.5">
+                      <i class="fa-regular fa-calendar mr-1"></i> {{ evaluasi.created_at|date:"d F Y, H:i" }}
+                    </p>
                   </div>
-                {% endwith %}
-              </div>
-              <div>
-                <h3 class="text-lg font-bold text-gray-800">
-                  Evaluasi #{{ forloop.revcounter }}
-                  {% if forloop.first %}
-                    <span class="text-xs font-bold text-white px-2 py-0.5 rounded ml-2" style="background-color: #0077B6;">TERBARU</span>
+                </div>
+
+                <div class="text-right hidden md:block">
+                  <p class="text-xs text-gray-400 font-bold uppercase">Status</p>
+                  {% if evaluasi.nilai >= 70 %}
+                    <span class="text-green-600 font-bold text-sm">LULUS</span>
+                  {% else %}
+                    <span class="text-red-500 font-bold text-sm">BELUM LULUS</span>
                   {% endif %}
-                </h3>
-                <p class="text-sm text-gray-600">
-                  Benar {{ evaluasi.jumlah_benar }} dari {{ evaluasi.total_soal }} soal
-                </p>
-              </div>
+                </div>
             </div>
-            <div class="text-sm text-gray-500 font-medium mt-2 sm:mt-0">
-              <i class="fa-solid fa-calendar-days mr-1"></i>
-              {{ evaluasi.created_at|date:"d F Y, H:i" }}
+
+            {% if evaluasi.rekomendasi_materi %}
+            <div class="bg-indigo-50 px-5 py-3 border-t border-indigo-100 flex items-start gap-3">
+                <i class="fa-solid fa-robot text-indigo-500 mt-1"></i>
+                <div>
+                    <h4 class="font-bold text-indigo-800 text-xs uppercase">Saran Belajar</h4>
+                    <p class="text-indigo-900 text-sm">
+                        Fokus pelajari lagi: <strong>{{ evaluasi.rekomendasi_materi }}</strong>
+                    </p>
+                </div>
             </div>
-        </div>
+            {% endif %}
 
-        {% if evaluasi.rekomendasi_materi %}
-        <div class="bg-blue-50 px-5 py-3 border-t border-b border-blue-100 flex items-start gap-3">
-            <div class="text-xl">🤖</div>
-            <div>
-                <h4 class="font-bold text-blue-800 text-xs uppercase tracking-wide">Saran AI</h4>
-                <p class="text-blue-900 text-sm mt-0.5">
-                    Disarankan belajar: <span class="font-bold underline">{{ evaluasi.rekomendasi_materi }}</span>
-                </p>
-            </div>
-        </div>
-        {% endif %}
+            <details class="group border-t border-gray-100">
+                <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 bg-gray-50 hover:bg-gray-100 transition text-gray-600">
+                    <span class="text-xs font-bold uppercase tracking-wider flex items-center">
+                        <i class="fa-solid fa-list-check mr-2"></i> Lihat Detail Jawaban
+                    </span>
+                    <span class="transition group-open:rotate-180">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </span>
+                </summary>
 
-        <details class="group bg-white">
-            <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 bg-gray-50 hover:bg-gray-100 transition-colors text-gray-600 border-t border-gray-100">
-                <span class="text-sm flex items-center">
-                    <i class="fa-solid fa-list-ul mr-2"></i> Lihat Detail Jawaban per Materi
-                </span>
-                <span class="transition group-open:rotate-180">
-                    <i class="fa-solid fa-chevron-down"></i>
-                </span>
-            </summary>
+                <div class="p-5 text-sm bg-white border-t border-gray-100">
+                    {% regroup evaluasi.jawaban_evaluasi.all|dictsort:"materi_soal" by get_materi_soal_display as materi_list %}
 
-            <div class="p-5 text-sm">
-                {% regroup evaluasi.jawaban_evaluasi.all|dictsort:"materi_soal" by get_materi_soal_display as materi_list %}
+                    {% for materi in materi_list %}
+                        <div class="mb-6 last:mb-0">
+                            <h5 class="font-bold text-gray-800 mb-3 pb-1 border-b border-gray-100 flex items-center">
+                                <span class="w-2 h-6 bg-blue-500 rounded-full mr-2"></span>
+                                {{ materi.grouper }}
+                            </h5>
 
-                {% for materi in materi_list %}
-                    <div class="mb-6 last:mb-0">
-                        <div class="flex items-center mb-3 pb-2 border-b border-gray-100">
-                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-2">
-                                {{ materi.grouper|slice:":8" }} </span>
-                            <h5 class="font-bold text-gray-700">
-                                {{ materi.grouper }} </h5>
-                        </div>
+                            <div class="space-y-3">
+                                {% for jawaban in materi.list %}
+                                <div class="p-3 rounded-lg border flex gap-3
+                                    {% if jawaban.is_correct %}bg-green-50/50 border-green-100{% else %}bg-red-50/50 border-red-100{% endif %}">
 
-                        <div class="space-y-3 pl-2 sm:pl-4">
-                            {% for jawaban in materi.list %}
-                            <div class="flex justify-between items-start gap-3 p-3 rounded-lg {% if jawaban.is_correct %}bg-green-50 border border-green-100{% else %}bg-red-50 border border-red-100{% endif %}">
-                                <div class="flex-1">
-                                    <p class="text-gray-800 mb-2 font-medium">{{ jawaban.soal_pertanyaan }}</p>
-
-                                    <div class="text-xs sm:text-sm flex flex-col sm:flex-row gap-1 sm:gap-4">
-                                        <div class="text-gray-600">
-                                            Jawabanmu:
-                                            <span class="font-bold {% if jawaban.is_correct %}text-green-700{% else %}text-red-600{% endif %}">
-                                                {{ jawaban.jawaban_user|default:"-" }}
-                                            </span>
-                                        </div>
-                                        {% if not jawaban.is_correct %}
-                                        <div class="text-gray-600">
-                                            Kunci: <span class="font-bold text-green-700">{{ jawaban.jawaban_benar }}</span>
-                                        </div>
+                                    <div class="mt-0.5">
+                                        {% if jawaban.is_correct %}
+                                            <i class="fa-solid fa-circle-check text-green-500"></i>
+                                        {% else %}
+                                            <i class="fa-solid fa-circle-xmark text-red-500"></i>
                                         {% endif %}
                                     </div>
+
+                                    <div class="flex-grow">
+                                        <p class="text-gray-800 font-medium mb-1">{{ jawaban.soal_pertanyaan }}</p>
+                                        <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs">
+                                            <span class="text-gray-500">Jawabanmu: <b class="{% if jawaban.is_correct %}text-green-700{% else %}text-red-600{% endif %}">{{ jawaban.jawaban_user }}</b></span>
+                                            {% if not jawaban.is_correct %}
+                                            <span class="text-gray-500">Kunci: <b class="text-green-700">{{ jawaban.jawaban_benar }}</b></span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="flex-shrink-0 pt-0.5">
-                                    {% if jawaban.is_correct %}
-                                        <i class="fa-solid fa-check text-green-500 text-lg"></i>
-                                    {% else %}
-                                        <i class="fa-solid fa-xmark text-red-500 text-lg"></i>
-                                    {% endif %}
-                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
+                    {% endfor %}
+                </div>
+            </details>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="text-center py-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                <i class="fa-solid fa-clipboard-question text-2xl text-gray-400"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900">Belum ada nilai evaluasi</h3>
+            <p class="text-gray-500 text-sm mt-1 mb-4">Selesaikan materi lalu kerjakan evaluasi akhir!</p>
+            <a href="{% url 'materi' %}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">Mulai Belajar</a>
+        </div>
+      {% endif %}
+    </div>
+
+    <div id="tab-materi" class="tab-content hidden space-y-4">
+      {% if riwayat_materi %}
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="divide-y divide-gray-100">
+                {% for materi in riwayat_materi %}
+                <div class="p-4 hover:bg-gray-50 transition flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                        <i class="fa-solid fa-check"></i>
                     </div>
+                    <div class="flex-grow">
+                        <h4 class="font-bold text-gray-800">{{ materi.get_materi_display }}</h4>
+                        <p class="text-xs text-gray-500">Diselesaikan pada {{ materi.waktu_selesai|date:"d F Y, H:i" }}</p>
+                    </div>
+                    <div>
+                        <a href="{% url 'materi_detail' forloop.counter %}" class="text-xs font-bold text-blue-600 hover:text-blue-800 border border-blue-200 px-3 py-1 rounded-full hover:bg-blue-50 transition">
+                            Baca Lagi
+                        </a>
+                        </div>
+                </div>
                 {% endfor %}
             </div>
-        </details>
-
-      </div>
-    {% empty %}
-      <div class="text-center p-8 bg-gray-50 rounded-lg">
-        <i class="fa-solid fa-folder-open text-4xl text-gray-400 mb-4"></i>
-        <h3 class="text-xl font-semibold text-gray-700">Belum Ada Riwayat</h3>
-        <p class="text-gray-500">Kamu belum pernah menyelesaikan evaluasi akhir.</p>
-      </div>
-    {% endfor %}
+        </div>
+      {% else %}
+        <div class="text-center py-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                <i class="fa-solid fa-book-open text-2xl text-gray-400"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900">Belum ada materi selesai</h3>
+            <p class="text-gray-500 text-sm mt-1 mb-4">Ayo mulai petualangan belajarmu sekarang!</p>
+            <a href="{% url 'materi' %}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">Lihat Materi</a>
+        </div>
+      {% endif %}
+    </div>
 
   </div>
-
-  <div class="mt-8 border-t pt-6">
-    <a href="{% url 'beranda' %}" class="font-medium" style="color: #0077B6;">
-      <i class="fa-solid fa-arrow-left mr-2"></i>
-      Kembali ke Dasbor
-    </a>
-  </div>
-
 </div>
+
+<script>
+  function switchTab(tabId) {
+    // 1. Sembunyikan semua tab content
+    document.querySelectorAll('.tab-content').forEach(el => {
+      el.classList.add('hidden');
+    });
+
+    // 2. Reset semua tombol tab ke style inactive
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('border-blue-600', 'text-blue-600', 'font-bold');
+        btn.classList.add('border-transparent', 'text-gray-500', 'font-medium', 'hover:text-gray-700');
+    });
+
+    // 3. Tampilkan tab yang dipilih
+    document.getElementById(tabId).classList.remove('hidden');
+
+    // 4. Highlight tombol yang aktif
+    let activeBtnId = tabId === 'tab-evaluasi' ? 'btn-evaluasi' : 'btn-materi';
+    let activeBtn = document.getElementById(activeBtnId);
+    activeBtn.classList.remove('border-transparent', 'text-gray-500', 'font-medium', 'hover:text-gray-700');
+    activeBtn.classList.add('border-blue-600', 'text-blue-600', 'font-bold');
+  }
+</script>
 {% endblock %}

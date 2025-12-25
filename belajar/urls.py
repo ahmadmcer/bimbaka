@@ -28,4 +28,5 @@ urlpatterns = [
     path('keluar/', views.keluar, name='keluar'),
     path('profil/edit/', views.edit_profile, name='edit_profile'),
     path('profil/hapus-foto/', views.hapus_foto_profil, name='hapus_foto_profil'),
+    path('guru/siswa/', views.guru_daftar_siswa, name='guru_daftar_siswa'),
 ]

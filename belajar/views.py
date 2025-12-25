@@ -13,6 +13,7 @@ import os
 import joblib
 import pandas as pd
 from django.conf import settings
+from django.db.models import Avg, Count, Q
 
 
 
@@ -145,30 +146,112 @@ def generate_soal_evaluasi_akhir(jumlah_soal=20, kelas='kelas_2'):  # Terima par
 # HALAMAN UTAMA
 @login_required
 def beranda(request):
+    # 1. LOGIKA GURU
     if is_guru(request.user):
         try:
             guru_kelas = request.user.profile.kelas
         except Profile.DoesNotExist:
             guru_kelas = None
+
         if guru_kelas:
+            # Ambil Siswa
             siswa_list = User.objects.filter(groups__name='Siswa', profile__kelas=guru_kelas)
+            total_siswa = siswa_list.count()
+
+            # Statistik Ringkas
+            siswa_lulus = NilaiEvaluasi.objects.filter(
+                user__in=siswa_list,
+                nilai__gte=70
+            ).values('user').distinct().count()
+
+            siswa_aktif = KemajuanBelajar.objects.filter(
+                user__in=siswa_list
+            ).values('user').distinct().count()
+
+            # Aktivitas Terbaru (Guru)
+            recent_evals = NilaiEvaluasi.objects.filter(user__in=siswa_list).order_by('-created_at')[:5]
+
+            # Data Grafik
+            breakdown_stats = NilaiEvaluasiPerMateri.objects.filter(
+                evaluasi_utama__user__in=siswa_list
+            ).values('materi').annotate(avg_nilai=Avg('nilai')).order_by('materi')
+
+            chart_labels = [item['materi'].replace('_', ' ').title() for item in breakdown_stats]
+            chart_data = [round(item['avg_nilai'], 1) for item in breakdown_stats]
+
+            if not chart_labels:
+                chart_labels = ['Materi 1', 'Materi 2', 'Materi 3', 'Materi 4', 'Materi 5', 'Materi 6']
+                chart_data = [0, 0, 0, 0, 0, 0]
+
         else:
             siswa_list = User.objects.none()
+            total_siswa = 0
+            siswa_lulus = 0
+            siswa_aktif = 0
+            recent_evals = []
+            chart_labels = []
+            chart_data = []
+
         context = {
-            'total_siswa': siswa_list.count(),
+            'total_siswa': total_siswa,
+            'siswa_lulus': siswa_lulus,
+            'siswa_aktif': siswa_aktif,
             'siswa_list': siswa_list,
             'guru_kelas': guru_kelas,
+            'recent_evals': recent_evals,
+            'chart_labels': chart_labels,
+            'chart_data': chart_data,
         }
         return render(request, 'pages/dasbor_guru.html', context)
+
+    # 2. LOGIKA SISWA (Perhatikan posisi 'else' ini harus sejajar dengan 'if' paling atas)
     else:
+        # Ringkasan Progress
         progress_summary = KemajuanBelajar.get_user_summary(request.user)
         ready_for_evaluation = KemajuanBelajar.user_ready_for_evaluation(request.user)
+
+        # Ambil Aktivitas Terbaru (GABUNGAN)
+        recent_evals = NilaiEvaluasi.objects.filter(
+            user=request.user
+        ).order_by('-created_at')[:5]
+
+        recent_progress = KemajuanBelajar.objects.filter(
+            user=request.user,
+            is_selesai=True
+        ).order_by('-waktu_selesai')[:5]
+
+        # Gabungkan data
+        activities = []
+
+        for e in recent_evals:
+            activities.append({
+                'type': 'evaluasi',
+                'time': e.created_at,
+                'nilai': e.nilai,
+                'judul': 'Evaluasi Akhir',
+                'desc': f'Mendapat nilai {int(e.nilai)}'
+            })
+
+        for p in recent_progress:
+            activities.append({
+                'type': 'materi',
+                'time': p.waktu_selesai,
+                'nilai': None,
+                'judul': p.get_materi_display(),
+                'desc': 'Telah menyelesaikan materi ini'
+            })
+
+        activities.sort(key=lambda x: x['time'], reverse=True)
+        recent_activities = activities[:5]
+
         latest_evaluation = NilaiEvaluasi.objects.filter(
             user=request.user).order_by('-created_at').first()
+
         context = {
             'progress_summary': progress_summary,
             'ready_for_evaluation': ready_for_evaluation,
             'latest_evaluation': latest_evaluation,
+            'recent_activities': recent_activities,
         }
         return render(request, 'pages/beranda.html', context)
 
@@ -611,16 +694,24 @@ def daftar(request):
 
 @login_required
 def riwayat_evaluasi(request):
-    # Hanya ambil riwayat untuk siswa yang sedang login
-    # Pastikan yang diambil BUKAN guru
     if is_guru(request.user):
-        return redirect('beranda')  # Guru tidak punya riwayat, arahkan ke dasbor
+        return redirect('beranda')
 
-    # Ambil semua evaluasi user, urutkan dari yang terbaru
-    riwayat_list = NilaiEvaluasi.objects.filter(user=request.user).order_by('-created_at')
+    # 1. Ambil List Evaluasi (Untuk Tab 1)
+    # Kita perlu prefetch jawaban agar halaman detailnya tidak berat (N+1 problem)
+    riwayat_evaluasi = NilaiEvaluasi.objects.filter(
+        user=request.user
+    ).prefetch_related('jawaban_evaluasi').order_by('-created_at')
+
+    # 2. Ambil List Materi Selesai (Untuk Tab 2)
+    riwayat_materi = KemajuanBelajar.objects.filter(
+        user=request.user,
+        is_selesai=True
+    ).order_by('-waktu_selesai')
 
     context = {
-        'riwayat_list': riwayat_list
+        'riwayat_evaluasi': riwayat_evaluasi,
+        'riwayat_materi': riwayat_materi,
     }
     return render(request, 'pages/riwayat_evaluasi.html', context)
 
@@ -897,3 +988,22 @@ def hapus_foto_profil(request):
         messages.error(request, 'Profil tidak ditemukan.')
 
     return redirect('edit_profile')
+
+@login_required
+@user_passes_test(is_guru, login_url='beranda')
+def guru_daftar_siswa(request):
+    try:
+        guru_kelas = request.user.profile.kelas
+    except Profile.DoesNotExist:
+        guru_kelas = None
+
+    if guru_kelas:
+        siswa_list = User.objects.filter(groups__name='Siswa', profile__kelas=guru_kelas)
+    else:
+        siswa_list = User.objects.none()
+
+    context = {
+        'siswa_list': siswa_list,
+        'total_siswa': siswa_list.count(),
+    }
+    return render(request, 'pages/guru_daftar_siswa.html', context)
