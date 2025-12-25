@@ -371,7 +371,7 @@ def get_ai_recommendation(evaluasi, kelas_siswa):
 
         # Format data ke DataFrame (karena model dilatih pake DF dgn nama kolom tertentu)
         # Nama kolom harus mengandung kata "NILAI" agar sesuai logic di create_model.py
-        feature_names = [f'NILAI_MATERI_{i}' for i in range(1, 7)]
+        feature_names = [f'NILAI_{i}' for i in range(1, 7)]
         X_input = pd.DataFrame([input_features], columns=feature_names)
 
         # 4. Lakukan Prediksi
