@@ -22,7 +22,6 @@
           <tr>
             <th class="p-4 font-semibold">Nama Lengkap</th>
             <th class="p-4 font-semibold">Username</th>
-            <th class="p-4 font-semibold">Email</th>
             <th class="p-4 font-semibold">Aksi</th>
           </tr>
         </thead>
@@ -36,7 +35,6 @@
                 <span>{{ siswa.get_full_name }}</span>
               </td>
               <td class="p-4 text-gray-600 text-sm">{{ siswa.username }}</td>
-              <td class="p-4 text-gray-600 text-sm">{{ siswa.email }}</td>
               <td class="p-4">
                 <a href="{% url 'guru_riwayat_siswa' siswa.id %}" class="text-blue-600 hover:text-blue-800 text-sm font-medium hover:underline">
                   Lihat Detail
@@ -44,7 +42,7 @@
               </td>
             </tr>
           {% empty %}
-            <tr><td colspan="4" class="p-8 text-center text-gray-500">Belum ada siswa.</td></tr>
+            <tr><td colspan="3" class="p-8 text-center text-gray-500">Belum ada siswa.</td></tr>
           {% endfor %}
         </tbody>
       </table>

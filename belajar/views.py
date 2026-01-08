@@ -16,7 +16,6 @@ from django.conf import settings
 from django.db.models import Avg, Count, Q
 
 
-
 # FUNGSI HELPER UNTUK CEK GURU
 def is_guru(user):
     """Cek apakah user ada di grup 'Guru'"""
@@ -204,7 +203,7 @@ def beranda(request):
         }
         return render(request, 'pages/dasbor_guru.html', context)
 
-    # 2. LOGIKA SISWA (Perhatikan posisi 'else' ini harus sejajar dengan 'if' paling atas)
+    # 2. LOGIKA SISWA
     else:
         # Ringkasan Progress
         progress_summary = KemajuanBelajar.get_user_summary(request.user)
@@ -313,16 +312,13 @@ def materi(request):
 
 @login_required
 def materi_detail(request, materi_id):
-    # 1. Validasi Materi
     if materi_id not in range(1, 7):
         messages.error(request, 'Materi tidak ditemukan!')
         return redirect('materi')
 
-    # 2. Ambil Profil & Kelas
     profile, created = Profile.objects.get_or_create(user=request.user)
     kelas = profile.kelas or 'kelas_2'
 
-    # 3. Update Progress Belajar
     kemajuan, created = KemajuanBelajar.objects.get_or_create(
         user=request.user, materi=f'materi_{materi_id}',
         defaults={'progress_persentase': 50.0}
@@ -331,18 +327,15 @@ def materi_detail(request, materi_id):
         kemajuan.progress_persentase = 50.0
         kemajuan.save()
 
-    # 4. Tentukan Template
     template_name = f'pages/materi/{kelas}/materi_{materi_id}.html'
-
-    # 5. [BARU] Ambil Data Quiz untuk Popup
     quiz_data = get_mini_quiz(kelas, materi_id)
 
-    # 6. Kirim ke Template
     context = {
         'materi_id': materi_id,
         'quiz_data': quiz_data
     }
     return render(request, template_name, context)
+
 
 @login_required
 def mark_materi_completed(request, materi_id):
@@ -361,9 +354,9 @@ def mark_materi_completed(request, materi_id):
 # EVALUASI AKHIR
 @login_required
 def evaluasi(request):
-    # 1. Cek apakah user sudah menyelesaikan semua materi
     if not KemajuanBelajar.user_ready_for_evaluation(request.user):
-        messages.error(request,'Ups! Kamu harus menyelesaikan semua materi dulu sebelum ikut Evaluasi Akhir. Semangat! 🚀')
+        messages.error(request,
+                       'Ups! Kamu harus menyelesaikan semua materi dulu sebelum ikut Evaluasi Akhir. Semangat! 🚀')
         return redirect('materi')
     latest_evaluasi = NilaiEvaluasi.objects.filter(
         user=request.user).order_by('-created_at').first()
@@ -410,11 +403,7 @@ def evaluasi(request):
 
 
 def get_ai_recommendation(evaluasi, kelas_siswa):
-    """
-    Fungsi untuk memprediksi rekomendasi materi menggunakan model ML.
-    """
     try:
-        # 1. Tentukan path model berdasarkan kelas
         model_filename = ''
         if kelas_siswa == 'kelas_2':
             model_filename = 'model_dummy_kelas_2.joblib'
@@ -423,49 +412,31 @@ def get_ai_recommendation(evaluasi, kelas_siswa):
         else:
             return "Kelas tidak dikenali"
 
-        # Construct full path (sesuaikan path folder ml_models Anda)
-        # Asumsi folder ml_models ada di dalam folder aplikasi 'belajar'
         model_path = os.path.join(settings.BASE_DIR, 'belajar', 'ml_models', model_filename)
 
         if not os.path.exists(model_path):
             return f"Model tidak ditemukan: {model_filename}"
 
-        # 2. Load Model
         model = joblib.load(model_path)
-
-        # 3. Siapkan Data Input (Features)
-        # Model dilatih dengan urutan kolom Nilai Materi 1 s/d 6
-        # Kita harus mengambil nilai dari database dengan urutan yang SAMA
-
-        # Ambil breakdown nilai yang sudah dihitung sebelumnya
         breakdown = NilaiEvaluasiPerMateri.objects.filter(evaluasi_utama=evaluasi)
-
-        # Buat dictionary untuk akses cepat: {'materi_1': 80.0, 'materi_2': 70.0, ...}
         nilai_map = {item.materi: item.nilai for item in breakdown}
 
-        # Urutkan nilai menjadi list [nilai_m1, nilai_m2, ..., nilai_m6]
-        # PENTING: Urutan list harus sama persis dengan urutan kolom saat training di create_model.py
         input_features = []
         for i in range(1, 7):
             materi_key = f'materi_{i}'
-            # Default 0 jika tidak ada nilai (walaupun seharusnya ada)
             nilai = nilai_map.get(materi_key, 0.0)
             input_features.append(nilai)
 
-        # Format data ke DataFrame (karena model dilatih pake DF dgn nama kolom tertentu)
-        # Nama kolom harus mengandung kata "NILAI" agar sesuai logic di create_model.py
         feature_names = [f'NILAI_{i}' for i in range(1, 7)]
         X_input = pd.DataFrame([input_features], columns=feature_names)
-
-        # 4. Lakukan Prediksi
         prediction = model.predict(X_input)
 
-        # Hasil prediksi berupa array, ambil elemen pertama
         return prediction[0]
 
     except Exception as e:
         print(f"Error Prediction: {e}")
         return "Gagal memproses rekomendasi"
+
 
 def finalize_evaluasi(request):
     soal = request.session.get('soal_evaluasi', [])
@@ -488,7 +459,7 @@ def finalize_evaluasi(request):
         JawabanEvaluasi.objects.create(
             evaluasi=evaluasi, nomor_soal=i + 1,
             materi_soal=soal_item['materi'],
-            soal_pertanyaan=soal_item['question_text'],  # Perbaikan KeyError
+            soal_pertanyaan=soal_item['question_text'],
             pilihan_jawaban=soal_item['choices'],
             jawaban_user=user_answer or '',
             jawaban_benar=correct_answer,
@@ -502,14 +473,9 @@ def finalize_evaluasi(request):
     try:
         profile = request.user.profile
         kelas_siswa = profile.kelas
-
-        # Panggil fungsi prediksi
         rekomendasi = get_ai_recommendation(evaluasi, kelas_siswa)
-
-        # Simpan ke database
         evaluasi.rekomendasi_materi = rekomendasi
         evaluasi.save()
-
     except Exception as e:
         print(f"Error saat menjalankan ML: {e}")
     request.session['evaluasi_id'] = evaluasi.id
@@ -604,40 +570,28 @@ def masuk(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        peran = request.POST.get('peran')  # Ambil peran dari form (siswa/guru)
+        peran = request.POST.get('peran')
 
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            # Pengguna valid, sekarang cek peran mereka
             is_siswa = user.groups.filter(name='Siswa').exists()
-            is_guru_check = is_guru(user)  # Menggunakan fungsi is_guru()
+            is_guru_check = is_guru(user)
 
-            # KASUS 1: Login sebagai SISWA di form SISWA
             if peran == 'siswa' and is_siswa:
                 login(request, user)
                 return redirect('beranda')
-
-            # KASUS 2: Login sebagai GURU di form GURU
             elif peran == 'guru' and is_guru_check:
                 login(request, user)
                 return redirect('beranda')
-
-            # KASUS 3: Peran tidak cocok (Misal: Guru login di form Siswa)
             elif peran == 'siswa' and not is_siswa:
                 messages.error(request, 'Akun ini bukan akun Siswa. Silakan gunakan tab Login Guru.')
             elif peran == 'guru' and not is_guru_check:
                 messages.error(request, 'Akun ini bukan akun Guru. Silakan gunakan tab Login Siswa.')
-
-            # KASUS 4: Pengguna tidak punya peran (jarang terjadi)
             else:
                 messages.error(request, 'Peran akun Anda tidak terdefinisi.')
-
         else:
-            # Username atau password salah
             messages.error(request, 'Username atau password salah!')
-
-    # Jika login gagal (POST) atau jika method GET, tampilkan halaman login
     return render(request, 'pages/auth/masuk.html')
 
 
@@ -647,7 +601,7 @@ def daftar(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         username = request.POST.get('username')
-        email = request.POST.get('email')
+        email = request.POST.get('email', '')  # Gunakan default string kosong
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
         peran = request.POST.get('peran')
@@ -660,22 +614,28 @@ def daftar(request):
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username sudah terdaftar!')
             return redirect('daftar')
-        if User.objects.filter(email=email).exists():
-            messages.error(request, 'Email sudah terdaftar!')
-            return redirect('daftar')
 
         role_name = ''
         if not kelas:
             messages.error(request, 'Silakan pilih kelas Anda (atau kelas yang Anda ajar)!')
             return redirect('daftar')
+
         if peran == 'guru':
             if kode_guru == SECRET_TEACHER_CODE:
+                # Validasi Email KHUSUS GURU
+                if not email:
+                    messages.error(request, 'Email wajib diisi untuk pendaftaran Guru!')
+                    return redirect('daftar')
+                if User.objects.filter(email=email).exists():
+                    messages.error(request, 'Email sudah terdaftar!')
+                    return redirect('daftar')
                 role_name = 'Guru'
             else:
                 messages.error(request, 'Kode Pendaftaran Guru salah!')
                 return redirect('daftar')
         elif peran == 'siswa':
             role_name = 'Siswa'
+            email = ''  # Paksa email kosong untuk siswa demi privasi/keamanan
         else:
             messages.error(request, 'Silakan pilih peran Anda (Siswa/Guru)!')
             return redirect('daftar')
@@ -697,13 +657,10 @@ def riwayat_evaluasi(request):
     if is_guru(request.user):
         return redirect('beranda')
 
-    # 1. Ambil List Evaluasi (Untuk Tab 1)
-    # Kita perlu prefetch jawaban agar halaman detailnya tidak berat (N+1 problem)
     riwayat_evaluasi = NilaiEvaluasi.objects.filter(
         user=request.user
     ).prefetch_related('jawaban_evaluasi').order_by('-created_at')
 
-    # 2. Ambil List Materi Selesai (Untuk Tab 2)
     riwayat_materi = KemajuanBelajar.objects.filter(
         user=request.user,
         is_selesai=True
@@ -719,30 +676,23 @@ def riwayat_evaluasi(request):
 @login_required
 @user_passes_test(is_guru, login_url='beranda')
 def guru_riwayat_siswa(request, siswa_id):
-    """Halaman untuk guru melihat detail riwayat evaluasi seorang siswa."""
-
-    # 1. Dapatkan guru dan kelasnya
     try:
         guru_kelas = request.user.profile.kelas
     except Profile.DoesNotExist:
         messages.error(request, 'Profil guru tidak ditemukan.')
         return redirect('beranda')
 
-    # 2. Dapatkan siswa yang diminta
     siswa = get_object_or_404(User, id=siswa_id, groups__name='Siswa')
 
-    # 3. Validasi: Pastikan guru ini mengajar siswa tsb
     if siswa.profile.kelas != guru_kelas:
         messages.error(request, 'Anda tidak memiliki izin untuk melihat siswa ini.')
         return redirect('guru_nilai')
 
-    # 4. Ambil semua riwayat evaluasi siswa, prefetch jawaban terkait
-    #    Ini mengambil SEMUA percobaan evaluasi siswa, diurutkan dari yang terbaru
     evaluasi_list = NilaiEvaluasi.objects.filter(
         user=siswa
     ).prefetch_related(
-        'jawaban_evaluasi'  # Ini akan mengambil semua detail jawaban untuk setiap evaluasi
-    ).order_by('-created_at')  # Terbaru di atas
+        'jawaban_evaluasi'
+    ).order_by('-created_at')
 
     context = {
         'siswa': siswa,
@@ -751,25 +701,19 @@ def guru_riwayat_siswa(request, siswa_id):
     return render(request, 'pages/guru_riwayat_siswa.html', context)
 
 
-# --- TAMBAHKAN FUNGSI BARU INI ---
 @login_required
 @user_passes_test(is_guru, login_url='beranda')
 def export_nilai_excel(request):
-    """Menangani ekspor data nilai siswa ke file Excel."""
-
-    # 1. Dapatkan kelas guru
     try:
         guru_kelas = request.user.profile.kelas
     except Profile.DoesNotExist:
         messages.error(request, 'Profil guru tidak ditemukan.')
         return redirect('guru_nilai')
 
-    # 2. Siapkan file Excel (Workbook)
     wb = Workbook()
     ws = wb.active
     ws.title = f"Nilai {request.user.profile.get_kelas_display()}"
 
-    # 3. Buat Header
     headers = [
         "Nama Siswa", "Username",
         "Materi 1", "Materi 2", "Materi 3",
@@ -778,7 +722,6 @@ def export_nilai_excel(request):
     ]
     ws.append(headers)
 
-    # 4. Ambil data siswa (logika yang sama dengan halaman 'guru_nilai')
     if guru_kelas:
         students = User.objects.filter(groups__name='Siswa', profile__kelas=guru_kelas).prefetch_related(
             'profile', 'nilai_evaluasi', 'nilai_evaluasi__breakdown_per_materi'
@@ -786,7 +729,6 @@ def export_nilai_excel(request):
     else:
         students = User.objects.none()
 
-    # 5. Isi data siswa ke baris Excel
     for student in students:
         latest_eval = student.nilai_evaluasi.order_by('-created_at').first()
 
@@ -803,7 +745,6 @@ def export_nilai_excel(request):
                 if b.materi in grades:
                     grades[b.materi] = b.nilai
 
-        # Buat baris data
         row_data = [
             student.get_full_name(),
             student.username,
@@ -815,37 +756,26 @@ def export_nilai_excel(request):
             grades['materi_6'],
             final_score
         ]
-        # Tambahkan baris ke sheet
         ws.append(row_data)
 
-    # 6. Buat Respon HTTP untuk mengunduh file
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     )
-    # Tentukan nama file
     filename = f"daftar_nilai_{guru_kelas}.xlsx"
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
-
-    # Simpan workbook ke respon
     wb.save(response)
 
     return response
+
 
 def keluar(request):
     logout(request)
     return redirect('masuk')
 
 
-# Tambahkan import random jika belum ada di file (sudah ada di snippet Anda)
-
 def get_mini_quiz(kelas, materi_id):
-    """
-    Menghasilkan 3 pasang soal dan jawaban untuk mode Drag & Drop (Match Pairs).
-    """
     pairs = []
-    generated_answers = set()  # Untuk mencegah duplikat jawaban
-
-    # Loop untuk membuat 3 pasang soal
+    generated_answers = set()
     target_pairs = 3
     attempts = 0
 
@@ -854,51 +784,49 @@ def get_mini_quiz(kelas, materi_id):
         q_text = ""
         a_text = ""
 
-        # ================= KELAS 2 =================
         if kelas == 'kelas_2':
-            if materi_id == 1:  # Penjumlahan Berulang
+            if materi_id == 1:
                 n = random.randint(2, 5)
                 val = random.randint(2, 5)
                 q_text = " + ".join([str(val)] * n)
                 a_text = f"{n} × {val}"
-            elif materi_id == 2:  # Komutatif
+            elif materi_id == 2:
                 a = random.randint(3, 9);
                 b = random.randint(2, 8)
                 q_text = f"{a} × {b}"
                 a_text = f"{b} × {a}"
-            elif materi_id == 3:  # 1 & 0
+            elif materi_id == 3:
                 val = random.randint(5, 20)
                 pengali = random.choice([0, 1])
                 q_text = f"{val} × {pengali}"
                 a_text = str(val * pengali)
-            elif materi_id == 4:  # 2 & 5
+            elif materi_id == 4:
                 a = random.randint(3, 9)
                 b = random.choice([2, 5])
                 q_text = f"{a} × {b}"
                 a_text = str(a * b)
-            elif materi_id == 5:  # 10
+            elif materi_id == 5:
                 a = random.randint(2, 9)
                 q_text = f"{a} × 10"
                 a_text = f"{a}0"
-            else:  # Tabel Lain
+            else:
                 a = random.randint(3, 8);
                 b = random.randint(3, 8)
                 q_text = f"{a} × {b}"
                 a_text = str(a * b)
 
-        # ================= KELAS 3 =================
         elif kelas == 'kelas_3':
-            if materi_id == 1:  # 0, 10, 100
+            if materi_id == 1:
                 a = random.randint(2, 9)
                 b = random.choice([10, 100])
                 q_text = f"{a} × {b}"
                 a_text = str(a * b)
-            elif materi_id == 2:  # Bersusun (Angka simpel)
+            elif materi_id == 2:
                 a = random.randint(11, 20);
                 b = random.choice([2, 3])
                 q_text = f"{a} × {b}"
                 a_text = str(a * b)
-            elif materi_id == 3:  # Bagi 1 & 0
+            elif materi_id == 3:
                 if random.choice([True, False]):
                     q_text = f"0 ÷ {random.randint(2, 9)}"
                     a_text = "0"
@@ -906,24 +834,23 @@ def get_mini_quiz(kelas, materi_id):
                     val = random.randint(5, 20)
                     q_text = f"{val} ÷ 1"
                     a_text = str(val)
-            elif materi_id == 4:  # Porogapit Simpel
+            elif materi_id == 4:
                 res = random.randint(10, 20);
                 div = random.randint(2, 3)
                 q_text = f"{res * div} ÷ {div}"
                 a_text = str(res)
-            elif materi_id == 5:  # Campuran
+            elif materi_id == 5:
                 a = random.randint(2, 5);
                 b = random.randint(2, 4);
                 c = random.randint(1, 5)
                 q_text = f"({a}×{b}) + {c}"
                 a_text = str((a * b) + c)
-            else:  # Soal Cerita (Versi Pendek)
+            else:
                 item = random.randint(3, 6);
                 price = random.randint(2, 5)
                 q_text = f"{item} kotak isi {price}"
                 a_text = str(item * price)
 
-        # Cek Duplikat Jawaban (Agar unik saat di-match)
         if a_text not in generated_answers:
             generated_answers.add(a_text)
             pairs.append({
@@ -932,25 +859,22 @@ def get_mini_quiz(kelas, materi_id):
                 'answer': a_text
             })
 
-    # Pisahkan soal dan jawaban untuk dikirim ke template
     questions = pairs[:]
     answers = pairs[:]
-
-    # Acak urutan jawaban agar tidak bersebelahan langsung dengan soalnya
     random.shuffle(answers)
 
     return {
-        'type': 'drag_drop',  # Penanda untuk template
+        'type': 'drag_drop',
         'questions': questions,
         'answers': answers,
         'total_pairs': len(pairs)
     }
 
+
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
-        # Perhatikan penambahan request.FILES di baris bawah ini untuk menangani gambar
         profile, created = Profile.objects.get_or_create(user=request.user)
         p_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
 
@@ -973,11 +897,9 @@ def edit_profile(request):
 
 @login_required
 def hapus_foto_profil(request):
-    """Menghapus foto profil pengguna."""
     try:
         profile = request.user.profile
         if profile.foto:
-            # Hapus file fisik dan set field ke None
             profile.foto.delete(save=False)
             profile.foto = None
             profile.save()
@@ -988,6 +910,7 @@ def hapus_foto_profil(request):
         messages.error(request, 'Profil tidak ditemukan.')
 
     return redirect('edit_profile')
+
 
 @login_required
 @user_passes_test(is_guru, login_url='beranda')

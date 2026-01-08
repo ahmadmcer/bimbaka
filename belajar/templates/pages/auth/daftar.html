@@ -31,8 +31,8 @@
       <input type="text" id="last_name" name="last_name" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
     </div>
 
-    <div for="peran" class="mb-4">
-      <label class="block text-gray-700 font-semibold mb-2">Saya mendaftar sebagai</label>
+    <div class="mb-4">
+      <label for="peran" class="block text-gray-700 font-semibold mb-2">Saya mendaftar sebagai</label>
       <select id="peran" name="peran" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
         <option value="" disabled selected>Pilih Peran</option>
         <option value="siswa">Siswa</option>
@@ -62,12 +62,13 @@
         <label for="kode_guru" class="block text-gray-700 font-semibold mb-2">Kode Pendaftaran Guru</label>
         <input type="text" id="kode_guru" name="kode_guru" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan kode undangan" />
       </div>
+      <div>
+        <label for="email" class="block text-gray-700 font-semibold mb-2">Email Guru</label>
+        <input type="email" id="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="email@contoh.com" />
+        <p class="text-xs text-gray-500 mt-1">*Email wajib diisi untuk Guru guna pemulihan akun.</p>
+      </div>
     </div>
 
-    <div class="mb-4">
-      <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
-      <input type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
-    </div>
     <div class="mb-4">
       <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
       <input type="password" id="password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
@@ -87,46 +88,48 @@
 <script>
   $(document).ready(function() {
     $('#peran').on('change', function() {
-      // Ambil ID select kelas yang sesuai
       var idKelasSiswa = '#kelas_siswa';
       var idKelasGuru = '#kelas_guru';
+      var idEmail = '#email';
 
       if (this.value === 'siswa') {
+        // Tampilkan kolom siswa, sembunyikan kolom guru
         $('#kolom_siswa').removeClass('hidden');
-        $(idKelasSiswa).prop('required', true); // Wajib isi kelas siswa
+        $(idKelasSiswa).prop('required', true).prop('disabled', false);
 
         $('#kolom_guru').addClass('hidden');
-        $(idKelasGuru).prop('required', false);
+        $(idKelasGuru).prop('required', false).prop('disabled', true);
         $('#kode_guru').prop('required', false);
 
-        // Nonaktifkan select kelas guru agar nilainya tidak terkirim
-        $(idKelasGuru).prop('disabled', true);
-        $(idKelasSiswa).prop('disabled', false);
+        // Nonaktifkan email untuk Siswa agar tidak terkirim/divalidasi
+        $(idEmail).prop('required', false).prop('disabled', true);
 
       } else if (this.value === 'guru') {
+        // Tampilkan kolom guru, sembunyikan kolom siswa
         $('#kolom_guru').removeClass('hidden');
-        $(idKelasGuru).prop('required', true); // Wajib isi kelas guru
-        $('#kode_guru').prop('required', true); // Wajib isi kode
+        $(idKelasGuru).prop('required', true).prop('disabled', false);
+        $('#kode_guru').prop('required', true);
+
+        // Aktifkan email untuk Guru
+        $(idEmail).prop('required', true).prop('disabled', false);
 
         $('#kolom_siswa').addClass('hidden');
-        $(idKelasSiswa).prop('required', false);
-
-        // Nonaktifkan select kelas siswa agar nilainya tidak terkirim
-        $(idKelasSiswa).prop('disabled', true);
-        $(idKelasGuru).prop('disabled', false);
+        $(idKelasSiswa).prop('required', false).prop('disabled', true);
 
       } else {
+        // Reset jika tidak ada yang dipilih
         $('#kolom_siswa').addClass('hidden');
         $('#kolom_guru').addClass('hidden');
-        $(idKelasSiswa).prop('required', false);
-        $(idKelasGuru).prop('required', false);
-        $('#kode_guru').prop('required', false);
+        $(idKelasSiswa).prop('required', false).prop('disabled', true);
+        $(idKelasGuru).prop('required', false).prop('disabled', true);
+        $(idEmail).prop('required', false).prop('disabled', true);
       }
     });
 
-    // Inisialisasi state disabled
+    // Inisialisasi awal: matikan kolom dinamis sebelum peran dipilih
     $('#kelas_siswa').prop('disabled', true);
     $('#kelas_guru').prop('disabled', true);
+    $('#email').prop('disabled', true);
   });
 </script>
 {% endblock %}
