@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load auth_extras %} {% block title %}
+  Evaluasi Akhir - Bimbaka
+{% endblock %}
+
+{% block content %}
+<div class="flex flex-col w-full max-w-2xl mx-auto items-center">
+
+  {% if page_obj %}
+    <div class="w-full p-6 sm:p-10 rounded-lg shadow-xl" style="background-color: #fefefe;">
+
+      <div class="text-center mb-4">
+        <p class="text-gray-600">Selamat datang di Evaluasi Akhir! Pilih jawaban yang tepat.</p>
+        <p class="text-gray-600">Kamu bisa!</p>
+      </div>
+
+      <div class="w-full my-6">
+        <div class="w-full bg-[#caf0f8] rounded-full h-2.5">
+          <div class="h-2.5 rounded-full transition-all duration-300" style="background-color: #00B4D8; width: {{ progress_percentage }}%"></div>
+        </div>
+      </div>
+
+      <p class="text-sm font-semibold text-gray-500 mb-8 text-center">Pertanyaan {{ page_obj.number }} dari {{ page_obj.paginator.count }}</p>
+
+      {% for soal in page_obj %}
+        <form method="post" action="{% url 'evaluasi' %}?page={{ page_obj.number }}">
+          {% csrf_token %}
+
+          <div class="text-center mb-10 min-h-[120px]">
+            {% if soal.type == 'visual' %}
+              <div class="flex justify-center items-center space-x-4 text-4xl sm:text-5xl">
+                <div class="flex flex-wrap justify-center">
+                  {% for i in soal.a_range %}{{ soal.icon }}{% endfor %}
+                </div>
+                <span class="text-gray-500 text-3xl sm:text-4xl">{{ soal.op }}</span>
+                <div class="flex flex-wrap justify-center">
+                  {% for i in soal.b_range %}{{ soal.icon }}{% endfor %}
+                </div>
+                <span class="text-gray-500 text-3xl sm:text-4xl">=</span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mt-6">{{ soal.question_text }}</h2>
+            {% else %}
+              <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 mt-6">
+                {{ soal.question_text }}
+              </h2>
+            {% endif %}
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 sm:gap-6 mb-10">
+            {% for choice in soal.choices %}
+              <label class="block">
+                <input type="radio" name="jawaban" value="{{ choice }}" class="sr-only peer" required
+                       {% if jawaban_chosen == choice %}checked{% endif %} />
+
+                <div class="p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 text-center
+                            bg-[#fefefe] border-[#F5B7B1] text-[#00B4D8]  hover:border-[#00B4D8]                          peer-checked:bg-[#00B4D8] peer-checked:border-[#0077B6] peer-checked:text-white peer-checked:font-bold  ">
+
+                  <span class="block text-3xl font-bold">{{ choice }}</span>
+                  <span class="block text-lg">{{ choice|to_terbilang }}</span>
+                </div>
+              </label>
+            {% endfor %}
+          </div>
+
+          <div class="flex justify-center">
+            {% if page_obj.has_next %}
+              <button type="submit" class="w-full sm:w-auto text-white font-bold py-3 px-10 rounded-full shadow-lg transition-transform hover:scale-105" style="background-color: #00B4D8;">
+                Next Question <i class="fa-solid fa-arrow-right ml-2"></i>
+              </button>
+            {% else %}
+              <button type="submit" class="w-full sm:w-auto text-white font-bold py-3 px-10 rounded-full shadow-lg transition-transform hover:scale-105" style="background-color: #0077B6;">
+                🎯 Selesai Evaluasi
+              </button>
+            {% endif %}
+          </div>
+        </form>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <div class="w-full p-8 text-center rounded-lg shadow-xl" style="background-color: #fefefe;">
+      <div class="mb-6">
+        <i class="fas fa-flag-checkered text-6xl" style="color: #0077B6;"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Siap untuk Evaluasi Akhir?</h2>
+      <p class="text-gray-600 mb-6">Ini akan menguji semua materi yang telah kamu pelajari. Semoga berhasil!</p>
+      <a href="{% url 'evaluasi' %}?start=1" class="inline-block text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform hover:scale-105" style="background-color: #00B4D8;">
+        🚀 Mulai Evaluasi
+      </a>
+
+      {% if latest_evaluasi %}
+        <div class="mt-6 text-sm text-gray-500">
+          <p>Nilai terakhirmu: <strong class="text-lg text-gray-700">{{ latest_evaluasi.nilai|floatformat:0 }}</strong></p>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

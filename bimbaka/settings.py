@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'belajar',
 ]
 
 MIDDLEWARE = [
@@ -140,6 +141,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Login settings
+
+LOGIN_URL = 'masuk'
+LOGIN_REDIRECT_URL = 'beranda'
+LOGOUT_REDIRECT_URL = 'masuk'
+
+# Konfigurasi Media (Upload User)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Security settings for production
 
 if not DEBUG:
     SECURE_SSL_REDIRECT = True

@@ -1,0 +1,101 @@
+NAMA,KELAS,Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,Q15,Q16,Q17,Q18,NILAI_1,NILAI_2,NILAI_3,NILAI_4,NILAI_5,NILAI_6,TOTAL_NILAI,REKOMENDASI_MATERI
+Siswa_Gen_1,Kelas 4,B,D,C,A,C,A,A,D,C,B,C,C,B,C,A,B,C,B,100.0,66.67,100.0,100.0,100.0,100.0,94.44,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_2,Kelas 4,B,D,C,D,D,D,A,B,C,B,C,B,B,C,A,D,A,D,100.0,33.33,66.67,66.67,100.0,0.0,61.11,"Materi 6: Perkalian dengan 3, 4, 6, 7, 8, dan 9"
+Siswa_Gen_3,Kelas 4,B,D,C,A,C,D,C,C,C,B,C,C,B,C,A,B,C,B,100.0,100.0,33.33,100.0,100.0,100.0,88.89,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_4,Kelas 4,B,B,C,A,D,D,B,D,D,C,D,C,D,C,A,D,C,B,66.67,66.67,33.33,33.33,66.67,66.67,55.56,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_5,Kelas 4,C,D,C,A,D,D,A,A,A,B,C,A,C,C,A,A,C,B,66.67,66.67,33.33,66.67,66.67,66.67,61.11,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_6,Kelas 4,B,D,C,A,A,A,A,D,C,B,C,C,B,C,A,B,C,B,100.0,33.33,100.0,100.0,100.0,100.0,88.89,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_7,Kelas 4,B,C,D,D,C,B,A,D,C,D,C,C,D,C,C,B,C,A,33.33,33.33,100.0,66.67,33.33,66.67,55.55,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_8,Kelas 4,C,B,C,A,C,C,A,D,C,B,A,C,B,C,D,A,C,B,33.33,66.67,100.0,66.67,66.67,66.67,66.67,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_9,Kelas 4,A,D,A,D,D,D,A,D,B,D,A,B,A,D,A,B,D,D,33.33,33.33,66.67,0.0,33.33,33.33,33.33,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_10,Kelas 4,B,D,C,A,A,D,B,A,D,B,C,C,C,C,A,B,C,B,100.0,66.67,0.0,100.0,66.67,100.0,72.22,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_11,Kelas 4,B,D,A,D,D,D,C,D,B,B,C,C,B,B,A,B,B,B,66.67,33.33,33.33,100.0,66.67,66.67,61.11,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_12,Kelas 4,B,D,C,A,C,D,A,D,C,B,C,C,B,C,D,B,C,B,100.0,100.0,100.0,100.0,66.67,100.0,94.44,Materi 5: Perkalian dengan 10
+Siswa_Gen_13,Kelas 4,B,D,C,A,A,A,A,D,D,C,C,C,B,C,A,B,C,C,100.0,33.33,66.67,66.67,100.0,66.67,72.22,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_14,Kelas 4,B,D,C,A,A,D,A,D,C,D,D,B,B,C,A,B,C,B,100.0,66.67,100.0,0.0,100.0,100.0,77.78,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_15,Kelas 4,B,D,C,A,C,A,A,B,B,A,C,D,D,C,A,B,C,B,100.0,66.67,33.33,33.33,66.67,100.0,66.67,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_16,Kelas 4,A,D,D,C,A,B,A,D,D,B,C,A,A,A,A,B,D,C,33.33,0.0,66.67,66.67,33.33,33.33,38.89,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_17,Kelas 4,A,D,C,A,C,D,D,A,C,C,A,D,B,C,A,D,C,B,66.67,100.0,33.33,0.0,100.0,66.67,61.11,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_18,Kelas 4,B,D,C,A,C,D,A,D,C,B,B,D,B,C,A,B,C,B,100.0,100.0,100.0,33.33,100.0,100.0,88.89,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_19,Kelas 4,B,D,C,A,C,D,A,D,C,B,C,C,A,C,A,B,C,B,100.0,100.0,100.0,100.0,66.67,100.0,94.44,Materi 5: Perkalian dengan 10
+Siswa_Gen_20,Kelas 4,A,D,C,C,B,B,C,D,A,B,B,C,B,A,D,C,C,D,66.67,0.0,33.33,66.67,33.33,33.33,38.89,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_21,Kelas 4,C,D,C,A,C,D,A,D,C,B,C,C,B,C,A,C,D,B,66.67,100.0,100.0,100.0,100.0,33.33,83.33,"Materi 6: Perkalian dengan 3, 4, 6, 7, 8, dan 9"
+Siswa_Gen_22,Kelas 4,B,D,C,C,B,B,D,C,C,C,C,D,B,B,B,B,C,B,100.0,0.0,33.33,33.33,33.33,100.0,50.0,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_23,Kelas 4,A,D,C,A,C,B,A,D,A,B,D,C,C,D,A,B,C,B,66.67,66.67,66.67,66.67,33.33,100.0,66.67,Materi 5: Perkalian dengan 10
+Siswa_Gen_24,Kelas 4,B,D,C,A,C,A,D,D,C,A,D,C,D,B,A,B,A,B,100.0,66.67,66.67,33.33,33.33,66.67,61.11,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_25,Kelas 4,B,D,C,A,C,D,A,C,C,B,C,C,A,C,A,B,C,B,100.0,100.0,66.67,100.0,66.67,100.0,88.89,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_26,Kelas 4,A,C,C,B,C,B,A,A,D,B,B,C,B,B,A,C,C,D,33.33,33.33,33.33,66.67,66.67,33.33,44.44,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_27,Kelas 4,D,C,C,A,C,D,A,D,C,B,C,C,A,B,A,B,C,B,33.33,100.0,100.0,100.0,33.33,100.0,77.78,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_28,Kelas 4,D,D,C,A,C,D,A,D,C,B,C,C,B,C,A,A,B,C,66.67,100.0,100.0,100.0,100.0,0.0,77.78,"Materi 6: Perkalian dengan 3, 4, 6, 7, 8, dan 9"
+Siswa_Gen_29,Kelas 4,B,D,B,A,C,D,A,D,C,B,C,A,B,C,A,D,C,A,66.67,100.0,100.0,66.67,100.0,33.33,77.78,"Materi 6: Perkalian dengan 3, 4, 6, 7, 8, dan 9"
+Siswa_Gen_30,Kelas 4,B,D,C,C,D,C,A,D,C,B,A,B,B,A,A,B,C,B,100.0,0.0,100.0,33.33,66.67,100.0,66.67,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_31,Kelas 4,B,A,C,A,D,D,A,D,C,B,C,D,B,C,A,C,C,B,66.67,66.67,100.0,66.67,100.0,66.67,77.78,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_32,Kelas 4,D,D,C,A,C,D,D,C,A,A,C,C,B,D,A,B,C,B,66.67,100.0,0.0,66.67,66.67,100.0,66.67,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_33,Kelas 4,B,D,C,A,D,D,A,D,C,D,C,C,A,C,A,B,C,A,100.0,66.67,100.0,66.67,66.67,66.67,77.78,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_34,Kelas 4,B,D,C,A,C,D,A,D,C,B,C,C,B,C,A,B,C,B,100.0,100.0,100.0,100.0,100.0,100.0,100.0,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_35,Kelas 4,B,D,C,A,C,D,A,D,C,B,C,C,B,B,A,B,C,B,100.0,100.0,100.0,100.0,66.67,100.0,94.44,Materi 5: Perkalian dengan 10
+Siswa_Gen_36,Kelas 4,D,D,C,B,C,D,A,C,C,D,C,C,D,C,D,D,C,B,66.67,66.67,66.67,66.67,33.33,66.67,61.11,Materi 5: Perkalian dengan 10
+Siswa_Gen_37,Kelas 4,D,D,D,A,C,C,A,D,D,A,C,C,A,B,A,B,C,A,33.33,66.67,66.67,66.67,33.33,66.67,55.56,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_38,Kelas 4,B,D,C,A,C,D,A,C,C,B,C,C,B,C,A,B,C,B,100.0,100.0,66.67,100.0,100.0,100.0,94.44,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_39,Kelas 4,B,D,D,C,D,A,D,D,C,B,C,C,B,C,C,B,C,C,66.67,0.0,66.67,100.0,66.67,66.67,61.11,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_40,Kelas 4,A,D,A,B,C,D,A,D,B,D,C,B,B,A,A,A,B,C,33.33,66.67,66.67,33.33,66.67,0.0,44.45,"Materi 6: Perkalian dengan 3, 4, 6, 7, 8, dan 9"
+Siswa_Gen_41,Kelas 4,C,D,C,D,D,D,A,A,A,C,C,D,C,D,A,B,C,A,66.67,33.33,33.33,33.33,33.33,66.67,44.44,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_42,Kelas 4,C,A,D,B,A,A,C,B,C,C,C,C,B,C,A,B,C,B,0.0,0.0,33.33,66.67,100.0,100.0,50.0,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_43,Kelas 4,B,D,C,D,C,D,A,D,C,C,C,C,B,C,A,B,C,B,100.0,66.67,100.0,66.67,100.0,100.0,88.89,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_44,Kelas 4,C,B,C,B,C,D,A,A,C,C,A,D,B,C,A,B,B,B,33.33,66.67,66.67,0.0,100.0,66.67,55.56,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_45,Kelas 4,B,D,B,A,C,D,A,C,A,B,A,A,B,C,D,B,C,B,66.67,100.0,33.33,33.33,66.67,100.0,66.67,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_46,Kelas 4,C,D,C,C,C,D,D,B,A,B,A,C,B,C,A,D,C,A,66.67,66.67,0.0,66.67,100.0,33.33,55.56,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_47,Kelas 4,D,D,B,B,D,A,B,D,B,B,C,D,A,D,B,D,C,D,33.33,0.0,33.33,66.67,0.0,33.33,27.78,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_48,Kelas 4,B,C,C,C,C,B,A,D,C,D,C,C,A,B,A,A,C,C,66.67,33.33,100.0,66.67,33.33,33.33,55.55,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_49,Kelas 4,B,D,C,A,C,D,A,D,C,B,C,C,B,C,A,B,C,A,100.0,100.0,100.0,100.0,100.0,66.67,94.44,"Materi 6: Perkalian dengan 3, 4, 6, 7, 8, dan 9"
+Siswa_Gen_50,Kelas 4,A,D,C,A,C,D,A,B,A,D,B,C,D,C,B,B,C,B,66.67,100.0,33.33,33.33,33.33,100.0,61.11,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_51,Kelas 4,C,A,C,A,A,C,C,D,D,B,C,D,B,B,B,B,D,B,33.33,33.33,33.33,66.67,33.33,66.67,44.44,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_52,Kelas 4,A,D,D,A,C,D,A,B,B,B,B,C,D,D,D,D,B,A,33.33,100.0,33.33,66.67,0.0,0.0,38.89,Materi 5: Perkalian dengan 10
+Siswa_Gen_53,Kelas 4,A,D,C,A,C,D,A,D,C,B,C,B,B,C,A,B,C,B,66.67,100.0,100.0,66.67,100.0,100.0,88.89,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_54,Kelas 4,D,D,C,A,C,D,D,D,A,C,B,A,C,C,A,B,C,D,66.67,100.0,33.33,0.0,66.67,66.67,55.56,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_55,Kelas 4,B,D,C,A,C,D,A,B,D,B,C,C,B,C,D,B,B,B,100.0,100.0,33.33,100.0,66.67,66.67,77.78,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_56,Kelas 4,B,D,C,A,C,D,C,D,C,C,D,A,B,D,A,B,D,B,100.0,100.0,66.67,0.0,66.67,66.67,66.67,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_57,Kelas 4,B,D,C,A,C,D,A,D,C,C,C,D,B,C,A,B,C,B,100.0,100.0,100.0,33.33,100.0,100.0,88.89,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_58,Kelas 4,A,D,C,A,C,D,B,A,B,B,C,B,B,C,A,D,B,D,66.67,100.0,0.0,66.67,100.0,0.0,55.56,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_59,Kelas 4,B,D,A,A,C,D,C,A,D,B,C,D,B,C,A,A,C,B,66.67,100.0,0.0,66.67,100.0,66.67,66.67,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_60,Kelas 4,A,D,B,A,D,D,C,C,C,B,D,A,D,C,D,C,B,A,33.33,66.67,33.33,33.33,33.33,0.0,33.33,"Materi 6: Perkalian dengan 3, 4, 6, 7, 8, dan 9"
+Siswa_Gen_61,Kelas 4,C,D,C,A,C,D,B,D,D,B,C,C,C,A,B,B,D,B,66.67,100.0,33.33,100.0,0.0,66.67,61.11,Materi 5: Perkalian dengan 10
+Siswa_Gen_62,Kelas 4,B,D,C,A,C,D,A,D,C,B,D,D,B,C,A,B,C,B,100.0,100.0,100.0,33.33,100.0,100.0,88.89,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_63,Kelas 4,B,D,C,A,C,D,A,D,C,B,C,C,C,D,C,B,D,C,100.0,100.0,100.0,100.0,0.0,33.33,72.22,Materi 5: Perkalian dengan 10
+Siswa_Gen_64,Kelas 4,B,B,C,B,A,D,A,D,C,A,D,D,A,D,A,B,C,C,66.67,33.33,100.0,0.0,33.33,66.67,50.0,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_65,Kelas 4,B,A,B,A,D,D,B,B,D,B,A,C,B,D,A,B,A,C,33.33,66.67,0.0,66.67,66.67,33.33,44.45,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_66,Kelas 4,B,D,A,A,B,D,C,B,D,B,C,A,B,B,A,D,A,C,66.67,66.67,0.0,66.67,66.67,0.0,44.45,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_67,Kelas 4,B,D,C,A,C,D,A,D,C,B,C,C,B,C,A,B,C,B,100.0,100.0,100.0,100.0,100.0,100.0,100.0,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_68,Kelas 4,B,D,C,A,A,D,A,D,C,C,D,B,B,C,A,B,C,B,100.0,66.67,100.0,0.0,100.0,100.0,77.78,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_69,Kelas 4,B,D,C,A,D,D,B,D,C,B,C,C,B,A,A,B,C,B,100.0,66.67,66.67,100.0,66.67,100.0,83.33,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_70,Kelas 4,B,D,C,A,C,D,A,D,C,B,C,C,B,C,A,B,C,B,100.0,100.0,100.0,100.0,100.0,100.0,100.0,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_71,Kelas 4,C,C,B,D,C,C,A,D,A,B,A,C,B,C,A,A,C,B,0.0,33.33,66.67,66.67,100.0,66.67,55.56,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_72,Kelas 4,B,D,C,B,C,D,A,D,B,B,C,C,B,D,A,B,C,B,100.0,66.67,66.67,100.0,66.67,100.0,83.33,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_73,Kelas 4,B,D,C,A,C,C,C,A,D,D,C,C,B,D,D,D,A,B,100.0,66.67,0.0,66.67,33.33,33.33,50.0,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_74,Kelas 4,B,A,D,A,C,D,A,D,D,B,D,D,D,C,B,B,C,B,33.33,100.0,66.67,33.33,33.33,100.0,61.11,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_75,Kelas 4,B,D,C,A,C,D,A,C,A,B,A,C,A,C,C,B,C,B,100.0,100.0,33.33,66.67,33.33,100.0,72.22,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_76,Kelas 4,C,A,B,A,D,C,D,A,A,B,C,D,C,C,A,B,C,B,0.0,33.33,0.0,66.67,66.67,100.0,44.45,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_77,Kelas 4,D,A,D,A,A,B,C,A,C,D,B,A,B,C,A,C,D,D,0.0,33.33,33.33,0.0,100.0,0.0,27.78,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_78,Kelas 4,B,B,C,B,A,D,A,D,B,B,B,B,B,C,A,B,B,D,66.67,33.33,66.67,33.33,100.0,33.33,55.55,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_79,Kelas 4,B,D,C,A,C,D,A,D,C,B,C,C,A,C,B,B,C,B,100.0,100.0,100.0,100.0,33.33,100.0,88.89,Materi 5: Perkalian dengan 10
+Siswa_Gen_80,Kelas 4,B,A,B,B,A,C,A,D,A,B,C,C,B,C,A,B,C,B,33.33,0.0,66.67,100.0,100.0,100.0,66.67,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_81,Kelas 4,A,B,C,A,C,C,B,B,B,A,C,B,D,D,D,B,D,D,33.33,66.67,0.0,33.33,0.0,33.33,27.78,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_82,Kelas 4,B,D,C,B,C,D,A,D,C,B,C,C,A,D,A,B,C,B,100.0,66.67,100.0,100.0,33.33,100.0,83.33,Materi 5: Perkalian dengan 10
+Siswa_Gen_83,Kelas 4,B,B,C,A,C,D,A,D,C,B,B,D,B,C,A,B,D,B,66.67,100.0,100.0,33.33,100.0,66.67,77.78,Materi 4: Perkalian dengan 2 dan 5
+Siswa_Gen_84,Kelas 4,C,D,C,D,D,B,A,A,C,C,C,C,C,A,D,A,C,C,66.67,0.0,66.67,66.67,0.0,33.33,38.89,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_85,Kelas 4,B,D,C,A,C,D,A,D,C,B,C,C,B,C,A,D,C,D,100.0,100.0,100.0,100.0,100.0,33.33,88.89,"Materi 6: Perkalian dengan 3, 4, 6, 7, 8, dan 9"
+Siswa_Gen_86,Kelas 4,B,D,C,A,B,C,A,D,C,B,C,A,D,C,D,B,C,B,100.0,33.33,100.0,66.67,33.33,100.0,72.22,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_87,Kelas 4,D,A,A,A,D,D,D,B,A,B,C,C,B,C,A,C,C,B,0.0,66.67,0.0,100.0,100.0,66.67,55.56,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_88,Kelas 4,B,D,C,A,C,D,A,D,C,B,C,C,B,C,A,B,C,B,100.0,100.0,100.0,100.0,100.0,100.0,100.0,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_89,Kelas 4,B,D,C,D,C,D,D,A,D,B,C,C,B,C,A,D,C,A,100.0,66.67,0.0,100.0,100.0,33.33,66.67,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_90,Kelas 4,A,C,A,C,B,A,D,D,B,B,D,D,B,C,C,B,D,B,0.0,0.0,33.33,33.33,66.67,66.67,33.33,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_91,Kelas 4,A,D,A,A,C,D,A,D,C,B,B,D,D,B,B,B,C,B,33.33,100.0,100.0,33.33,0.0,100.0,61.11,Materi 5: Perkalian dengan 10
+Siswa_Gen_92,Kelas 4,B,D,D,A,D,D,B,D,D,B,B,C,B,D,A,B,A,A,66.67,66.67,33.33,66.67,66.67,33.33,55.56,Materi 3: Perkalian dengan 1 dan 0
+Siswa_Gen_93,Kelas 4,B,D,D,B,C,B,A,D,C,B,D,C,B,B,A,B,C,B,66.67,33.33,100.0,66.67,66.67,100.0,72.22,Materi 2: Sifat Komutatif (Sifat Pertukaran)
+Siswa_Gen_94,Kelas 4,A,B,B,A,D,D,A,D,C,B,C,C,D,C,C,B,C,B,0.0,66.67,100.0,100.0,33.33,100.0,66.67,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_95,Kelas 4,D,B,C,B,B,D,B,D,C,D,C,B,B,C,A,D,C,B,33.33,33.33,66.67,33.33,100.0,66.67,55.55,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_96,Kelas 4,B,D,D,C,C,D,A,D,C,B,A,C,D,C,A,D,D,A,66.67,66.67,100.0,66.67,66.67,0.0,61.11,"Materi 6: Perkalian dengan 3, 4, 6, 7, 8, dan 9"
+Siswa_Gen_97,Kelas 4,A,D,D,A,C,C,D,C,C,B,A,A,B,B,A,A,B,A,33.33,66.67,33.33,33.33,66.67,0.0,38.89,"Materi 6: Perkalian dengan 3, 4, 6, 7, 8, dan 9"
+Siswa_Gen_98,Kelas 4,B,D,B,A,D,D,A,B,A,A,C,A,D,C,C,D,B,D,66.67,66.67,33.33,33.33,33.33,0.0,38.89,"Materi 6: Perkalian dengan 3, 4, 6, 7, 8, dan 9"
+Siswa_Gen_99,Kelas 4,B,B,B,A,C,B,B,D,C,B,C,B,B,C,A,B,C,B,33.33,66.67,66.67,66.67,100.0,100.0,72.22,Materi 1: Perkalian sebagai Penjumlahan Berulang
+Siswa_Gen_100,Kelas 4,B,D,A,A,A,D,A,B,D,B,C,C,B,C,A,B,C,B,66.67,66.67,33.33,100.0,100.0,100.0,77.78,Materi 3: Perkalian dengan 1 dan 0
