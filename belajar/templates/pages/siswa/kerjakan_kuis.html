@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div class="sticky top-0 bg-white z-10 border-b pb-4 mb-6 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800">{{ kuis.judul }}</h1>
+            <p class="text-gray-500 text-sm">Jawab dengan teliti.</p>
+        </div>
+        <div class="bg-red-100 text-red-600 px-4 py-2 rounded-lg font-mono font-bold text-xl flex items-center shadow-sm">
+            <i class="fa-regular fa-clock mr-2"></i>
+            <span id="timer">00:00</span>
+        </div>
+    </div>
+
+    <form method="POST" id="quizForm">
+        {% csrf_token %}
+
+        <div class="space-y-8">
+            {% for soal in kuis.daftar_soal.all %}
+            <div class="p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition bg-gray-50">
+                <p class="font-semibold text-lg mb-4 text-gray-800">{{ forloop.counter }}. {{ soal.pertanyaan }}</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <label class="cursor-pointer flex items-center p-3 bg-white border rounded hover:bg-blue-50 transition">
+                        <input type="radio" name="soal_{{ soal.id }}" value="A" class="w-4 h-4 text-blue-600 mr-3" required>
+                        <span>A. {{ soal.opsi_a }}</span>
+                    </label>
+                    <label class="cursor-pointer flex items-center p-3 bg-white border rounded hover:bg-blue-50 transition">
+                        <input type="radio" name="soal_{{ soal.id }}" value="B" class="w-4 h-4 text-blue-600 mr-3">
+                        <span>B. {{ soal.opsi_b }}</span>
+                    </label>
+                    <label class="cursor-pointer flex items-center p-3 bg-white border rounded hover:bg-blue-50 transition">
+                        <input type="radio" name="soal_{{ soal.id }}" value="C" class="w-4 h-4 text-blue-600 mr-3">
+                        <span>C. {{ soal.opsi_c }}</span>
+                    </label>
+                    <label class="cursor-pointer flex items-center p-3 bg-white border rounded hover:bg-blue-50 transition">
+                        <input type="radio" name="soal_{{ soal.id }}" value="D" class="w-4 h-4 text-blue-600 mr-3">
+                        <span>D. {{ soal.opsi_d }}</span>
+                    </label>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-8 border-t pt-6 text-right">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition transform hover:-translate-y-1">
+                Selesai & Kumpulkan <i class="fa-solid fa-paper-plane ml-2"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Timer Javascript
+    let timeLimit = {{ kuis.durasi_menit }} * 60;
+    const timerElement = document.getElementById('timer');
+    const form = document.getElementById('quizForm');
+
+    const countdown = setInterval(() => {
+        const minutes = Math.floor(timeLimit / 60);
+        let seconds = timeLimit % 60;
+
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        timerElement.innerText = `${minutes}:${seconds}`;
+
+        if (timeLimit <= 0) {
+            clearInterval(countdown);
+            alert("Waktu Habis! Jawaban Anda akan dikirim otomatis.");
+            form.submit();
+        } else {
+            timeLimit--;
+            if (timeLimit < 60) {
+                timerElement.parentElement.classList.add('animate-pulse', 'bg-red-200');
+            }
+        }
+    }, 1000);
+</script>
+{% endblock %}

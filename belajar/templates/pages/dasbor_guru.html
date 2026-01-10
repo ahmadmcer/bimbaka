@@ -4,7 +4,7 @@
 {% block title %}Dasbor Guru - {{ request.user.profile.get_kelas_display }}{% endblock %}
 
 {% block content %}
-<div class="flex flex-col w-full space-y-6">
+<div class="flex flex-col w-full space-y-8">
 
   <div class="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm border border-gray-100">
     <div>
@@ -55,8 +55,35 @@
     </div>
   </div>
 
-  <div class="grid lg:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <a href="{% url 'daftar_kuis_guru' %}" class="flex items-center p-6 bg-white border border-indigo-100 rounded-xl shadow-sm hover:shadow-md hover:bg-indigo-50 transition group">
+        <div class="p-4 bg-indigo-100 text-indigo-600 rounded-full group-hover:bg-white group-hover:scale-110 transition duration-300">
+            <i class="fa-solid fa-pen-to-square text-2xl"></i>
+        </div>
+        <div class="ml-4 flex-grow">
+            <h3 class="text-lg font-bold text-gray-800 group-hover:text-indigo-700">Manajemen Kuis</h3>
+            <p class="text-sm text-gray-500 group-hover:text-indigo-600">Buat soal & kelola ujian kelas</p>
+        </div>
+        <div class="text-gray-300 group-hover:text-indigo-400">
+            <i class="fa-solid fa-chevron-right"></i>
+        </div>
+    </a>
 
+    <a href="{% url 'guru_nilai' %}" class="flex items-center p-6 bg-white border border-emerald-100 rounded-xl shadow-sm hover:shadow-md hover:bg-emerald-50 transition group">
+        <div class="p-4 bg-emerald-100 text-emerald-600 rounded-full group-hover:bg-white group-hover:scale-110 transition duration-300">
+            <i class="fa-solid fa-chart-line text-2xl"></i>
+        </div>
+        <div class="ml-4 flex-grow">
+            <h3 class="text-lg font-bold text-gray-800 group-hover:text-emerald-700">Rekap Nilai Siswa</h3>
+            <p class="text-sm text-gray-500 group-hover:text-emerald-600">Pantau detail nilai evaluasi & kuis</p>
+        </div>
+        <div class="text-gray-300 group-hover:text-emerald-400">
+            <i class="fa-solid fa-chevron-right"></i>
+        </div>
+    </a>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-6">
     <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
         <i class="fa-solid fa-chart-simple text-blue-500 mr-2"></i> Rata-rata Pemahaman Materi
@@ -162,7 +189,7 @@
           datasets: [{
               label: 'Rata-rata Nilai Siswa',
               data: {{ chart_data|safe }},
-              backgroundColor: 'rgba(59, 130, 246, 0.6)', // Warna biru transparan
+              backgroundColor: 'rgba(59, 130, 246, 0.6)',
               borderColor: 'rgba(59, 130, 246, 1)',
               borderWidth: 1,
               borderRadius: 4,
@@ -176,21 +203,11 @@
               y: {
                   beginAtZero: true,
                   max: 100,
-                  grid: {
-                    color: '#f3f4f6'
-                  }
+                  grid: { color: '#f3f4f6' }
               },
-              x: {
-                  grid: {
-                    display: false
-                  }
-              }
+              x: { grid: { display: false } }
           },
-          plugins: {
-            legend: {
-              display: false
-            }
-          }
+          plugins: { legend: { display: false } }
       }
   });
 
@@ -209,5 +226,4 @@
       });
   });
 </script>
-
 {% endblock %}

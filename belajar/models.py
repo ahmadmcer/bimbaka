@@ -394,3 +394,50 @@ class Profile(models.Model):
         kelas_display = self.get_kelas_display() if self.kelas else 'Belum Set Kelas'
         nama = self.user.get_full_name() or self.user.username
         return f'{nama} - {kelas_display}'
+
+class Kuis(models.Model):
+    KELAS_CHOICES = [
+        ('kelas_2', 'Kelas 2'),
+        ('kelas_3', 'Kelas 3'),
+    ]
+
+    judul = models.CharField(max_length=200, verbose_name="Judul Kuis")
+    deskripsi = models.TextField(blank=True, verbose_name="Deskripsi Singkat")
+    guru = models.ForeignKey(User, on_delete=models.CASCADE, related_name='kuis_dibuat')
+    kelas_target = models.CharField(max_length=20, choices=KELAS_CHOICES, verbose_name="Untuk Kelas")
+    durasi_menit = models.IntegerField(default=10, help_text="Durasi dalam menit")
+    is_active = models.BooleanField(default=True, verbose_name="Aktifkan Kuis")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.judul} ({self.get_kelas_target_display()})"
+
+class SoalKuis(models.Model):
+    JAWABAN_CHOICES = [
+        ('A', 'A'),
+        ('B', 'B'),
+        ('C', 'C'),
+        ('D', 'D'),
+    ]
+
+    kuis = models.ForeignKey(Kuis, on_delete=models.CASCADE, related_name='daftar_soal')
+    pertanyaan = models.TextField()
+    opsi_a = models.CharField(max_length=200, verbose_name="Pilihan A")
+    opsi_b = models.CharField(max_length=200, verbose_name="Pilihan B")
+    opsi_c = models.CharField(max_length=200, verbose_name="Pilihan C")
+    opsi_d = models.CharField(max_length=200, verbose_name="Pilihan D")
+    jawaban_benar = models.CharField(max_length=1, choices=JAWABAN_CHOICES)
+
+    def __str__(self):
+        return f"Soal: {self.pertanyaan[:50]}..."
+
+class RiwayatKuis(models.Model):
+    kuis = models.ForeignKey(Kuis, on_delete=models.CASCADE)
+    siswa = models.ForeignKey(User, on_delete=models.CASCADE, related_name='riwayat_kuis')
+    nilai = models.FloatField()
+    benar = models.IntegerField()
+    salah = models.IntegerField()
+    tanggal_mengerjakan = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.siswa.username} - {self.kuis.judul} - {self.nilai}"
