@@ -446,7 +446,7 @@ def tambah_soal(request, kuis_id):
     kuis = get_object_or_404(Kuis, id=kuis_id, guru=request.user)
     soal_list = kuis.daftar_soal.all()
     if request.method == 'POST':
-        form = SoalKuisForm(request.POST)
+        form = SoalKuisForm(request.POST, request.FILES)
         if form.is_valid():
             soal = form.save(commit=False)
             soal.kuis = kuis

@@ -422,6 +422,15 @@ class SoalKuis(models.Model):
 
     kuis = models.ForeignKey(Kuis, on_delete=models.CASCADE, related_name='daftar_soal')
     pertanyaan = models.TextField()
+
+    gambar = models.ImageField(
+        upload_to='soal_images/',
+        blank=True,
+        null=True,
+        verbose_name="Gambar Soal",
+        help_text="Upload gambar jika soal membutuhkan ilustrasi visual"
+    )
+
     opsi_a = models.CharField(max_length=200, verbose_name="Pilihan A")
     opsi_b = models.CharField(max_length=200, verbose_name="Pilihan B")
     opsi_c = models.CharField(max_length=200, verbose_name="Pilihan C")

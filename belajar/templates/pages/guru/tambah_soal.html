@@ -20,7 +20,7 @@
                     <h3 class="font-bold text-white"><i class="fa-solid fa-plus-circle mr-2"></i>Tambah Soal Baru</h3>
                 </div>
 
-                <form method="POST" class="p-6 space-y-5">
+                <form method="POST" enctype="multipart/form-data" class="p-6 space-y-5">
                     {% csrf_token %}
 
                     <div>
@@ -31,6 +31,14 @@
                             document.querySelector('#id_pertanyaan').classList.add('w-full', 'p-3', 'border', 'rounded-lg', 'focus:ring-indigo-500', 'focus:border-indigo-500');
                             document.querySelector('#id_pertanyaan').setAttribute('rows', '3');
                         </script>
+                    </div>
+
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                        <label class="block text-sm font-bold text-blue-800 mb-2">
+                            <i class="fa-regular fa-image mr-1"></i> Gambar Soal (Opsional)
+                        </label>
+                        {{ form.gambar }}
+                        <p class="text-xs text-blue-500 mt-1">Upload gambar jika soal membutuhkan ilustrasi visual (cocok untuk anak SD).</p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -87,7 +95,13 @@
                     <div class="text-sm border-b pb-3 last:border-0">
                         <div class="flex items-start">
                             <span class="font-bold text-gray-500 mr-2">{{ forloop.counter }}.</span>
-                            <div>
+                            <div class="w-full">
+                                {% if soal.gambar %}
+                                <div class="mb-2">
+                                    <img src="{{ soal.gambar.url }}" alt="Gambar Soal" class="h-16 w-auto rounded border shadow-sm object-cover">
+                                </div>
+                                {% endif %}
+
                                 <p class="text-gray-800 font-medium line-clamp-2">{{ soal.pertanyaan }}</p>
                                 <div class="mt-1 text-xs text-gray-500 grid grid-cols-2 gap-x-2">
                                     <span class="{% if soal.jawaban_benar == 'A' %}text-green-600 font-bold{% endif %}">A. {{ soal.opsi_a }}</span>

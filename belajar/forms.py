@@ -39,7 +39,7 @@ class KuisForm(forms.ModelForm):
 class SoalKuisForm(forms.ModelForm):
     class Meta:
         model = SoalKuis
-        fields = ['pertanyaan', 'opsi_a', 'opsi_b', 'opsi_c', 'opsi_d', 'jawaban_benar']
+        fields = ['pertanyaan', 'gambar', 'opsi_a', 'opsi_b', 'opsi_c', 'opsi_d', 'jawaban_benar']
         widgets = {
             'pertanyaan': forms.Textarea(attrs={'class': 'w-full p-2 border rounded', 'rows': 3}),
             'opsi_a': forms.TextInput(attrs={'class': 'w-full p-2 border rounded'}),
