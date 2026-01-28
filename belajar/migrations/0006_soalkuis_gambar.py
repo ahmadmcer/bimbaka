@@ -6,13 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('belajar', '0005_kuis_riwayatkuis_soalkuis'),
+        ("belajar", "0005_kuis_riwayatkuis_soalkuis"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='soalkuis',
-            name='gambar',
-            field=models.ImageField(blank=True, help_text='Upload gambar jika soal membutuhkan ilustrasi visual', null=True, upload_to='soal_images/', verbose_name='Gambar Soal'),
+            model_name="soalkuis",
+            name="gambar",
+            field=models.ImageField(
+                blank=True,
+                help_text="Upload gambar jika soal membutuhkan ilustrasi visual",
+                null=True,
+                upload_to="soal_images/",
+                verbose_name="Gambar Soal",
+            ),
         ),
     ]

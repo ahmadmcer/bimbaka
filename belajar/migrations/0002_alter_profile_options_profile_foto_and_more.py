@@ -6,21 +6,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('belajar', '0001_initial'),
+        ("belajar", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='profile',
+            name="profile",
             options={},
         ),
         migrations.AddField(
-            model_name='profile',
-            name='foto',
-            field=models.ImageField(blank=True, null=True, upload_to='profile_pics', verbose_name='Foto Profil'),
+            model_name="profile",
+            name="foto",
+            field=models.ImageField(
+                blank=True,
+                null=True,
+                upload_to="profile_pics",
+                verbose_name="Foto Profil",
+            ),
         ),
         migrations.AlterModelTable(
-            name='profile',
+            name="profile",
             table=None,
         ),
     ]

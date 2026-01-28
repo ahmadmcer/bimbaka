@@ -16,101 +16,323 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='NilaiEvaluasi',
+            name="NilaiEvaluasi",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nilai', models.FloatField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(100.0)], verbose_name='Nilai')),
-                ('total_soal', models.IntegerField(default=0, validators=[django.core.validators.MinValueValidator(0)], verbose_name='Total Soal')),
-                ('jumlah_benar', models.IntegerField(default=0, validators=[django.core.validators.MinValueValidator(0)], verbose_name='Jumlah Benar')),
-                ('durasi_menit', models.PositiveIntegerField(blank=True, null=True, verbose_name='Durasi Pengerjaan (menit)')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='nilai_evaluasi', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "nilai",
+                    models.FloatField(
+                        blank=True,
+                        null=True,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(100.0),
+                        ],
+                        verbose_name="Nilai",
+                    ),
+                ),
+                (
+                    "total_soal",
+                    models.IntegerField(
+                        default=0,
+                        validators=[django.core.validators.MinValueValidator(0)],
+                        verbose_name="Total Soal",
+                    ),
+                ),
+                (
+                    "jumlah_benar",
+                    models.IntegerField(
+                        default=0,
+                        validators=[django.core.validators.MinValueValidator(0)],
+                        verbose_name="Jumlah Benar",
+                    ),
+                ),
+                (
+                    "durasi_menit",
+                    models.PositiveIntegerField(
+                        blank=True, null=True, verbose_name="Durasi Pengerjaan (menit)"
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="nilai_evaluasi",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Nilai Evaluasi Akhir',
-                'verbose_name_plural': 'Nilai Evaluasi Akhir',
-                'db_table': 'nilai_evaluasi',
-                'ordering': ['-created_at'],
+                "verbose_name": "Nilai Evaluasi Akhir",
+                "verbose_name_plural": "Nilai Evaluasi Akhir",
+                "db_table": "nilai_evaluasi",
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='Profile',
+            name="Profile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('kelas', models.CharField(blank=True, choices=[('kelas_2', 'Kelas 2'), ('kelas_3', 'Kelas 3')], max_length=50, null=True, verbose_name='Kelas')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='profile', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "kelas",
+                    models.CharField(
+                        blank=True,
+                        choices=[("kelas_2", "Kelas 2"), ("kelas_3", "Kelas 3")],
+                        max_length=50,
+                        null=True,
+                        verbose_name="Kelas",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="profile",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Profil Pengguna',
-                'verbose_name_plural': 'Profil Pengguna',
-                'db_table': 'profile',
+                "verbose_name": "Profil Pengguna",
+                "verbose_name_plural": "Profil Pengguna",
+                "db_table": "profile",
             },
         ),
         migrations.CreateModel(
-            name='KemajuanBelajar',
+            name="KemajuanBelajar",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('materi', models.CharField(choices=[('materi_1', 'Materi 1'), ('materi_2', 'Materi 2'), ('materi_3', 'Materi 3'), ('materi_4', 'Materi 4'), ('materi_5', 'Materi 5'), ('materi_6', 'Materi 6')], max_length=50, verbose_name='Materi')),
-                ('is_selesai', models.BooleanField(default=False, verbose_name='Selesai')),
-                ('progress_persentase', models.FloatField(default=0.0, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(100.0)], verbose_name='Progress (%)')),
-                ('waktu_mulai', models.DateTimeField(auto_now_add=True)),
-                ('waktu_selesai', models.DateTimeField(blank=True, null=True)),
-                ('catatan', models.TextField(blank=True, verbose_name='Catatan')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='kemajuan_belajar', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "materi",
+                    models.CharField(
+                        choices=[
+                            ("materi_1", "Materi 1"),
+                            ("materi_2", "Materi 2"),
+                            ("materi_3", "Materi 3"),
+                            ("materi_4", "Materi 4"),
+                            ("materi_5", "Materi 5"),
+                            ("materi_6", "Materi 6"),
+                        ],
+                        max_length=50,
+                        verbose_name="Materi",
+                    ),
+                ),
+                (
+                    "is_selesai",
+                    models.BooleanField(default=False, verbose_name="Selesai"),
+                ),
+                (
+                    "progress_persentase",
+                    models.FloatField(
+                        default=0.0,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(100.0),
+                        ],
+                        verbose_name="Progress (%)",
+                    ),
+                ),
+                ("waktu_mulai", models.DateTimeField(auto_now_add=True)),
+                ("waktu_selesai", models.DateTimeField(blank=True, null=True)),
+                ("catatan", models.TextField(blank=True, verbose_name="Catatan")),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="kemajuan_belajar",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Kemajuan Belajar',
-                'verbose_name_plural': 'Kemajuan Belajar',
-                'db_table': 'kemajuan_belajar',
-                'ordering': ['user', 'materi'],
-                'unique_together': {('user', 'materi')},
+                "verbose_name": "Kemajuan Belajar",
+                "verbose_name_plural": "Kemajuan Belajar",
+                "db_table": "kemajuan_belajar",
+                "ordering": ["user", "materi"],
+                "unique_together": {("user", "materi")},
             },
         ),
         migrations.CreateModel(
-            name='JawabanEvaluasi',
+            name="JawabanEvaluasi",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nomor_soal', models.IntegerField(validators=[django.core.validators.MinValueValidator(1)], verbose_name='Nomor Soal')),
-                ('materi_soal', models.CharField(choices=[('materi_1', 'Materi 1'), ('materi_2', 'Materi 2'), ('materi_3', 'Materi 3'), ('materi_4', 'Materi 4'), ('materi_5', 'Materi 5'), ('materi_6', 'Materi 6')], help_text='Materi asal dari soal ini', max_length=50, verbose_name='Materi Soal')),
-                ('soal_pertanyaan', models.TextField(verbose_name='Soal Pertanyaan')),
-                ('pilihan_jawaban', models.JSONField(default=list, help_text='Array pilihan jawaban yang tersedia', verbose_name='Pilihan Jawaban')),
-                ('jawaban_user', models.TextField(blank=True, verbose_name='Jawaban User')),
-                ('jawaban_benar', models.TextField(verbose_name='Jawaban Benar')),
-                ('is_correct', models.BooleanField(default=False, verbose_name='Benar/Tidak')),
-                ('poin', models.FloatField(default=1.0, validators=[django.core.validators.MinValueValidator(0.0)], verbose_name='Poin')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('evaluasi', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='jawaban_evaluasi', to='belajar.nilaievaluasi')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "nomor_soal",
+                    models.IntegerField(
+                        validators=[django.core.validators.MinValueValidator(1)],
+                        verbose_name="Nomor Soal",
+                    ),
+                ),
+                (
+                    "materi_soal",
+                    models.CharField(
+                        choices=[
+                            ("materi_1", "Materi 1"),
+                            ("materi_2", "Materi 2"),
+                            ("materi_3", "Materi 3"),
+                            ("materi_4", "Materi 4"),
+                            ("materi_5", "Materi 5"),
+                            ("materi_6", "Materi 6"),
+                        ],
+                        help_text="Materi asal dari soal ini",
+                        max_length=50,
+                        verbose_name="Materi Soal",
+                    ),
+                ),
+                ("soal_pertanyaan", models.TextField(verbose_name="Soal Pertanyaan")),
+                (
+                    "pilihan_jawaban",
+                    models.JSONField(
+                        default=list,
+                        help_text="Array pilihan jawaban yang tersedia",
+                        verbose_name="Pilihan Jawaban",
+                    ),
+                ),
+                (
+                    "jawaban_user",
+                    models.TextField(blank=True, verbose_name="Jawaban User"),
+                ),
+                ("jawaban_benar", models.TextField(verbose_name="Jawaban Benar")),
+                (
+                    "is_correct",
+                    models.BooleanField(default=False, verbose_name="Benar/Tidak"),
+                ),
+                (
+                    "poin",
+                    models.FloatField(
+                        default=1.0,
+                        validators=[django.core.validators.MinValueValidator(0.0)],
+                        verbose_name="Poin",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "evaluasi",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="jawaban_evaluasi",
+                        to="belajar.nilaievaluasi",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Jawaban Evaluasi',
-                'verbose_name_plural': 'Jawaban Evaluasi',
-                'db_table': 'jawaban_evaluasi',
-                'ordering': ['evaluasi', 'nomor_soal'],
-                'unique_together': {('evaluasi', 'nomor_soal')},
+                "verbose_name": "Jawaban Evaluasi",
+                "verbose_name_plural": "Jawaban Evaluasi",
+                "db_table": "jawaban_evaluasi",
+                "ordering": ["evaluasi", "nomor_soal"],
+                "unique_together": {("evaluasi", "nomor_soal")},
             },
         ),
         migrations.CreateModel(
-            name='NilaiEvaluasiPerMateri',
+            name="NilaiEvaluasiPerMateri",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('materi', models.CharField(choices=[('materi_1', 'Materi 1'), ('materi_2', 'Materi 2'), ('materi_3', 'Materi 3'), ('materi_4', 'Materi 4'), ('materi_5', 'Materi 5'), ('materi_6', 'Materi 6')], max_length=50, verbose_name='Materi')),
-                ('nilai', models.FloatField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(100.0)], verbose_name='Nilai (%)')),
-                ('total_soal', models.IntegerField(default=0, validators=[django.core.validators.MinValueValidator(0)], verbose_name='Total Soal Materi Ini')),
-                ('jumlah_benar', models.IntegerField(default=0, validators=[django.core.validators.MinValueValidator(0)], verbose_name='Jumlah Benar Materi Ini')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('evaluasi_utama', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='breakdown_per_materi', to='belajar.nilaievaluasi', verbose_name='Evaluasi Utama')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "materi",
+                    models.CharField(
+                        choices=[
+                            ("materi_1", "Materi 1"),
+                            ("materi_2", "Materi 2"),
+                            ("materi_3", "Materi 3"),
+                            ("materi_4", "Materi 4"),
+                            ("materi_5", "Materi 5"),
+                            ("materi_6", "Materi 6"),
+                        ],
+                        max_length=50,
+                        verbose_name="Materi",
+                    ),
+                ),
+                (
+                    "nilai",
+                    models.FloatField(
+                        blank=True,
+                        null=True,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(100.0),
+                        ],
+                        verbose_name="Nilai (%)",
+                    ),
+                ),
+                (
+                    "total_soal",
+                    models.IntegerField(
+                        default=0,
+                        validators=[django.core.validators.MinValueValidator(0)],
+                        verbose_name="Total Soal Materi Ini",
+                    ),
+                ),
+                (
+                    "jumlah_benar",
+                    models.IntegerField(
+                        default=0,
+                        validators=[django.core.validators.MinValueValidator(0)],
+                        verbose_name="Jumlah Benar Materi Ini",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "evaluasi_utama",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="breakdown_per_materi",
+                        to="belajar.nilaievaluasi",
+                        verbose_name="Evaluasi Utama",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Breakdown Nilai Per Materi',
-                'verbose_name_plural': 'Breakdown Nilai Per Materi',
-                'db_table': 'nilai_evaluasi_per_materi',
-                'ordering': ['evaluasi_utama', 'materi'],
-                'unique_together': {('evaluasi_utama', 'materi')},
+                "verbose_name": "Breakdown Nilai Per Materi",
+                "verbose_name_plural": "Breakdown Nilai Per Materi",
+                "db_table": "nilai_evaluasi_per_materi",
+                "ordering": ["evaluasi_utama", "materi"],
+                "unique_together": {("evaluasi_utama", "materi")},
             },
         ),
     ]
