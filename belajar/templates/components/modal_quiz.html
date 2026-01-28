@@ -1,52 +1,48 @@
-<div id="quizModal" class="fixed inset-0 bg-[#0077B6]/90 backdrop-blur-sm hidden items-center justify-center z-50 transition-all duration-300 opacity-0">
-
-  <div class="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-2xl mx-4 transform scale-95 transition-all duration-300 relative overflow-hidden" id="quizCard">
-
+<div id="quizModal"
+     class="fixed inset-0 bg-[#0077B6]/90 backdrop-blur-sm hidden items-center justify-center z-50 transition-all duration-300 opacity-0">
+  <div class="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-2xl mx-4 transform scale-95 transition-all duration-300 relative overflow-hidden"
+       id="quizCard">
     <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#0077B6] to-[#00B4D8]"></div>
-
     <div class="text-center mb-6">
       <h3 class="text-2xl font-extrabold text-[#0077B6]">Pasangkan Jawaban!</h3>
-      <p class="text-[#00B4D8] text-sm">Tarik kotak <span class="font-bold text-[#F5B7B1]">Soal</span> ke kotak <span class="font-bold text-[#0077B6]">Jawaban</span> yang benar.</p>
+      <p class="text-[#00B4D8] text-sm">
+        Tarik kotak <span class="font-bold text-[#F5B7B1]">Soal</span> ke kotak <span class="font-bold text-[#0077B6]">Jawaban</span> yang benar.
+      </p>
     </div>
-
     <div class="grid grid-cols-2 gap-8 mb-6 relative">
-
-        <div class="flex flex-col space-y-3" id="questionsContainer">
-            <h4 class="text-center font-bold text-gray-400 text-xs tracking-widest mb-1">SOAL</h4>
-            {% for item in quiz_data.questions %}
-            <div class="draggable-source bg-[#F5B7B1] text-white font-bold py-3 px-4 rounded-xl shadow-md cursor-grab active:cursor-grabbing hover:scale-105 transition-transform text-center select-none relative z-10"
-                 draggable="true"
-                 data-id="{{ item.id }}"
-                 id="q-{{ item.id }}">
-                 {{ item.question }}
-                 <i class="fa-solid fa-grip-lines-vertical absolute right-3 opacity-50"></i>
-            </div>
-            {% endfor %}
-        </div>
-
-        <div class="flex flex-col space-y-3" id="answersContainer">
-            <h4 class="text-center font-bold text-gray-400 text-xs tracking-widest mb-1">JAWABAN</h4>
-            {% for item in quiz_data.answers %}
-            <div class="droppable-target bg-white border-2 border-dashed border-[#00B4D8] text-[#0077B6] font-bold py-3 px-4 rounded-xl flex items-center justify-center transition-all h-[52px]"
-                 data-id="{{ item.id }}"
-                 id="a-{{ item.id }}">
-                 <span class="pointer-events-none">{{ item.answer }}</span>
-            </div>
-            {% endfor %}
-        </div>
-
+      <div class="flex flex-col space-y-3" id="questionsContainer">
+        <h4 class="text-center font-bold text-gray-400 text-xs tracking-widest mb-1">SOAL</h4>
+        {% for item in quiz_data.questions %}
+          <div class="draggable-source bg-[#F5B7B1] text-white font-bold py-3 px-4 rounded-xl shadow-md cursor-grab active:cursor-grabbing hover:scale-105 transition-transform text-center select-none relative z-10"
+               draggable="true"
+               data-id="{{ item.id }}"
+               id="q-{{ item.id }}">
+            {{ item.question }}
+            <i class="fa-solid fa-grip-lines-vertical absolute right-3 opacity-50"></i>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="flex flex-col space-y-3" id="answersContainer">
+        <h4 class="text-center font-bold text-gray-400 text-xs tracking-widest mb-1">JAWABAN</h4>
+        {% for item in quiz_data.answers %}
+          <div class="droppable-target bg-white border-2 border-dashed border-[#00B4D8] text-[#0077B6] font-bold py-3 px-4 rounded-xl flex items-center justify-center transition-all h-[52px]"
+               data-id="{{ item.id }}"
+               id="a-{{ item.id }}">
+            <span class="pointer-events-none">{{ item.answer }}</span>
+          </div>
+        {% endfor %}
+      </div>
     </div>
-
-    <div id="feedbackMessage" class="hidden text-center mb-4 font-bold text-lg"></div>
-
+    <div id="feedbackMessage"
+         class="hidden text-center mb-4 font-bold text-lg"></div>
     <div class="text-center">
-      <button onclick="closeQuiz()" class="text-gray-400 text-xs font-medium hover:text-[#F5B7B1] underline decoration-dotted">
+      <button onclick="closeQuiz()"
+              class="text-gray-400 text-xs font-medium hover:text-[#F5B7B1] underline decoration-dotted">
         Nyerah? Kembali Belajar
       </button>
     </div>
   </div>
 </div>
-
 <style>
     /* Style saat item didrag di atas target */
     .drag-over {
@@ -76,7 +72,6 @@
         transform: scale(1.05);
     }
 </style>
-
 <script>
   const modal = document.getElementById('quizModal');
   const card = document.getElementById('quizCard');
