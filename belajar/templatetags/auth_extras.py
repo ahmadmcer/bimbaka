@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 register = template.Library()
 
 
-@register.filter(name='has_group')
+@register.filter(name="has_group")
 def has_group(user, group_name):
     """
     Cek apakah user termasuk dalam grup tertentu.
@@ -18,7 +18,7 @@ def has_group(user, group_name):
     return group in user.groups.all()
 
 
-@register.filter(name='to_terbilang')
+@register.filter(name="to_terbilang")
 def to_terbilang(value):
     """Mengubah angka (string or int) menjadi teks bahasa Indonesia."""
     try:
@@ -26,7 +26,18 @@ def to_terbilang(value):
     except (ValueError, TypeError):
         return value  # Kembalikan nilai asli jika bukan angka
 
-    satuan = ["Nol", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan"]
+    satuan = [
+        "Nol",
+        "Satu",
+        "Dua",
+        "Tiga",
+        "Empat",
+        "Lima",
+        "Enam",
+        "Tujuh",
+        "Delapan",
+        "Sembilan",
+    ]
 
     if 0 <= num < 10:
         return satuan[num]

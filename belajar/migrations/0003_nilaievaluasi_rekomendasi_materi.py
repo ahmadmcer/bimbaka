@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('belajar', '0002_alter_profile_options_profile_foto_and_more'),
+        ("belajar", "0002_alter_profile_options_profile_foto_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='nilaievaluasi',
-            name='rekomendasi_materi',
-            field=models.CharField(blank=True, max_length=100, null=True, verbose_name='Rekomendasi AI'),
+            model_name="nilaievaluasi",
+            name="rekomendasi_materi",
+            field=models.CharField(
+                blank=True, max_length=100, null=True, verbose_name="Rekomendasi AI"
+            ),
         ),
     ]

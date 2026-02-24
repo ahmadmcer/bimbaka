@@ -13,26 +13,27 @@ def generate_realisitic_data(original_file_path, output_filename, n_students=200
         print("File tidak ditemukan!")
         return
 
-    if 'NAMA' not in df.columns:
-        if 'Unnamed: 0' in df.columns:
-            df.rename(columns={'Unnamed: 0': 'NAMA'}, inplace=True)
+    if "NAMA" not in df.columns:
+        if "Unnamed: 0" in df.columns:
+            df.rename(columns={"Unnamed: 0": "NAMA"}, inplace=True)
         else:
-            df.rename(columns={df.columns[0], 'NAMA'}, inplace=True)
+            df.rename(columns={df.columns[0], "NAMA"}, inplace=True)
 
     # Ambil Kunci Jawaban
     try:
-        key_row = df[df['NAMA'].astype(str).str.contains(
-            'Kunci', case=False, na=False)].iloc[0]
+        key_row = df[
+            df["NAMA"].astype(str).str.contains("Kunci", case=False, na=False)
+        ].iloc[0]
     except IndexError:
         print("Error: Tidak menemukan baris 'Kunci Jawaban' di file csv.")
         return
 
-    q_cols = [f'Q{i}' for i in range(1, 19)]  # Q1 s/d Q18
+    q_cols = [f"Q{i}" for i in range(1, 19)]  # Q1 s/d Q18
     answer_key = key_row[q_cols].values
-    options = ['A', 'B', 'C', 'D']
+    options = ["A", "B", "C", "D"]
 
     # Mapping Nama Materi
-    existing_recs = df['REKOMENDASI_MATERI'].dropna().unique()
+    existing_recs = df["REKOMENDASI_MATERI"].dropna().unique()
     material_map = {}
     for rec in existing_recs:
         for i in range(1, 7):  # Asumsi ada 6 materi
@@ -115,7 +116,7 @@ def generate_realisitic_data(original_file_path, output_filename, n_students=200
 
             # Hitung Nilai Per Materi
             score = round((correct_count / 3) * 100, 2)
-            scores[f'NILAI_{m}'] = score
+            scores[f"NILAI_{m}"] = score
             raw_scores_list.append(score)
 
         # --- LOGIKA GURU (AUTO LABELING) ---
@@ -124,8 +125,7 @@ def generate_realisitic_data(original_file_path, output_filename, n_students=200
         min_val = min(raw_scores_list)
 
         # Cari materi apa saja yang nilainya terendah (bisa jadi ada 2 materi nilainya sama2 0)
-        min_indices = [idx+1 for idx,
-                       v in enumerate(raw_scores_list) if v == min_val]
+        min_indices = [idx + 1 for idx, v in enumerate(raw_scores_list) if v == min_val]
 
         # ATURAN PRIORITAS GURU:
         # Jika ada nilai yang sama rendahnya, prioritaskan materi yang lebih awal (Materi 1 > Materi 6)
@@ -135,29 +135,28 @@ def generate_realisitic_data(original_file_path, output_filename, n_students=200
 
         # --- SUSUN DATASET ---
         row = {
-            'NAMA': f"Siswa_Gen_{student_id}",
-            'KELAS': df['KELAS'].mode()[0] if not df['KELAS'].mode().empty else "-"
+            "NAMA": f"Siswa_Gen_{student_id}",
+            "KELAS": df["KELAS"].mode()[0] if not df["KELAS"].mode().empty else "-",
         }
 
         # Masukkan Q1-Q18
         for idx, ans in enumerate(student_answers):
-            row[f'Q{idx+1}'] = ans
+            row[f"Q{idx+1}"] = ans
 
         # Masukkan Nilai
         row.update(scores)
 
         # Masukkan Total & Label
-        row['TOTAL_NILAI'] = round(sum(raw_scores_list) / 6, 2)
-        row['REKOMENDASI_MATERI'] = final_rec
+        row["TOTAL_NILAI"] = round(sum(raw_scores_list) / 6, 2)
+        row["REKOMENDASI_MATERI"] = final_rec
 
         dummy_data.append(row)
 
     # Simpan ke CSV
     df_dummy = pd.DataFrame(dummy_data)
     df_dummy.to_csv(output_filename, index=False)
-    print(
-        f"✅ Berhasil generate {n_students} data realistis ke: {output_filename}")
-    print(df_dummy['REKOMENDASI_MATERI'].value_counts())
+    print(f"✅ Berhasil generate {n_students} data realistis ke: {output_filename}")
+    print(df_dummy["REKOMENDASI_MATERI"].value_counts())
     print("-" * 30)
 
 
@@ -166,7 +165,7 @@ def generate_realisitic_data(original_file_path, output_filename, n_students=200
 generate_realisitic_data(
     original_file_path="nilai_kelas_2.csv",
     output_filename="nilai_dummy_kelas_2_v2.csv",
-    n_students=100
+    n_students=100,
 )
 
 
@@ -174,5 +173,5 @@ generate_realisitic_data(
 generate_realisitic_data(
     original_file_path="nilai_kelas_3.csv",
     output_filename="nilai_dummy_kelas_3_v2.csv",
-    n_students=100
+    n_students=100,
 )

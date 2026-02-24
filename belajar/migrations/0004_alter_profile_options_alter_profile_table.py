@@ -6,16 +6,19 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('belajar', '0003_nilaievaluasi_rekomendasi_materi'),
+        ("belajar", "0003_nilaievaluasi_rekomendasi_materi"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='profile',
-            options={'verbose_name': 'Profil Pengguna', 'verbose_name_plural': 'Profil Pengguna'},
+            name="profile",
+            options={
+                "verbose_name": "Profil Pengguna",
+                "verbose_name_plural": "Profil Pengguna",
+            },
         ),
         migrations.AlterModelTable(
-            name='profile',
-            table='profile',
+            name="profile",
+            table="profile",
         ),
     ]

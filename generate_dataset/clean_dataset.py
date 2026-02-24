@@ -6,34 +6,38 @@ def clean_dataset(file_path):
     df = pd.read_csv(file_path)
 
     # Perbaikan nama kolom (Jika ada 'Unnamed: 0', ubah jadi 'NAMA')
-    if 'Unnamed: 0' in df.columns:
-        df.rename(columns={'Unnamed: 0': 'NAMA'}, inplace=True)
+    if "Unnamed: 0" in df.columns:
+        df.rename(columns={"Unnamed: 0": "NAMA"}, inplace=True)
 
     # 2. Hapus Baris 'Kunci Jawaban'
     # Kita hanya mengambil baris di mana kolom NAMA TIDAK SAMA dengan 'Kunci Jawaban'
-    df_clean = df[df['NAMA'] != 'Kunci Jawaban'].copy()
+    df_clean = df[df["NAMA"] != "Kunci Jawaban"].copy()
 
     # 3. Konversi Kolom Nilai dari String ke Float
     # Daftar kolom fitur yang akan digunakan
-    feature_cols = ['NILAI_1', 'NILAI_2',
-                    'NILAI_3', 'NILAI_4', 'NILAI_5', 'NILAI_6']
+    feature_cols = ["NILAI_1", "NILAI_2", "NILAI_3", "NILAI_4", "NILAI_5", "NILAI_6"]
 
     for col in feature_cols:
         # Ganti koma dengan titik, lalu ubah tipe data jadi float
         # errors='coerce' akan mengubah data non-angka menjadi NaN (untuk keamanan)
-        df_clean[col] = df_clean[col].astype(str).str.replace(
-            ',', '.').apply(pd.to_numeric, errors='coerce')
+        df_clean[col] = (
+            df_clean[col]
+            .astype(str)
+            .str.replace(",", ".")
+            .apply(pd.to_numeric, errors="coerce")
+        )
 
     # 4. Pilih Kolom Final untuk Dataset
     # X (Features) = NILAI_1 s/d NILAI_6
     # y (Target)   = REKOMENDASI_MATERI
-    final_cols = feature_cols + ['REKOMENDASI_MATERI']
+    final_cols = feature_cols + ["REKOMENDASI_MATERI"]
     df_final = df_clean[final_cols]
 
     # Hapus baris jika masih ada yang kosong (opsional, untuk kebersihan data)
     df_final = df_final.dropna()
 
     return df_final
+
 
 # --- PENGGUNAAN KODE ---
 

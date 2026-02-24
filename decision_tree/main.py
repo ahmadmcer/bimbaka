@@ -12,13 +12,14 @@ def train_model(file_path, title):
 
     # 2. Tentukan Fitur (X) dan Target (y)
     # Mengambil semua kolom yang mengandung kata 'NILAI' sebagai fitur
-    feature_cols = [col for col in df.columns if 'NILAI' in col]
+    feature_cols = [col for col in df.columns if "NILAI" in col]
     X = df[feature_cols]
-    y = df['REKOMENDASI_MATERI']
+    y = df["REKOMENDASI_MATERI"]
 
     # 3. Bagi Data (Split) - 70% Training, 30% Testing
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.3, random_state=42)
+        X, y, test_size=0.3, random_state=42
+    )
 
     # HYPERPARAMETER TUNING
     # Definisikan model
@@ -26,13 +27,13 @@ def train_model(file_path, title):
 
     # Tentukan kandidat parameter yang mau dicoba
     param_grid = {
-        'max_depth': [None, 5, 7, 10, 15],
-        'min_samples_split': [2, 5, 10, 20],
-        'criterion': ['gini', 'entropy']
+        "max_depth": [None, 5, 7, 10, 15],
+        "min_samples_split": [2, 5, 10, 20],
+        "criterion": ["gini", "entropy"],
     }
 
     # Mencari kombinasi terbaik
-    grid_search = GridSearchCV(dt, param_grid, cv=5, scoring='accuracy')
+    grid_search = GridSearchCV(dt, param_grid, cv=5, scoring="accuracy")
     grid_search.fit(X_train, y_train)
 
     # Lihat hasil tuning
