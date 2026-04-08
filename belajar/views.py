@@ -36,86 +36,162 @@ def is_guru(user):
     return user.is_authenticated and user.groups.filter(name="Guru").exists()
 
 
-def generate_soal_evaluasi_akhir(jumlah_soal=20, kelas="kelas_2"):
-    """Hasilkan soal evaluasi komprehensif berdasarkan kelas siswa."""
+def generate_soal_evaluasi_akhir(jumlah_soal=24, kelas="kelas_2"):
+    """
+    KELAS 2: 4 soal per materi (24 total)
+    - Materi 1: Penjumlahan Berulang (visual + text)
+    - Materi 2: Sifat Komutatif (a×b dan b×a)
+    - Materi 3: Perkalian 1 & 0 (fokus pada 1 dan 0)
+    - Materi 4: Perkalian 2 & 5 (hanya 2 atau 5)
+    - Materi 5: Perkalian 10 (hanya ×10)
+    - Materi 6: Tabel Perkalian (random 3-9)
+
+    KELAS 3: 4 soal per materi (24 total)
+    - Materi 1: Perkalian 0, 10, 100
+    - Materi 2: Perkalian Bersusun (2 digit × 1 digit)
+    - Materi 3: Pembagian 1 & 0
+    - Materi 4: Pembagian Bersusun (2+ digit ÷ 1 digit)
+    - Materi 5: Operasi Campuran (a×b)+c
+    - Materi 6: Soal Cerita
+    """
     soal = []
 
-    # SOAL KELAS 2
+    # SOAL KELAS 2 - SPESIFIK PER MATERI
     if kelas == "kelas_2":
-        kategori_k2 = ["visual", "komutatif", "nol_satu", "dua_lima_sepuluh", "tabel"]
-        for i in range(jumlah_soal):
-            question_data = {}
-            tipe_soal = random.choice(kategori_k2)
-
-            if tipe_soal == "visual":
-                a = random.randint(2, 5)
-                b = random.randint(2, 4)
-                jawaban = a * b
-                question_data = {
-                    "type": "visual",
-                    "question_text": "Berapa hasil dari apel di atas?",
-                    "a_range": [1] * a,
-                    "b_range": [1] * b,
-                    "op": "×",
-                    "icon": "🍎",
-                }
-            elif tipe_soal == "komutatif":
-                a = random.randint(3, 9)
-                b = random.randint(2, 8)
-                jawaban = a * b
-                question_data = {
-                    "type": "text",
-                    "question_text": f"Berapakah {b} × {a}?",
-                }
-            elif tipe_soal == "nol_satu":
-                a = random.randint(5, 20)
-                b = random.choice([0, 1])
-                jawaban = a * b
-                question_data = {
-                    "type": "text",
-                    "question_text": f"Berapakah {a} × {b}?",
-                }
-            elif tipe_soal == "dua_lima_sepuluh":
-                a = random.randint(3, 9)
-                b = random.choice([2, 5, 10])
-                jawaban = a * b
-                question_data = {
-                    "type": "text",
-                    "question_text": f"Berapakah {a} × {b}?",
-                }
-            else:
-                a = random.randint(3, 9)
-                b = random.randint(3, 9)
-                jawaban = a * b
-                question_data = {
-                    "type": "text",
-                    "question_text": f"Berapakah {a} × {b}?",
-                }
-
-            pilihan = [str(jawaban)]
-            while len(pilihan) < 4:
-                wrong = jawaban + random.randint(-5, 5)
-                if wrong != jawaban and wrong >= 0 and str(wrong) not in pilihan:
-                    pilihan.append(str(wrong))
-            random.shuffle(pilihan)
-            question_data.update(
-                {
-                    "choices": pilihan,
-                    "correct_answer": str(jawaban),
-                    "materi": f"materi_{random.randint(1, 6)}",
-                }
-            )
-            soal.append(question_data)
-
-    # SOAL KELAS 3
-    elif kelas == "kelas_3":
-        soal_per_materi = jumlah_soal // 6
-        sisa_soal = jumlah_soal % 6
         for materi_id in range(1, 7):
-            jumlah_untuk_materi = soal_per_materi + (1 if materi_id <= sisa_soal else 0)
-            for _ in range(jumlah_untuk_materi):
+            for _ in range(4):  # 4 soal per materi
                 question_data = {}
+                jawaban = 0
+
                 if materi_id == 1:
+                    # MATERI 1: Penjumlahan Berulang (Visual + Text)
+                    if random.choice([True, False]):
+                        # Soal Visual
+                        a = random.randint(2, 5)
+                        b = random.randint(2, 4)
+                        jawaban = a * b
+                        question_data = {
+                            "type": "visual",
+                            "question_text": "Berapa hasil dari apel di atas?",
+                            "a_range": [1] * a,
+                            "b_range": [1] * b,
+                            # TAMBAHKAN DUA BARIS DI BAWAH INI:
+                            "bilangan_1": a,
+                            "bilangan_2": b,
+                            "op": "×",
+                            "icon": "🍎",
+                        }
+
+
+                    else:
+                        # Soal Text
+                        a = random.randint(2, 5)
+                        b = random.randint(2, 4)
+                        jawaban = a * b
+                        # Membuat deret "4 + 4 + 4" secara dinamis
+                        penjumlahan_str = " + ".join([str(b)] * a)
+                        # Menampilkan perkalian dan penjumlahannya sekaligus
+                        question_data = {
+                            "type": "text",
+                            "question_text": f"Berapakah {a} × {b} = {penjumlahan_str} = ?",
+                        }
+
+                elif materi_id == 2:
+                    # MATERI 2: Sifat Komutatif (a×b = b×a)
+                    # Fokus pada pertukaran angka
+                    a = random.randint(3, 9)
+                    b = random.randint(2, 8)
+                    jawaban = a * b
+
+                    if random.choice([True, False]):
+                        # Soal dalam urutan a × b
+                        question_data = {
+                            "type": "text",
+                            "question_text": f"Berapakah {a} × {b}?",
+                        }
+                    else:
+                        # Soal dalam urutan b × a (terbalik)
+                        question_data = {
+                            "type": "text",
+                            "question_text": f"Berapakah {b} × {a}?",
+                        }
+
+                elif materi_id == 3:
+                    # MATERI 3: Perkalian 1 & 0
+                    # 2 soal dengan ×1 dan 2 soal dengan ×0
+                    pengali = random.choice([0, 1])
+                    a = random.randint(5, 20)
+                    jawaban = a * pengali
+
+                    if pengali == 1:
+                        question_data = {
+                            "type": "text",
+                            "question_text": f"Berapakah {a} × 1?",
+                        }
+                    else:
+                        question_data = {
+                            "type": "text",
+                            "question_text": f"Berapakah {a} × 0?",
+                        }
+
+                elif materi_id == 4:
+                    # MATERI 4: Perkalian 2 & 5
+                    # Hanya perkalian dengan 2 atau 5
+                    pengali = random.choice([2, 5])
+                    a = random.randint(3, 9)
+                    jawaban = a * pengali
+                    question_data = {
+                        "type": "text",
+                        "question_text": f"Berapakah {a} × {pengali}?",
+                    }
+
+                elif materi_id == 5:
+                    # MATERI 5: Perkalian 10
+                    # Semua soal ×10
+                    a = random.randint(2, 9)
+                    jawaban = a * 10
+                    question_data = {
+                        "type": "text",
+                        "question_text": f"Berapakah {a} × 10?",
+                    }
+
+                else:  # materi_id == 6
+                    # MATERI 6: Tabel Perkalian (3-9)
+                    a = random.randint(3, 9)
+                    b = random.randint(3, 9)
+                    jawaban = a * b
+                    question_data = {
+                        "type": "text",
+                        "question_text": f"Berapakah {a} × {b}?",
+                    }
+
+                # Buat pilihan jawaban
+                pilihan = [str(jawaban)]
+                while len(pilihan) < 4:
+                    wrong = jawaban + random.randint(-5, 5)
+                    if wrong != jawaban and wrong >= 0 and str(wrong) not in pilihan:
+                        pilihan.append(str(wrong))
+                random.shuffle(pilihan)
+
+                # Tambahkan pilihan dan materi ke soal
+                question_data.update(
+                    {
+                        "choices": pilihan,
+                        "correct_answer": str(jawaban),
+                        "materi": f"materi_{materi_id}",
+                    }
+                )
+                soal.append(question_data)
+
+    # SOAL KELAS 3 - SPESIFIK PER MATERI
+    elif kelas == "kelas_3":
+        for materi_id in range(1, 7):
+            for _ in range(4):  # 4 soal per materi
+                question_data = {}
+                jawaban = 0
+
+                if materi_id == 1:
+                    # MATERI 1: Perkalian 0, 10, 100
                     a = random.randint(1, 12)
                     b = random.choice([0, 10, 100])
                     jawaban = a * b
@@ -123,32 +199,64 @@ def generate_soal_evaluasi_akhir(jumlah_soal=20, kelas="kelas_2"):
                         "type": "text",
                         "question_text": f"Berapakah {a} × {b}?",
                     }
+
                 elif materi_id == 2:
-                    a = random.randint(10, 99)
-                    b = random.randint(2, 9)
+                    # MATERI 2: Perkalian Bersusun (2 digit × 1 digit)
+                    # Hasil tidak lebih dari 200
+                    b = random.randint(2, 9)  # Pengali 2-9
+                    a = random.randint(10, int(200 / b))
                     jawaban = a * b
+
                     question_data = {
-                        "type": "text",
-                        "question_text": f"Berapakah {a} × {b}?",
+                        "type": "susun_multiply",
+                        "question_text": "Berapakah hasil perkalian di bawah?",
+                        "bilangan_1": a,
+                        "bilangan_2": b,
                     }
+
+
                 elif materi_id == 3:
-                    a = random.randint(5, 50)
-                    b = 1
-                    jawaban = a // b
-                    question_data = {
-                        "type": "text",
-                        "question_text": f"Berapakah {a} ÷ {b}?",
-                    }
+                    # MATERI 3: Pembagian 1 & 0
+                    # 2 soal dengan ÷1 dan 2 soal dengan ÷ (dengan hasil menunjukkan sifat 0)
+                    if random.choice([True, False]):
+                        # Pembagian dengan 1
+                        a = random.randint(5, 50)
+                        jawaban = a // 1
+                        question_data = {
+                            "type": "text",
+                            "question_text": f"Berapakah {a} ÷ 1?",
+                        }
+                    else:
+                        # Pembagian 0 dibagi bilangan apapun = 0
+                        b = random.randint(2, 9)
+                        jawaban = 0
+                        question_data = {
+                            "type": "text",
+                            "question_text": f"Berapakah 0 ÷ {b}?",
+                        }
+
                 elif materi_id == 4:
+                    # MATERI 4: Pembagian Bersusun POROGAPIT
+                    # Yang dibagi tidak lebih dari 60
                     divisor = random.randint(2, 9)
-                    quotient = random.randint(10, 99)
+                    quotient = random.randint(3, 9)  # Hasil pembagian 3-9
                     dividend = divisor * quotient
+
+                    # Pastikan dividend tidak lebih dari 60
+                    while dividend > 60:
+                        divisor = random.randint(2, 6)  # Kurangi pembagi
+                        quotient = random.randint(3, 9)
+                        dividend = divisor * quotient
                     jawaban = quotient
                     question_data = {
-                        "type": "text",
-                        "question_text": f"Berapakah {dividend} ÷ {divisor}?",
+                        "type": "susun_divide",
+                        "question_text": "Berapakah hasil pembagian di bawah?",
+                        "dividend": dividend,
+                        "divisor": divisor,
                     }
+
                 elif materi_id == 5:
+                    # MATERI 5: Operasi Campuran (a×b)+c
                     a = random.randint(2, 9)
                     b = random.randint(2, 9)
                     c = random.randint(1, 20)
@@ -157,7 +265,9 @@ def generate_soal_evaluasi_akhir(jumlah_soal=20, kelas="kelas_2"):
                         "type": "text",
                         "question_text": f"Berapakah ({a} × {b}) + {c}?",
                     }
-                else:
+
+                else:  # materi_id == 6
+                    # MATERI 6: Soal Cerita
                     items = random.randint(3, 8)
                     per_group = random.randint(2, 6)
                     given_away = random.randint(1, items * per_group // 2)
@@ -167,12 +277,15 @@ def generate_soal_evaluasi_akhir(jumlah_soal=20, kelas="kelas_2"):
                         "question_text": f"Ana punya {items} kotak. Tiap kotak isi {per_group} permen. Diberikan {given_away}. Berapa sisanya?",
                     }
 
+                # Buat pilihan jawaban
                 pilihan = [str(jawaban)]
                 while len(pilihan) < 4:
                     wrong = jawaban + random.randint(-10, 10)
                     if wrong != jawaban and wrong >= 0 and str(wrong) not in pilihan:
                         pilihan.append(str(wrong))
                 random.shuffle(pilihan)
+
+                # Tambahkan pilihan dan materi ke soal
                 question_data.update(
                     {
                         "choices": pilihan,
@@ -653,6 +766,7 @@ def kerjakan_kuis(request, kuis_id):
 
 # --- EVALUASI & AI REKOMENDASI ---
 @login_required
+@login_required
 def evaluasi(request):
     if not KemajuanBelajar.user_ready_for_evaluation(request.user):
         messages.error(
@@ -671,7 +785,7 @@ def evaluasi(request):
 
     if request.method == "GET":
         if "page" not in request.GET or request.GET.get("start") == "1":
-            soal = generate_soal_evaluasi_akhir(jumlah_soal=20, kelas=kelas_siswa)
+            soal = generate_soal_evaluasi_akhir(jumlah_soal=24, kelas=kelas_siswa)  # UBAH KE 24
             request.session["soal_evaluasi"] = soal
             request.session["jawaban_evaluasi"] = []
         soal = request.session.get("soal_evaluasi", [])
@@ -708,7 +822,6 @@ def evaluasi(request):
             return finalize_evaluasi(request)
         else:
             return redirect(f"/evaluasi/?page={current_page + 1}")
-
 
 def get_ai_recommendation(evaluasi, kelas_siswa):
     try:
