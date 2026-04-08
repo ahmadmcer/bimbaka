@@ -235,18 +235,15 @@ def generate_soal_evaluasi_akhir(jumlah_soal=24, kelas="kelas_2"):
                             "question_text": f"Berapakah 0 ÷ {b}?",
                         }
 
-                elif materi_id == 4:
-                    # MATERI 4: Pembagian Bersusun POROGAPIT
-                    # Yang dibagi tidak lebih dari 60
-                    divisor = random.randint(2, 9)
-                    quotient = random.randint(3, 9)  # Hasil pembagian 3-9
-                    dividend = divisor * quotient
 
-                    # Pastikan dividend tidak lebih dari 60
-                    while dividend > 60:
-                        divisor = random.randint(2, 6)  # Kurangi pembagi
-                        quotient = random.randint(3, 9)
-                        dividend = divisor * quotient
+
+                elif materi_id == 4:
+
+                    # MATERI 4: Pembagian Bersusun POROGAPIT
+                    # Hasil bagi (quotient) dibatasi 11-20 agar sangat ramah untuk anak kelas 3
+                    divisor = random.randint(2, 5)  # Pembagi 2-5
+                    quotient = random.randint(11, 20)  # Hasil belasan sampai 20 saja
+                    dividend = divisor * quotient
                     jawaban = quotient
                     question_data = {
                         "type": "susun_divide",
