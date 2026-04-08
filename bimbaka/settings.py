@@ -71,7 +71,8 @@ WSGI_APPLICATION = "bimbaka.wsgi.application"
 # Database
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL", f'sqlite:///{BASE_DIR / "db.sqlite3"}'),
+        default=os.environ.get(
+            "DATABASE_URL", f'sqlite:///{BASE_DIR / "db.sqlite3"}'),
         conn_max_age=600,
     )
 }
@@ -104,12 +105,17 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-# STORAGES = {
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    # 'default' mengatur file Media (foto upload guru/siswa)
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    # 'staticfiles' mengatur file statis bawaan (CSS, JS, ikon)
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
