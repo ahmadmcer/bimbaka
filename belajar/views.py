@@ -953,6 +953,45 @@ def hasil_evaluasi(request):
 
 
 # --- HALAMAN GURU ---
+
+@login_required
+@user_passes_test(is_guru, login_url="beranda")
+def tambah_siswa(request):
+    try:
+        guru_kelas = request.user.profile.kelas
+    except Profile.DoesNotExist:
+        messages.error(request, "Profil guru tidak ditemukan.")
+        return redirect("beranda")
+
+    if request.method == "POST":
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username sudah digunakan!")
+        else:
+            # Email dikosongkan (string kosong) karena Django User model mengizinkannya
+            user = User.objects.create_user(
+                username=username,
+                password=password,
+                first_name=first_name,
+                last_name=last_name,
+                email=""
+            )
+
+            group, _ = Group.objects.get_or_create(name="Siswa")
+            user.groups.add(group)
+
+            Profile.objects.create(user=user, kelas=guru_kelas)
+
+            messages.success(request,
+                             f"Akun siswa {first_name} berhasil dibuat untuk {request.user.profile.get_kelas_display()}!")
+            return redirect("guru_daftar_siswa")
+
+    return render(request, "pages/guru/tambah_siswa.html")
+
 @login_required
 @user_passes_test(is_guru, login_url="beranda")
 def guru_nilai(request):
@@ -1146,59 +1185,59 @@ def masuk(request):
 def daftar(request):
     SECRET_TEACHER_CODE = "BIMBAKA2025"
     if request.method == "POST":
+        # 1. Ambil data dari POST
         first_name = request.POST.get("first_name")
         last_name = request.POST.get("last_name")
         username = request.POST.get("username")
         email = request.POST.get("email", "")
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
-        peran = request.POST.get("peran")
         kelas = request.POST.get("kelas")
         kode_guru = request.POST.get("kode_guru")
 
+        # 2. Validasi dasar
         if password != confirm_password:
             messages.error(request, "Password tidak sesuai!")
             return redirect("daftar")
+
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username sudah terdaftar!")
             return redirect("daftar")
 
-        role_name = ""
         if not kelas:
             messages.error(request, "Silakan pilih kelas Anda!")
             return redirect("daftar")
 
-        if peran == "guru":
-            if kode_guru == SECRET_TEACHER_CODE:
-                if not email:
-                    messages.error(request, "Email wajib diisi untuk Guru!")
-                    return redirect("daftar")
-                if User.objects.filter(email=email).exists():
-                    messages.error(request, "Email sudah terdaftar!")
-                    return redirect("daftar")
-                role_name = "Guru"
-            else:
-                messages.error(request, "Kode Pendaftaran Guru salah!")
+        # 3. Logika pendaftaran Guru
+        if kode_guru == SECRET_TEACHER_CODE:
+            if not email:
+                messages.error(request, "Email wajib diisi untuk Guru!")
                 return redirect("daftar")
-        elif peran == "siswa":
-            role_name = "Siswa"
-            email = ""
+
+            if User.objects.filter(email=email).exists():
+                messages.error(request, "Email sudah terdaftar!")
+                return redirect("daftar")
+
+            # Buat akun guru
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+                first_name=first_name,
+                last_name=last_name,
+            )
+
+            # Masukkan ke grup dan buat profil
+            group, _ = Group.objects.get_or_create(name="Guru")
+            user.groups.add(group)
+            Profile.objects.create(user=user, kelas=kelas)
+
+            messages.success(request, "Akun Guru berhasil dibuat! Silakan masuk.")
+            return redirect("masuk")
         else:
-            messages.error(request, "Silakan pilih peran!")
+            messages.error(request, "Kode Pendaftaran Guru salah!")
             return redirect("daftar")
 
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-            first_name=first_name,
-            last_name=last_name,
-        )
-        group, _ = Group.objects.get_or_create(name=role_name)
-        user.groups.add(group)
-        Profile.objects.create(user=user, kelas=kelas)
-        messages.success(request, "Akun berhasil dibuat! Silakan masuk.")
-        return redirect("masuk")
     return render(request, "pages/auth/daftar.html")
 
 
@@ -1229,9 +1268,11 @@ def riwayat_evaluasi(request):
 @login_required
 def edit_profile(request):
     if request.method == "POST":
-        u_form = UserUpdateForm(request.POST, instance=request.user)
+        # TAMBAH: user=request.user
+        u_form = UserUpdateForm(request.POST, instance=request.user, user=request.user)
         profile, created = Profile.objects.get_or_create(user=request.user)
         p_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
@@ -1239,8 +1280,10 @@ def edit_profile(request):
             return redirect("edit_profile")
     else:
         profile, created = Profile.objects.get_or_create(user=request.user)
-        u_form = UserUpdateForm(instance=request.user)
+        # TAMBAH: user=request.user
+        u_form = UserUpdateForm(instance=request.user, user=request.user)
         p_form = ProfileUpdateForm(instance=profile)
+
     return render(
         request, "pages/auth/edit_profile.html", {"u_form": u_form, "p_form": p_form}
     )

@@ -12,7 +12,7 @@ urlpatterns = [
         views.mark_materi_completed,
         name="mark_materi_completed",
     ),
-    # --- FITUR KUIS (GURU & SISWA) - INI YANG KETINGGALAN ---
+    # --- FITUR KUIS (GURU & SISWA)
     path("guru/kuis/", views.daftar_kuis_guru, name="daftar_kuis_guru"),
     path("guru/kuis/buat/", views.buat_kuis, name="buat_kuis"),
     path("guru/kuis/<int:kuis_id>/soal/", views.tambah_soal, name="tambah_soal"),
@@ -31,6 +31,7 @@ urlpatterns = [
         name="guru_riwayat_siswa",
     ),
     path("guru/siswa/", views.guru_daftar_siswa, name="guru_daftar_siswa"),
+    path("guru/siswa/tambah/", views.tambah_siswa, name="tambah_siswa"),
     path(
         "guru/kuis/<int:kuis_id>/nilai/",
         views.lihat_nilai_kuis,

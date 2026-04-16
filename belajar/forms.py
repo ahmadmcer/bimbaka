@@ -28,6 +28,14 @@ class UserUpdateForm(forms.ModelForm):
             ),
         }
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+
+        # Jika user yang sedang login adalah Siswa, hapus field email dari form
+        if self.user and self.user.groups.filter(name="Siswa").exists():
+            if 'email' in self.fields:
+                del self.fields['email']
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
