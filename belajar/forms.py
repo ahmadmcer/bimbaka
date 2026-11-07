@@ -1,3 +1,6 @@
+# Copyright (C) 2025-2026 Fika Qoshdina <qoshdinafika@gmail.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 from django import forms
 from django.contrib.auth.models import User
 from .models import Profile

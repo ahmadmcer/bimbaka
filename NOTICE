@@ -1,0 +1,40 @@
+# NOTICE / Academic Attribution
+
+Bimbaka (Aplikasi Pembelajaran dan Bimbingan Belajar Interaktif Berbasis Django) merupakan karya ilmiah dan luaran dari Skripsi / Tugas Akhir program sarjana:
+
+- **Pemilik & Penulis:** Fika Qoshdina (<qoshdinafika@gmail.com>)
+- **Program Studi:** S1 Teknik Informatika
+- **Fakultas / Institusi:** Telkom University Purwokerto
+- **Tahun Kelulusan:** 2026
+- **Judul Skripsi:** *Implementasi Algoritma Decision Tree untuk Rekomendasi Materi Belajar pada Website Pembelajaran Matematika Topik Perkalian dan Pembagian*
+- **Katalog Open Library Telkom University:** [Katalog #248686](https://openlibrary.telkomuniversity.ac.id/home/catalog/id/248686/slug/implementasi-algoritma-decision-tree-untuk-rekomendasi-materi-belajar-pada-website-pembelajaran-matematika-topik-perkalian-dan-pembagian-dalam-bentuk-buku-karya-ilmiah.html)
+- **Repositori Resmi:** https://github.com/Fika-Fifrost/TA_Bimbaka
+
+---
+
+## Panduan Sitasi Akademik (Academic Citation)
+
+Jika Anda menggunakan, memodifikasi, mengevaluasi, atau merujuk kode sumber maupun metodologi penelitian ini dalam publikasi ilmiah, tugas akhir, skripsi, tesis, atau riset turunan lainnya, mohon cantumkan sitasi akademik berikut:
+
+### Format APA (7th Edition)
+```text
+Qoshdina, F. (2026). Implementasi Algoritma Decision Tree untuk Rekomendasi Materi Belajar pada Website Pembelajaran Matematika Topik Perkalian dan Pembagian (Skripsi, Telkom University Purwokerto). Open Library Telkom University. https://openlibrary.telkomuniversity.ac.id/home/catalog/id/248686/slug/implementasi-algoritma-decision-tree-untuk-rekomendasi-materi-belajar-pada-website-pembelajaran-matematika-topik-perkalian-dan-pembagian-dalam-bentuk-buku-karya-ilmiah.html
+```
+
+### Format IEEE
+```text
+F. Qoshdina, "Implementasi Algoritma Decision Tree untuk Rekomendasi Materi Belajar pada Website Pembelajaran Matematika Topik Perkalian dan Pembagian," Skripsi sarjana, S1 Teknik Informatika, Telkom University Purwokerto, Purwokerto, Indonesia, 2026. [Online]. Available: https://openlibrary.telkomuniversity.ac.id/home/catalog/id/248686/slug/implementasi-algoritma-decision-tree-untuk-rekomendasi-materi-belajar-pada-website-pembelajaran-matematika-topik-perkalian-dan-pembagian-dalam-bentuk-buku-karya-ilmiah.html
+```
+
+### Format BibTeX
+```bibtex
+@mastersthesis{qoshdina2026implementasi,
+  author       = {Qoshdina, Fika},
+  title        = {Implementasi Algoritma Decision Tree untuk Rekomendasi Materi Belajar pada Website Pembelajaran Matematika Topik Perkalian dan Pembagian},
+  school       = {Telkom University Purwokerto},
+  address      = {Purwokerto, Indonesia},
+  year         = {2026},
+  type         = {Skripsi},
+  url          = {https://openlibrary.telkomuniversity.ac.id/home/catalog/id/248686/slug/implementasi-algoritma-decision-tree-untuk-rekomendasi-materi-belajar-pada-website-pembelajaran-matematika-topik-perkalian-dan-pembagian-dalam-bentuk-buku-karya-ilmiah.html}
+}
+```
