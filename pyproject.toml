@@ -1,3 +1,9 @@
+[project]
+name = "bimbaka"
+version = "1.0.0"
+description = "Bimbaka - Aplikasi Pembelajaran dan Bimbingan Belajar Interaktif Berbasis Django"
+requires-python = ">=3.12"
+
 [tool.djlint]
 indent = 2
 
