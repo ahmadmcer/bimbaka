@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2026-11-08
 
 ### Added
+- Added GNU AGPLv3 (`LICENSE`) establishing strong copyleft open-source licensing.
+- Added `NOTICE` documenting academic thesis attribution and formal citation guidelines for Fika Qoshdina (Telkom University Purwokerto) and link to the official upstream repository [Fika-Fifrost/TA_Bimbaka](https://github.com/Fika-Fifrost/TA_Bimbaka).
+- Added SPDX license identifier and copyright notices across primary Python source modules.
 - Created `AGENTS.md` establishing standardized guidelines for AI coding agents, including atomic commit enforcement, strict branch isolation, issue tracking, and PR merge rules (scored 100/100 Gold Tier).
 - Created administrative functions for quiz management and student records in `belajar` app.
 - Added edit and delete functionality for quiz components (`kuis`).
